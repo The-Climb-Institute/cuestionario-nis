@@ -125,6 +125,12 @@ header .logo-area {
   font-size: var(--font-size-base);
 }
 
+.seccion-footer {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 2px solid var(--color-gold-primary);
+}
+
 .seccion-score {
   display: flex;
   align-items: center;
@@ -132,7 +138,6 @@ header .logo-area {
   padding: var(--spacing-md);
   background: var(--color-gray-light);
   border-radius: var(--border-radius);
-  margin-top: var(--spacing-md);
 }
 
 .score-label {
@@ -153,6 +158,17 @@ header .logo-area {
   margin-left: auto;
 }
 
+.score-value.no-data {
+  font-size: var(--font-size-xl);
+  min-width: 30px;
+}
+
+.seccion-score.no-data,
+.resumen-value.no-data,
+.total-score-value.no-data {
+  opacity: 0.6;
+}
+
 /* === FORM FIELDS === */
 .seccion-fields {
   display: grid;
@@ -167,10 +183,33 @@ header .logo-area {
   background: var(--color-gray-light);
   border-radius: var(--border-radius);
   position: relative;
+  border-left: 4px solid transparent;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
 .form-field.hidden {
   display: none;
+}
+
+/* Highlighting por semáforo */
+.form-field.highlight-green {
+  border-left-color: var(--color-green);
+  background-color: rgba(39, 174, 96, 0.05);
+}
+
+.form-field.highlight-yellow {
+  border-left-color: var(--color-yellow);
+  background-color: rgba(243, 156, 18, 0.05);
+}
+
+.form-field.highlight-red {
+  border-left-color: var(--color-red);
+  background-color: rgba(231, 76, 60, 0.05);
+}
+
+.form-field.highlight-gray {
+  border-left-color: var(--color-gray-medium);
+  background-color: rgba(200, 200, 200, 0.02);
 }
 
 .field-label {

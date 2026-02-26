@@ -82,7 +82,7 @@ class NISScorer {
    * Calcula el score de una sección completa
    * @param {string} seccion - 'ambiental', 'social' o 'gobernanza'
    * @param {object} formValues - Valores del formulario {indicadorId: value, ...}
-   * @returns {object} {score: 0-1, porcentaje: 0-100, label: 'En cumplimiento'|'En progreso'|'Requiere atención'}
+   * @returns {object} {score: 0-1, porcentaje: 0-100, label: 'En cumplimiento'|'En progreso'|'Requiere atención', hasData: boolean}
    */
   calculateSectionScore(seccion, formValues) {
     // Filtrar benchmarks de la sección
@@ -93,33 +93,70 @@ class NISScorer {
         score: 0,
         porcentaje: 0,
         label: 'Sin datos',
-        color: '#95A5A6'
+        color: '#95A5A6',
+        hasData: false
       };
     }
 
     // Normalizar cada valor
     const normalizedScores = sectionBenchmarks.map(benchmark => {
-      const value = formValues[benchmark.id] || null;
-      return this.normalizeValue(benchmark.id, value);
+      const value = formValues[benchmark.id];
+      return { value, normalized: this.normalizeValue(benchmark.id, value) };
     });
 
-    // Promediar los scores
-    const score = normalizedScores.reduce((a, b) => a + b, 0) / normalizedScores.length;
+    // Filtrar solo los indicadores que tienen valor (no nulos)
+    const respondedIndicators = normalizedScores.filter(item => item.value !== null && item.value !== '');
 
-    return this.getTrafficLight(score);
+    // Si no hay respuestas, retornar "Sin datos"
+    if (respondedIndicators.length === 0) {
+      return {
+        score: 0,
+        porcentaje: 0,
+        label: 'Sin datos',
+        color: '#95A5A6',
+        hasData: false
+      };
+    }
+
+    // Promediar solo los scores respondidos
+    const score = respondedIndicators.reduce((sum, item) => sum + item.normalized, 0) / respondedIndicators.length;
+
+    const trafficLight = this.getTrafficLight(score);
+    trafficLight.hasData = true;
+    return trafficLight;
   }
 
   /**
    * Calcula el score total ponderado de todas las secciones
    * @param {object} formValues - Valores del formulario
-   * @returns {object} {score: 0-1, porcentaje: 0-100, label, color}
+   * @returns {object} {score: 0-1, porcentaje: 0-100, label, color, hasData}
    */
   calculateTotalScore(formValues) {
-    const sectionsScores = {
-      ambiental: this.calculateSectionScore('ambiental', formValues).score,
-      social: this.calculateSectionScore('social', formValues).score,
-      gobernanza: this.calculateSectionScore('gobernanza', formValues).score
+    const sectionResults = {
+      ambiental: this.calculateSectionScore('ambiental', formValues),
+      social: this.calculateSectionScore('social', formValues),
+      gobernanza: this.calculateSectionScore('gobernanza', formValues)
     };
+
+    const sectionsScores = {
+      ambiental: sectionResults.ambiental.score,
+      social: sectionResults.social.score,
+      gobernanza: sectionResults.gobernanza.score
+    };
+
+    // Verificar si hay al menos un dato respondido
+    const hasAnyData = sectionResults.ambiental.hasData || sectionResults.social.hasData || sectionResults.gobernanza.hasData;
+
+    // Si no hay datos, retornar "Sin datos"
+    if (!hasAnyData) {
+      return {
+        score: 0,
+        porcentaje: 0,
+        label: 'Sin datos',
+        color: '#95A5A6',
+        hasData: false
+      };
+    }
 
     // Calcular ponderado
     const totalScore =
@@ -127,7 +164,9 @@ class NISScorer {
       (sectionsScores.social * this.weights.social) +
       (sectionsScores.gobernanza * this.weights.gobernanza);
 
-    return this.getTrafficLight(totalScore);
+    const trafficLight = this.getTrafficLight(totalScore);
+    trafficLight.hasData = true;
+    return trafficLight;
   }
 
   /**

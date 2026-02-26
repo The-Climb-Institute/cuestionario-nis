@@ -75,10 +75,15 @@ function updateSectionScores(scores) {
 
     const score = scores[seccion];
 
-    // Score value
+    // Score value - mostrar "-" si no hay datos, "N%" si hay datos
     const scoreElement = document.querySelector(`[data-score-${seccion}]`);
+    const percentElement = document.querySelector(`[data-percent-${seccion}]`);
     if (scoreElement) {
-      scoreElement.textContent = score.porcentaje;
+      scoreElement.textContent = score.hasData ? score.porcentaje : '-';
+      scoreElement.parentElement.classList.toggle('no-data', !score.hasData);
+    }
+    if (percentElement) {
+      percentElement.style.display = score.hasData ? 'inline' : 'none';
     }
 
     // Semaforo
@@ -88,7 +93,44 @@ function updateSectionScores(scores) {
       semaforoElement.style.color = score.color;
       semaforoElement.title = score.label;
     }
+
+    // Resaltar los campos de la sección con el color del semáforo
+    highlightSectionFields(seccion, score);
   });
+}
+
+/**
+ * Resalta los campos de una sección con el color del semáforo correspondiente
+ */
+function highlightSectionFields(seccion, score) {
+  const sectionDiv = document.querySelector(`[data-seccion="${seccion}"]`);
+  if (!sectionDiv) return;
+
+  const fields = sectionDiv.querySelectorAll('.form-field');
+  fields.forEach(field => {
+    const fieldId = field.getAttribute('data-field-id');
+    const values = formRenderer.getFormValues();
+    const hasValue = values[fieldId] !== null && values[fieldId] !== '';
+
+    // Solo resaltar si el campo tiene valor
+    if (hasValue) {
+      field.classList.add(`highlight-${getSemaforoClass(score.color)}`);
+    } else {
+      field.classList.remove('highlight-green', 'highlight-yellow', 'highlight-red', 'highlight-gray');
+    }
+  });
+}
+
+/**
+ * Convierte un color hex a clase de semáforo
+ */
+function getSemaforoClass(color) {
+  switch (color) {
+    case '#27AE60': return 'green';
+    case '#F39C12': return 'yellow';
+    case '#E74C3C': return 'red';
+    default: return 'gray';
+  }
 }
 
 /**
@@ -98,7 +140,13 @@ function updateTotalScore(totalScore) {
   const totalScoreDiv = document.querySelector('.total-score');
   if (totalScoreDiv) {
     totalScoreDiv.style.background = `linear-gradient(135deg, ${totalScore.color}dd 0%, ${totalScore.color} 100%)`;
-    totalScoreDiv.querySelector('.total-score-value').textContent = `${totalScore.porcentaje}%`;
+    const valueElement = totalScoreDiv.querySelector('.total-score-value');
+    const percentElement = totalScoreDiv.querySelector('.total-score-percent');
+    valueElement.textContent = totalScore.hasData ? totalScore.porcentaje : '-';
+    valueElement.classList.toggle('no-data', !totalScore.hasData);
+    if (percentElement) {
+      percentElement.style.display = totalScore.hasData ? 'inline' : 'none';
+    }
     totalScoreDiv.querySelector('.total-score-label').textContent = totalScore.label;
   }
 }
@@ -121,10 +169,12 @@ function updateResumenPanel(scores) {
     const itemDiv = document.createElement('div');
     itemDiv.className = 'resumen-item';
 
+    const displayValue = score.hasData ? score.porcentaje : '-';
+
     itemDiv.innerHTML = `
       <span class="resumen-label">${sectionData.nombre}</span>
-      <span class="resumen-value">
-        ${score.porcentaje}%
+      <span class="resumen-value ${!score.hasData ? 'no-data' : ''}">
+        ${displayValue}<span class="resumen-percent" style="${score.hasData ? '' : 'display: none;'}">%</span>
         <span class="resumen-semaforo" style="color: ${score.color};">●</span>
       </span>
     `;

@@ -325,17 +325,12 @@ class NISFormRenderer {
       seccionDiv.className = `nis-seccion nis-seccion-${seccion}`;
       seccionDiv.setAttribute('data-seccion', seccion);
 
-      // Header de sección
+      // Header de sección (sin score - se moverá al final)
       const header = document.createElement('div');
       header.className = 'seccion-header';
       header.innerHTML = `
         <h2 class="seccion-titulo">${seccionData.nombre}</h2>
         <p class="seccion-descripcion">${seccionData.descripcion}</p>
-        <div class="seccion-score">
-          <span class="score-label">Score:</span>
-          <span class="score-value" data-score-${seccion}>--</span>%
-          <span class="score-semaforo" data-semaforo-${seccion}>●</span>
-        </div>
       `;
       seccionDiv.appendChild(header);
 
@@ -349,6 +344,20 @@ class NISFormRenderer {
       });
 
       seccionDiv.appendChild(fieldsContainer);
+
+      // Footer con score (al final de la sección)
+      const footer = document.createElement('div');
+      footer.className = 'seccion-footer';
+      footer.innerHTML = `
+        <div class="seccion-score">
+          <span class="score-label">Score:</span>
+          <span class="score-value" data-score-${seccion}>-</span>
+          <span class="score-percent" data-percent-${seccion}>%</span>
+          <span class="score-semaforo" data-semaforo-${seccion}>●</span>
+        </div>
+      `;
+      seccionDiv.appendChild(footer);
+
       container.appendChild(seccionDiv);
     });
   }
