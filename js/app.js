@@ -171,13 +171,26 @@ function updateResumenPanel(scores) {
 
     const displayValue = score.hasData ? score.porcentaje : '-';
 
+    // Si hay datos y el score está en rojo, hacer clickable
+    const isAttentionLevel = score.hasData && score.porcentaje < 40;
+    const clickableClass = isAttentionLevel ? 'clickable' : '';
+    const cursorStyle = isAttentionLevel ? 'cursor: pointer;' : '';
+
     itemDiv.innerHTML = `
       <span class="resumen-label">${sectionData.nombre}</span>
-      <span class="resumen-value ${!score.hasData ? 'no-data' : ''}">
+      <span class="resumen-value ${!score.hasData ? 'no-data' : ''}" style="${cursorStyle}">
         ${displayValue}<span class="resumen-percent" style="${score.hasData ? '' : 'display: none;'}">%</span>
         <span class="resumen-semaforo" style="color: ${score.color};">●</span>
       </span>
     `;
+
+    // Agregar listener si está en nivel de atención
+    if (isAttentionLevel) {
+      itemDiv.classList.add('clickable');
+      itemDiv.addEventListener('click', () => {
+        openAttentionModal(seccion);
+      });
+    }
 
     resumenContainer.appendChild(itemDiv);
   });
@@ -313,6 +326,259 @@ function resetForm() {
     updateScores();
     formRenderer.updateConditionalFields({});
   }
+}
+
+/**
+ * Abre el modal de indicadores que requieren atención
+ */
+function openAttentionModal(seccion) {
+  const values = formRenderer.getFormValues();
+
+  // Obtener indicadores de la sección que requieren atención
+  const attentionIndicators = getIndicatorsNeedingAttention(seccion, values);
+
+  if (attentionIndicators.length === 0) {
+    alert('No hay indicadores que requieran atención en esta sección.');
+    return;
+  }
+
+  // Crear modal HTML
+  const modal = createAttentionModal(seccion, attentionIndicators);
+  document.body.appendChild(modal);
+
+  // Agregar listener para cerrar modal
+  modal.querySelector('.modal-close').addEventListener('click', () => {
+    modal.remove();
+  });
+
+  modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+      modal.remove();
+    }
+  });
+
+  // Cerrar con ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.parentElement) {
+      modal.remove();
+    }
+  });
+}
+
+/**
+ * Obtiene los indicadores de una sección que requieren atención (<40%)
+ */
+function getIndicatorsNeedingAttention(seccion, values) {
+  const sectionResult = scorer.calculateSectionScore(seccion, values);
+
+  // Si la sección está en verde, no hay indicadores que requieran atención
+  if (sectionResult.porcentaje >= 70) {
+    return [];
+  }
+
+  // Obtener benchmarks de la sección
+  const sectionBenchmarks = scorer.benchmarks.benchmarks.filter(b => b.seccion === seccion);
+
+  // Calcular score individual para cada indicador
+  const indicators = sectionBenchmarks.map(benchmark => {
+    const value = values[benchmark.id];
+    const normalized = scorer.normalizeValue(benchmark.id, value);
+    const porcentaje = Math.round(normalized * 100);
+
+    return {
+      id: benchmark.id,
+      indicador: benchmark.indicador,
+      meta: benchmark.meta,
+      unidad: benchmark.unidad,
+      valor: value,
+      porcentaje: porcentaje,
+      benchmark: benchmark
+    };
+  });
+
+  // Filtrar solo los que están en rojo (<40%) o amarillo (40-69%)
+  return indicators.filter(ind => ind.porcentaje < 70 && (ind.valor !== null && ind.valor !== ''));
+}
+
+/**
+ * Crea el HTML del modal de indicadores que requieren atención
+ */
+function createAttentionModal(seccion, indicators) {
+  const sectionData = scorer.benchmarks.secciones[seccion];
+
+  // Agrupar por indicadores que requieren atención (rojo) vs en progreso (amarillo)
+  const atencion = indicators.filter(ind => ind.porcentaje < 40);
+  const progreso = indicators.filter(ind => ind.porcentaje >= 40 && ind.porcentaje < 70);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+
+  const modal = document.createElement('div');
+  modal.className = 'modal-content';
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'modal-header';
+  header.innerHTML = `
+    <h2>Indicadores de ${sectionData.nombre}</h2>
+    <button class="modal-close" aria-label="Cerrar">✕</button>
+  `;
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'modal-body';
+
+  // Sección de indicadores que requieren atención (rojo)
+  if (atencion.length > 0) {
+    const atencionSection = document.createElement('div');
+    atencionSection.className = 'modal-section';
+    atencionSection.innerHTML = `
+      <h3 class="modal-section-title" style="color: var(--color-red);">
+        Requiere Atención (< 40%)
+      </h3>
+    `;
+
+    atencion.forEach(ind => {
+      const row = createIndicatorRow(ind);
+      atencionSection.appendChild(row);
+    });
+
+    body.appendChild(atencionSection);
+  }
+
+  // Sección de indicadores en progreso (amarillo)
+  if (progreso.length > 0) {
+    const progressSection = document.createElement('div');
+    progressSection.className = 'modal-section';
+    progressSection.innerHTML = `
+      <h3 class="modal-section-title" style="color: var(--color-yellow);">
+        En Progreso (40-69%)
+      </h3>
+    `;
+
+    progreso.forEach(ind => {
+      const row = createIndicatorRow(ind);
+      progressSection.appendChild(row);
+    });
+
+    body.appendChild(progressSection);
+  }
+
+  // Footer
+  const footer = document.createElement('div');
+  footer.className = 'modal-footer';
+  footer.innerHTML = `
+    <p style="color: var(--color-gray-dark); font-size: 12px; margin: 0;">
+      Haz clic en cualquier indicador para ver más detalles
+    </p>
+  `;
+
+  modal.appendChild(header);
+  modal.appendChild(body);
+  modal.appendChild(footer);
+  overlay.appendChild(modal);
+
+  return overlay;
+}
+
+/**
+ * Crea una fila de indicador para el modal
+ */
+function createIndicatorRow(indicator) {
+  const row = document.createElement('div');
+  row.className = 'modal-indicator';
+
+  const color = indicator.porcentaje < 40 ? 'var(--color-red)' : 'var(--color-yellow)';
+  const benchmark = indicator.benchmark;
+
+  let valueDisplay = '';
+  if (indicator.valor === null || indicator.valor === '') {
+    valueDisplay = '(Sin responder)';
+  } else if (typeof indicator.valor === 'boolean' || indicator.valor === 'Sí' || indicator.valor === 'No') {
+    valueDisplay = indicator.valor === true || indicator.valor === 'Sí' ? 'Sí' : 'No';
+  } else {
+    valueDisplay = `${indicator.valor} ${indicator.unidad}`;
+  }
+
+  const metaDisplay = `${indicator.meta} ${indicator.unidad}`;
+
+  row.innerHTML = `
+    <div class="indicator-header">
+      <span class="indicator-name">${indicator.indicador}</span>
+      <span class="indicator-score" style="color: ${color};">
+        ${indicator.porcentaje}%
+      </span>
+    </div>
+    <div class="indicator-comparison">
+      <div class="indicator-value">
+        <small>Tu respuesta:</small>
+        <strong>${valueDisplay}</strong>
+      </div>
+      <div class="indicator-benchmark">
+        <small>Meta:</small>
+        <strong>${metaDisplay}</strong>
+      </div>
+    </div>
+    <div class="indicator-source" title="${benchmark.fuente_apa}">
+      <small style="color: var(--color-gray-dark); display: block; margin-top: 8px; font-style: italic;">
+        📚 ${benchmark.fuente_apa.substring(0, 60)}...
+      </small>
+    </div>
+  `;
+
+  // Agregar click para mostrar más detalles
+  row.addEventListener('click', () => {
+    showBenchmarkDetail(indicator.benchmark);
+  });
+
+  return row;
+}
+
+/**
+ * Muestra los detalles completos del benchmark
+ */
+function showBenchmarkDetail(benchmark) {
+  const detailOverlay = document.createElement('div');
+  detailOverlay.className = 'modal-overlay';
+
+  const detailModal = document.createElement('div');
+  detailModal.className = 'modal-content modal-detail';
+
+  detailModal.innerHTML = `
+    <div class="modal-header">
+      <h2>${benchmark.indicador}</h2>
+      <button class="modal-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-section">
+        <h4>Meta</h4>
+        <p><strong>${benchmark.meta} ${benchmark.unidad}</strong></p>
+      </div>
+      <div class="detail-section">
+        <h4>Descripción</h4>
+        <p>${benchmark.descripcion}</p>
+      </div>
+      <div class="detail-section">
+        <h4>Fuente (APA 7)</h4>
+        <p style="font-family: monospace; font-size: 12px; white-space: pre-wrap; background: var(--color-gray-light); padding: 12px; border-radius: 4px;">
+          ${benchmark.fuente_apa}
+        </p>
+      </div>
+    </div>
+  `;
+
+  detailModal.querySelector('.modal-close').addEventListener('click', () => {
+    detailOverlay.remove();
+  });
+
+  detailOverlay.appendChild(detailModal);
+  document.body.appendChild(detailOverlay);
+
+  detailOverlay.addEventListener('click', (e) => {
+    if (e.target === detailOverlay) {
+      detailOverlay.remove();
+    }
+  });
 }
 
 // Inicializar cuando el DOM está listo
