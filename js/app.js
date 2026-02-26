@@ -101,19 +101,26 @@ function updateSectionScores(scores) {
 
 /**
  * Resalta los campos de una sección con el color del semáforo correspondiente
+ * Solo resalta campos que TIENEN BENCHMARK (tienen meta OCDE)
  */
 function highlightSectionFields(seccion, score) {
   const sectionDiv = document.querySelector(`[data-seccion="${seccion}"]`);
   if (!sectionDiv) return;
 
   const fields = sectionDiv.querySelectorAll('.form-field');
+  const values = formRenderer.getFormValues();
+
   fields.forEach(field => {
     const fieldId = field.getAttribute('data-field-id');
-    const values = formRenderer.getFormValues();
     const hasValue = values[fieldId] !== null && values[fieldId] !== '';
 
-    // Solo resaltar si el campo tiene valor
-    if (hasValue) {
+    // Verificar si este campo TIENE BENCHMARK (es indicador con meta OCDE)
+    const hasBenchmark = scorer.benchmarks.benchmarks.some(
+      b => b.id === fieldId && b.seccion === seccion
+    );
+
+    // Solo resaltar si tiene valor Y tiene benchmark
+    if (hasValue && hasBenchmark) {
       field.classList.add(`highlight-${getSemaforoClass(score.color)}`);
     } else {
       field.classList.remove('highlight-green', 'highlight-yellow', 'highlight-red', 'highlight-gray');
@@ -367,21 +374,30 @@ function openAttentionModal(seccion) {
 
 /**
  * Obtiene los indicadores de una sección que requieren atención (<40%)
+ * IMPORTANTE: Solo considera indicadores que TIENEN BENCHMARK
  */
 function getIndicatorsNeedingAttention(seccion, values) {
   const sectionResult = scorer.calculateSectionScore(seccion, values);
 
-  // Si la sección está en verde, no hay indicadores que requieran atención
-  if (sectionResult.porcentaje >= 70) {
+  // Si la sección está en verde o sin datos, no hay indicadores que requieran atención
+  if (!sectionResult.hasData || sectionResult.porcentaje >= 70) {
     return [];
   }
 
-  // Obtener benchmarks de la sección
-  const sectionBenchmarks = scorer.benchmarks.benchmarks.filter(b => b.seccion === seccion);
+  // Obtener SOLO benchmarks de la sección (campos con meta OCDE)
+  const sectionBenchmarks = scorer.benchmarks.benchmarks.filter(
+    b => b.seccion === seccion && b.id !== null
+  );
 
-  // Calcular score individual para cada indicador
+  // Calcular score individual para cada indicador con benchmark
   const indicators = sectionBenchmarks.map(benchmark => {
     const value = values[benchmark.id];
+
+    // Solo procesar si tiene valor
+    if (value === null || value === '') {
+      return null;
+    }
+
     const normalized = scorer.normalizeValue(benchmark.id, value);
     const porcentaje = Math.round(normalized * 100);
 
@@ -394,10 +410,10 @@ function getIndicatorsNeedingAttention(seccion, values) {
       porcentaje: porcentaje,
       benchmark: benchmark
     };
-  });
+  }).filter(ind => ind !== null); // Filtrar nulos
 
   // Filtrar solo los que están en rojo (<40%) o amarillo (40-69%)
-  return indicators.filter(ind => ind.porcentaje < 70 && (ind.valor !== null && ind.valor !== ''));
+  return indicators.filter(ind => ind.porcentaje < 70);
 }
 
 /**

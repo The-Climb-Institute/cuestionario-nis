@@ -80,13 +80,17 @@ class NISScorer {
 
   /**
    * Calcula el score de una sección completa
+   * IMPORTANTE: Solo cuenta indicadores que TIENEN BENCHMARK (benchmarkId != null)
+   * Los campos informativos sin meta OCDE no se cuentan en el score
    * @param {string} seccion - 'ambiental', 'social' o 'gobernanza'
    * @param {object} formValues - Valores del formulario {indicadorId: value, ...}
-   * @returns {object} {score: 0-1, porcentaje: 0-100, label: 'En cumplimiento'|'En progreso'|'Requiere atención', hasData: boolean}
+   * @returns {object} {score: 0-1, porcentaje: 0-100, label, color, hasData: boolean}
    */
   calculateSectionScore(seccion, formValues) {
-    // Filtrar benchmarks de la sección
-    const sectionBenchmarks = this.benchmarks.benchmarks.filter(b => b.seccion === seccion);
+    // CRÍTICO: Filtrar SOLO benchmarks con benchmarkId (descartar campos informativos)
+    const sectionBenchmarks = this.benchmarks.benchmarks.filter(
+      b => b.seccion === seccion && b.id !== null
+    );
 
     if (sectionBenchmarks.length === 0) {
       return {
@@ -98,7 +102,7 @@ class NISScorer {
       };
     }
 
-    // Normalizar cada valor
+    // Normalizar solo indicadores con benchmark
     const normalizedScores = sectionBenchmarks.map(benchmark => {
       const value = formValues[benchmark.id];
       return { value, normalized: this.normalizeValue(benchmark.id, value) };
@@ -107,7 +111,7 @@ class NISScorer {
     // Filtrar solo los indicadores que tienen valor (no nulos)
     const respondedIndicators = normalizedScores.filter(item => item.value !== null && item.value !== '');
 
-    // Si no hay respuestas, retornar "Sin datos"
+    // Si no hay respuestas en campos con benchmark, retornar "Sin datos"
     if (respondedIndicators.length === 0) {
       return {
         score: 0,
@@ -118,7 +122,7 @@ class NISScorer {
       };
     }
 
-    // Promediar solo los scores respondidos
+    // Promediar solo los scores respondidos (con benchmarks)
     const score = respondedIndicators.reduce((sum, item) => sum + item.normalized, 0) / respondedIndicators.length;
 
     const trafficLight = this.getTrafficLight(score);
