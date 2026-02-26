@@ -119,12 +119,20 @@ class NISFormRenderer {
           benchmarkId: null
         },
         {
+          id: 'residuos_peligrosos',
+          label: '¿Tienen protocolo formal de gestión de residuos peligrosos?',
+          type: 'radio',
+          options: ['Sí', 'No'],
+          helpText: 'Benchmark Convenio de Basilea: protocolo documentado requerido',
+          benchmarkId: 'residuos_peligrosos'
+        },
+        {
           id: 'mide_alcance3',
           label: '¿La empresa mide emisiones en su cadena de valor (alcance 3)?',
           type: 'radio',
           options: ['Sí', 'No'],
           helpText: 'Análisis de alcance 3 en cadena de suministro',
-          benchmarkId: null
+          benchmarkId: 'mide_alcance3'
         },
         {
           id: 'reutiliza_agua',
@@ -132,7 +140,7 @@ class NISFormRenderer {
           type: 'radio',
           options: ['Sí', 'No'],
           helpText: 'Implementación de economía circular en agua',
-          benchmarkId: null
+          benchmarkId: 'reutiliza_agua'
         },
         {
           id: 'estres_hidrico',
@@ -202,7 +210,7 @@ class NISFormRenderer {
           type: 'radio',
           options: ['Sí', 'No'],
           helpText: 'Componente clave del buen gobierno corporativo',
-          benchmarkId: null
+          benchmarkId: 'organo_vigilancia'
         },
         {
           id: 'estrategia_sostenibilidad',

@@ -132,6 +132,8 @@ class NISScorer {
 
   /**
    * Calcula el score total ponderado de todas las secciones
+   * IMPORTANTE: Solo considera secciones con datos respondidos.
+   * Redistribuye los pesos proporcionalmente entre secciones contestadas.
    * @param {object} formValues - Valores del formulario
    * @returns {object} {score: 0-1, porcentaje: 0-100, label, color, hasData}
    */
@@ -148,11 +150,19 @@ class NISScorer {
       gobernanza: sectionResults.gobernanza.score
     };
 
-    // Verificar si hay al menos un dato respondido
-    const hasAnyData = sectionResults.ambiental.hasData || sectionResults.social.hasData || sectionResults.gobernanza.hasData;
+    // Identificar secciones con datos respondidos
+    const sectionsWithData = [];
+    let totalWeightOfAnsweredSections = 0;
 
-    // Si no hay datos, retornar "Sin datos"
-    if (!hasAnyData) {
+    Object.keys(sectionResults).forEach(section => {
+      if (sectionResults[section].hasData) {
+        sectionsWithData.push(section);
+        totalWeightOfAnsweredSections += this.weights[section];
+      }
+    });
+
+    // Si no hay datos en ninguna sección, retornar "Sin datos"
+    if (sectionsWithData.length === 0) {
       return {
         score: 0,
         porcentaje: 0,
@@ -162,11 +172,12 @@ class NISScorer {
       };
     }
 
-    // Calcular ponderado
-    const totalScore =
-      (sectionsScores.ambiental * this.weights.ambiental) +
-      (sectionsScores.social * this.weights.social) +
-      (sectionsScores.gobernanza * this.weights.gobernanza);
+    // Calcular ponderado con pesos redistribuidos solo para secciones contestadas
+    let totalScore = 0;
+    sectionsWithData.forEach(section => {
+      const redistributedWeight = this.weights[section] / totalWeightOfAnsweredSections;
+      totalScore += (sectionsScores[section] * redistributedWeight);
+    });
 
     const trafficLight = this.getTrafficLight(totalScore);
     trafficLight.hasData = true;

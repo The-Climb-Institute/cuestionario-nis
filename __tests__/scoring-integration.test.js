@@ -43,6 +43,26 @@ describe('NISScorer - Integration Tests with Real Benchmarks', () => {
       const result = scorer.normalizeValue('energia_renovable', null);
       expect(result).toBe(0);
     });
+
+    test('Binary field "Sí" → 1.0 (mide_alcance3)', () => {
+      const result = scorer.normalizeValue('mide_alcance3', 'Sí');
+      expect(result).toBe(1.0);
+    });
+
+    test('Binary field "No" → 0.0 (mide_alcance3)', () => {
+      const result = scorer.normalizeValue('mide_alcance3', 'No');
+      expect(result).toBe(0.0);
+    });
+
+    test('Binary field "Sí" → 1.0 (reutiliza_agua)', () => {
+      const result = scorer.normalizeValue('reutiliza_agua', 'Sí');
+      expect(result).toBe(1.0);
+    });
+
+    test('Binary field "Sí" → 1.0 (organo_vigilancia)', () => {
+      const result = scorer.normalizeValue('organo_vigilancia', 'Sí');
+      expect(result).toBe(1.0);
+    });
   });
 
   describe('calculateSectionScore - Ambiental', () => {
@@ -195,10 +215,54 @@ describe('NISScorer - Integration Tests with Real Benchmarks', () => {
       expect(result.hasData).toBe(false);
       expect(result.porcentaje).toBe(0);
     });
+
+    test('Only Ambiental answered (100%) → 100% total (weight redistribution)', () => {
+      const formValues = {
+        energia_renovable: 100,
+        agua_descargada_tratada: null,
+        residuos_reciclados: null
+      };
+      const result = scorer.calculateTotalScore(formValues);
+      expect(result.hasData).toBe(true);
+      expect(result.porcentaje).toBe(100);
+      expect(result.color).toBe('#27AE60');
+    });
+
+    test('Only Ambiental answered (50%) → 50% total (weight redistribution)', () => {
+      const formValues = {
+        energia_renovable: 50,
+        agua_descargada_tratada: null,
+        residuos_reciclados: null
+      };
+      const result = scorer.calculateTotalScore(formValues);
+      expect(result.hasData).toBe(true);
+      expect(result.porcentaje).toBe(50);
+      expect(result.color).toBe('#F39C12');
+    });
+
+    test('Ambiental (100%) + Social (60%) → weighted average with redistributed weights', () => {
+      const formValues = {
+        // Ambiental 100%
+        energia_renovable: 100,
+        agua_descargada_tratada: null,
+        residuos_reciclados: null,
+        // Social 60%
+        horas_capacitacion: 24, // 24/40 = 0.6 = 60%
+        evaluacion_formal_desempeno: null,
+        tasa_accidentes: null,
+        politicas_igualdad: null
+      };
+      const result = scorer.calculateTotalScore(formValues);
+      expect(result.hasData).toBe(true);
+      // Weights redistributed: Ambiental 0.4/(0.4+0.4) = 0.5, Social 0.4/(0.4+0.4) = 0.5
+      // Total = (1.0 * 0.5) + (0.6 * 0.5) = 0.5 + 0.3 = 0.8 = 80%
+      expect(result.porcentaje).toBe(80);
+      expect(result.color).toBe('#27AE60');
+    });
   });
 
   describe('Real Benchmark Field IDs', () => {
-    test('All 14 benchmark IDs should exist and be accessible', () => {
+    test('All 17 benchmark IDs should exist and be accessible', () => {
       const expectedBenchmarks = [
         'horas_capacitacion',
         'tasa_accidentes',
@@ -213,7 +277,10 @@ describe('NISScorer - Integration Tests with Real Benchmarks', () => {
         'estrategia_sostenibilidad',
         'codigo_etica',
         'politicas_datos',
-        'canal_denuncias'
+        'canal_denuncias',
+        'mide_alcance3',
+        'reutiliza_agua',
+        'organo_vigilancia'
       ];
 
       expectedBenchmarks.forEach(id => {

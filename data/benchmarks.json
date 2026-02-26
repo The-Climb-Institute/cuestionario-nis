@@ -153,6 +153,39 @@
       "descripcion": "ISO/IEC 27001 y GDPR requieren políticas documentadas para protección de datos personales e implementación de medidas de ciberseguridad en toda la organización.",
       "fuente_apa": "International Organization for Standardization. (2013). ISO/IEC 27001:2013 Information technology – Security techniques – Information security management systems. Geneva: ISO.",
       "normalizacion": "1.0 si existe, 0.0 si no"
+    },
+    {
+      "id": "mide_alcance3",
+      "indicador": "Medición de emisiones en cadena de valor (Alcance 3)",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "ambiental",
+      "descripcion": "El GHG Protocol y el TCFD recomiendan que las empresas midan y reporten las emisiones de alcance 3 (cadena de suministro y uso del producto) como parte del compromiso de transparencia climática.",
+      "fuente_apa": "Greenhouse Gas Protocol. (2011). Corporate Value Chain (Scope 3) Accounting and Reporting Standard. World Resources Institute & World Business Council for Sustainable Development.",
+      "normalizacion": "1.0 si mide alcance 3, 0.0 si no"
+    },
+    {
+      "id": "reutiliza_agua",
+      "indicador": "Reutilización de agua tratada en procesos operativos",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "ambiental",
+      "descripcion": "La ONU-Agua y el ODS 6 promueven la reutilización de agua tratada como pilar de la economía circular hídrica. Las empresas deben implementar sistemas de reutilización para reducir la huella hídrica.",
+      "fuente_apa": "UN-Water. (2018). Sustainable Development Goal 6 Synthesis Report 2018 on Water and Sanitation. United Nations. https://www.unwater.org/publication/sdg-6-synthesis-report-2018-water-and-sanitation",
+      "normalizacion": "1.0 si reutiliza, 0.0 si no"
+    },
+    {
+      "id": "organo_vigilancia",
+      "indicador": "Presencia de órgano de vigilancia independiente (ej. comité de auditoría)",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "gobernanza",
+      "descripcion": "Los Principios de Gobierno Corporativo de la OCDE establecen que toda empresa de tamaño medio o grande debe contar con un órgano de vigilancia independiente que supervise la dirección, los estados financieros y el cumplimiento normativo.",
+      "fuente_apa": "Organisation for Economic Co-operation and Development. (2015). G20/OECD Principles of Corporate Governance. OECD Publishing. https://doi.org/10.1787/9789264236882-en",
+      "normalizacion": "1.0 si existe, 0.0 si no"
     }
   ],
   "secciones": {
