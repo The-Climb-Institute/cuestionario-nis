@@ -1,0 +1,192 @@
+{
+  "benchmarks": [
+    {
+      "id": "horas_capacitacion",
+      "indicador": "Horas de capacitación promedio por empleado al año",
+      "meta": 40,
+      "unidad": "horas/año",
+      "tipo": "numeric",
+      "seccion": "social",
+      "descripcion": "La OCDE recomienda un mínimo de 40 horas de formación continua por empleado al año para el desarrollo profesional y la competitividad organizacional.",
+      "fuente_apa": "Organisation for Economic Co-operation and Development. (2021). OECD Skills Outlook 2021: Learning for Life. OECD Publishing. https://doi.org/10.1787/0ae365b4-en",
+      "normalizacion": "min(value / 40, 1.0)"
+    },
+    {
+      "id": "tasa_accidentes",
+      "indicador": "Tasa de accidentes laborales (por cada 100 empleados)",
+      "meta": 2.0,
+      "unidad": "accidentes/100 empleados",
+      "tipo": "numeric",
+      "seccion": "social",
+      "descripcion": "La OIT establece como referencia una tasa de accidentes inferior a 2.0 por cada 100 trabajadores. Las empresas deben implementar sistemas de gestión de seguridad y salud ocupacional.",
+      "fuente_apa": "International Labour Organization. (2022). World Report on Safety and Health at Work 2022. Geneva: ILO. Retrieved from https://www.ilo.org/global/publications/books",
+      "normalizacion": "max(0, 1 - (value / 10))"
+    },
+    {
+      "id": "evaluacion_formal_desempeno",
+      "indicador": "Porcentaje de empleados evaluados formalmente en desempeño",
+      "meta": 80,
+      "unidad": "%",
+      "tipo": "numeric",
+      "seccion": "social",
+      "descripcion": "Se recomienda que al menos 80% de los empleados reciban una evaluación formal de desempeño anual. Esto mejora el desarrollo profesional y la retención de talento.",
+      "fuente_apa": "Society for Human Resource Management. (2020). 2020 Employee Benefits: The Evolution of Benefits. SHRM Research. Arlington, VA: SHRM.",
+      "normalizacion": "value / 100"
+    },
+    {
+      "id": "politicas_igualdad",
+      "indicador": "Políticas formales de igualdad de oportunidades y no discriminación",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "social",
+      "descripcion": "Toda empresa debe contar con políticas documentadas de igualdad de oportunidades y no discriminación, conforme a estándares ONU y OIT.",
+      "fuente_apa": "United Nations. (2011). Guiding Principles on Business and Human Rights. New York: UN Office of the High Commissioner for Human Rights.",
+      "normalizacion": "1.0 si 'Sí', 0.0 si 'No'"
+    },
+    {
+      "id": "energia_renovable",
+      "indicador": "Porcentaje de energía renovable utilizada en operaciones",
+      "meta": 30,
+      "unidad": "%",
+      "tipo": "numeric",
+      "seccion": "ambiental",
+      "descripcion": "El Acuerdo de París establece que las empresas deben avanzar hacia al menos 30% de energía renovable para 2030 como mínimo, como parte del compromiso climático global.",
+      "fuente_apa": "United Nations Framework Convention on Climate Change. (2015). The Paris Agreement. Paris: UNFCCC. https://unfccc.int/process-and-meetings/the-paris-agreement/the-paris-agreement",
+      "normalizacion": "value / 100"
+    },
+    {
+      "id": "agua_descargada_tratada",
+      "indicador": "Porcentaje del agua descargada que está tratada",
+      "meta": 80,
+      "unidad": "%",
+      "tipo": "numeric",
+      "seccion": "ambiental",
+      "descripcion": "UNESCO y ONU-Agua recomiendan que al menos 80% del agua descargada en operaciones industriales sea tratada para proteger los recursos hídricos.",
+      "fuente_apa": "UNESCO & UN-Water. (2019). Integrated Monitoring Initiative for SDG 6: Synthesis Report on Water and Sanitation. Paris: UNESCO.",
+      "normalizacion": "value / 100"
+    },
+    {
+      "id": "residuos_reciclados",
+      "indicador": "Porcentaje de residuos reciclados o reutilizados",
+      "meta": 50,
+      "unidad": "%",
+      "tipo": "numeric",
+      "seccion": "ambiental",
+      "descripcion": "El Pacto Verde Europeo y PNUMA establecen una meta de al menos 50% de reciclaje de residuos para 2030, como parte de la economía circular.",
+      "fuente_apa": "United Nations Environment Programme. (2021). From Pollution to Solution: A Global Assessment of Marine Litter and Plastic Pollution. Nairobi: UNEP.",
+      "normalizacion": "value / 100"
+    },
+    {
+      "id": "residuos_peligrosos",
+      "indicador": "Presencia de protocolo de gestión de residuos peligrosos",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "ambiental",
+      "descripcion": "El Convenio de Basilea exige que toda empresa genere un protocolo documentado para la gestión segura de residuos peligrosos (corrosivos, reactivos, explosivos).",
+      "fuente_apa": "Basel Convention. (1989). Basel Convention on the Control of Transboundary Movements of Hazardous Wastes. UN Environment Programme.",
+      "normalizacion": "1.0 si existe protocolo, 0.0 si no"
+    },
+    {
+      "id": "mujeres_consejo",
+      "indicador": "Porcentaje de mujeres en el consejo de administración",
+      "meta": 30,
+      "unidad": "%",
+      "tipo": "numeric",
+      "seccion": "gobernanza",
+      "descripcion": "La OCDE recomienda una representación mínima del 30% de mujeres en órganos de gobierno corporativo para garantizar diversidad en la toma de decisiones.",
+      "fuente_apa": "Organisation for Economic Co-operation and Development. (2015). OECD Guidelines on Corporate Governance of State-Owned Enterprises (2nd ed.). Paris: OECD Publishing.",
+      "normalizacion": "value / 100"
+    },
+    {
+      "id": "estrategia_sostenibilidad",
+      "indicador": "Presencia de estrategia formal de sostenibilidad en el negocio",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "gobernanza",
+      "descripcion": "GRI y ISO 14001 requieren que toda empresa declare una estrategia formal de sostenibilidad integrada en su modelo de negocio.",
+      "fuente_apa": "Global Reporting Initiative. (2016). GRI 101: Foundation. Amsterdam: GRI. https://www.globalreporting.org",
+      "normalizacion": "1.0 si existe, 0.0 si no"
+    },
+    {
+      "id": "codigo_etica",
+      "indicador": "Presencia de código de ética aplicado en la empresa",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "gobernanza",
+      "descripcion": "Las Directrices para Empresas Multinacionales de la OCDE exigen que toda empresa cuente con un código de ética documentado y aplicado a todos los niveles.",
+      "fuente_apa": "Organisation for Economic Co-operation and Development. (2011). OECD Guidelines for Multinational Enterprises. Paris: OECD Publishing. https://doi.org/10.1787/9789264115415-en",
+      "normalizacion": "1.0 si existe, 0.0 si no"
+    },
+    {
+      "id": "canal_denuncias",
+      "indicador": "Presencia de canal de denuncias éticas (whistleblowing)",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "gobernanza",
+      "descripcion": "La Convención Anticorrupción de la OCDE requiere canales formales de denuncias para reportar incumplimientos éticos y legales sin represalias.",
+      "fuente_apa": "Organisation for Economic Co-operation and Development. (1997). Convention on Combating Bribery of Foreign Public Officials in International Business Transactions. Paris: OECD.",
+      "normalizacion": "1.0 si existe, 0.0 si no"
+    },
+    {
+      "id": "sistema_gestion_riesgos",
+      "indicador": "Presencia de sistema formal de gestión de riesgos",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "gobernanza",
+      "descripcion": "ISO 31000 establece que toda empresa debe contar con un sistema formal, documentado y periódicamente revisado para identificar, analizar y mitigar riesgos.",
+      "fuente_apa": "International Organization for Standardization. (2018). ISO 31000:2018 Risk Management – Guidelines and principles. Geneva: ISO.",
+      "normalizacion": "1.0 si existe, 0.0 si no"
+    },
+    {
+      "id": "politicas_datos",
+      "indicador": "Presencia de políticas de protección de datos personales y ciberseguridad",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "gobernanza",
+      "descripcion": "ISO/IEC 27001 y GDPR requieren políticas documentadas para protección de datos personales e implementación de medidas de ciberseguridad en toda la organización.",
+      "fuente_apa": "International Organization for Standardization. (2013). ISO/IEC 27001:2013 Information technology – Security techniques – Information security management systems. Geneva: ISO.",
+      "normalizacion": "1.0 si existe, 0.0 si no"
+    }
+  ],
+  "secciones": {
+    "ambiental": {
+      "nombre": "Ambiental",
+      "peso": 0.4,
+      "descripcion": "Indicadores de desempeño ambiental: emisiones, energía, agua, residuos y biodiversidad."
+    },
+    "social": {
+      "nombre": "Social",
+      "peso": 0.4,
+      "descripcion": "Indicadores de desempeño social: capacitación, evaluación, seguridad laboral e igualdad."
+    },
+    "gobernanza": {
+      "nombre": "Gobernanza",
+      "peso": 0.2,
+      "descripcion": "Indicadores de gobierno corporativo: gestión de riesgos, ética, datos y diversidad."
+    }
+  },
+  "escala_semaforos": {
+    "verde": {
+      "minimo": 70,
+      "label": "En cumplimiento",
+      "color": "#27AE60"
+    },
+    "amarillo": {
+      "minimo": 40,
+      "label": "En progreso",
+      "color": "#F39C12"
+    },
+    "rojo": {
+      "minimo": 0,
+      "label": "Requiere atención",
+      "color": "#E74C3C"
+    }
+  }
+}

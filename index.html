@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuestionario NIS - The Climb Institute</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-area">
+      <h1>The Climb Institute</h1>
+    </div>
+    <div class="subtitle">Cuestionario de Normas de Información de Sostenibilidad (NIS)</div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="container">
+    <!-- FORMULARIO -->
+    <main class="nis-form" id="form-container">
+      <!-- El formulario se renderiza aquí dinámicamente -->
+    </main>
+
+    <!-- PANEL DE RESUMEN -->
+    <aside class="resumen-panel">
+      <h3 class="resumen-titulo">Resumen de Scores</h3>
+
+      <div class="resumen-section">
+        <div id="resumen-scores">
+          <!-- Los scores se actualizan aquí dinámicamente -->
+        </div>
+      </div>
+
+      <div class="total-score">
+        <span class="total-score-value">--</span>%
+        <div class="total-score-label">Score Total</div>
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="resumen-section" style="margin-top: var(--spacing-lg);">
+        <button onclick="exportAsJSON()" class="action-button" style="width: 100%; padding: 10px; background: var(--color-gold-primary); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 8px;">
+          Descargar JSON
+        </button>
+        <button onclick="printForm()" class="action-button" style="width: 100%; padding: 10px; background: var(--color-gray-dark); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-bottom: 8px;">
+          Imprimir
+        </button>
+        <button onclick="resetForm()" class="action-button" style="width: 100%; padding: 10px; background: #95A5A6; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+          Limpiar
+        </button>
+      </div>
+
+      <!-- INFORMACIÓN -->
+      <div class="resumen-section" style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--color-gray-medium);">
+        <small style="color: var(--color-gray-dark); line-height: 1.5;">
+          <strong>Indicadores verdes:</strong> En cumplimiento (≥70%)<br>
+          <strong>Indicadores amarillos:</strong> En progreso (40-69%)<br>
+          <strong>Indicadores rojos:</strong> Requiere atención (<40%)
+        </small>
+      </div>
+    </aside>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>The Climb Institute - Evaluación de Sostenibilidad y Gobernanza Corporativa</p>
+    <p style="font-size: 12px; margin-top: 8px;">Benchmarks basados en estándares OCDE, OIT, GRI, ISO y organismos internacionales</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="./js/scoring.js"></script>
+  <script src="./js/form.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
