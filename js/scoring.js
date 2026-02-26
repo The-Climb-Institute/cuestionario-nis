@@ -108,8 +108,8 @@ class NISScorer {
       return { value, normalized: this.normalizeValue(benchmark.id, value) };
     });
 
-    // Filtrar solo los indicadores que tienen valor (no nulos)
-    const respondedIndicators = normalizedScores.filter(item => item.value !== null && item.value !== '');
+    // Filtrar solo los indicadores que tienen valor (no nulos ni undefined)
+    const respondedIndicators = normalizedScores.filter(item => item.value != null && item.value !== '');
 
     // Si no hay respuestas en campos con benchmark, retornar "Sin datos"
     if (respondedIndicators.length === 0) {

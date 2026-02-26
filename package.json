@@ -1,0 +1,13 @@
+{
+  "name": "cuestionario-nis",
+  "version": "1.0.0",
+  "description": "Formulario interactivo para evaluar el cumplimiento de **Normas de Información de Sostenibilidad (NIS)** en empresas, comparando contra benchmarks OCDE y organismos internacionales.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
