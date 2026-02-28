@@ -285,6 +285,51 @@ function setupBenchmarkListeners(benchmarks) {
 }
 
 /**
+ * Envía los datos del formulario a OpenFormStack
+ */
+async function submitToOpenFormStack() {
+  try {
+    const values = formRenderer.getFormValues();
+    const scores = scorer.getAllScores(values);
+
+    const data = {
+      timestamp: new Date().toISOString(),
+      formulario: values,
+      scores: scores,
+      seccion_ambiental: scores.ambiental,
+      seccion_social: scores.social,
+      seccion_gobernanza: scores.gobernanza,
+      score_total: scores.total
+    };
+
+    // Mostrar mensaje de envío en progreso
+    showSubmissionModal('enviando');
+
+    // Enviar a OpenFormStack
+    const endpoint = 'https://openformstack.com/f/cmm3yej4l00004nan9zcn7laj';
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error en servidor: ${response.statusText}`);
+    }
+
+    const result = await response.json();
+
+    // Mostrar confirmación
+    showSubmissionModal('exito', result.id || 'confirmado');
+  } catch (error) {
+    console.error('Error enviando formulario:', error);
+    showSubmissionModal('error', error.message);
+  }
+}
+
+/**
  * Exporta los datos del formulario como JSON
  */
 function exportAsJSON() {
@@ -595,6 +640,63 @@ function showBenchmarkDetail(benchmark) {
       detailOverlay.remove();
     }
   });
+}
+
+/**
+ * Muestra modal de estado de envío del formulario
+ */
+function showSubmissionModal(status, data = '') {
+  // Remover modal anterior si existe
+  const existingModal = document.querySelector('.submission-modal-overlay');
+  if (existingModal) existingModal.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'submission-modal-overlay';
+
+  const modal = document.createElement('div');
+  modal.className = 'submission-modal';
+
+  let content = '';
+  if (status === 'enviando') {
+    content = `
+      <div class="submission-loading">
+        <div class="spinner"></div>
+        <h3>Enviando formulario...</h3>
+        <p>Por favor espera mientras tus datos se envían a OpenFormStack</p>
+      </div>
+    `;
+  } else if (status === 'exito') {
+    content = `
+      <div class="submission-success">
+        <div class="success-icon">✓</div>
+        <h3>¡Envío exitoso!</h3>
+        <p>Tu formulario se ha guardado correctamente.</p>
+        <p class="submission-id"><strong>ID de envío:</strong> ${data}</p>
+        <button onclick="closeSubmissionModal()" class="btn-close">Cerrar</button>
+      </div>
+    `;
+  } else if (status === 'error') {
+    content = `
+      <div class="submission-error">
+        <div class="error-icon">✕</div>
+        <h3>Error al enviar</h3>
+        <p>${data}</p>
+        <button onclick="closeSubmissionModal()" class="btn-close">Cerrar</button>
+      </div>
+    `;
+  }
+
+  modal.innerHTML = content;
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+}
+
+/**
+ * Cierra el modal de envío
+ */
+function closeSubmissionModal() {
+  const overlay = document.querySelector('.submission-modal-overlay');
+  if (overlay) overlay.remove();
 }
 
 // Inicializar cuando el DOM está listo

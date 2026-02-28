@@ -55,8 +55,8 @@ Commits: abc1234, def5678"
 ### 4. Unblock a Task
 When external dependencies are met (e.g., Paula provides questionnaire):
 ```bash
-git mv blocked/02-task-1-form-instructions.md ready/
-git commit -m "chore(task): [task-1] unblocked - questionnaire received"
+git mv blocked/03-task-2-conditional-questions.md ready/
+git commit -m "chore(task): [task-2] unblocked - questionnaire received"
 ```
 
 ## Questionnaire sources (reference)
