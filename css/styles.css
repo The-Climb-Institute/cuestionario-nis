@@ -76,6 +76,13 @@ header .logo-area {
   margin-bottom: var(--spacing-md);
 }
 
+header .logo-image {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 /* === MAIN CONTAINER === */
 .container {
   max-width: 1200px;
@@ -652,6 +659,10 @@ footer p {
 
   header h1 {
     font-size: 24px;
+  }
+
+  header .logo-image {
+    max-width: 150px;
   }
 
   .seccion-titulo {

@@ -5,8 +5,8 @@
 ## Quick Navigation
 
 - **Overview & Context**: `00-meeting-notes-2026-02-26.md` | `01-paula-feedback-todos.md`
-- **Ready to Start**: `ready/` (5 tasks)
-- **Blocked**: `blocked/` (5 tasks waiting for dependencies)
+- **Ready to Start**: `ready/` (6 tasks)
+- **Blocked**: `blocked/` (4 tasks waiting for dependencies)
 - **In Progress**: `in-progress/` (currently being worked on)
 - **Completed**: `../completed/` (finished tasks)
 
@@ -14,8 +14,8 @@
 
 | Status | Count | Details |
 |--------|-------|---------|
-| ✓ Ready | 5 | Company ID, Logo, Colors, Benchmarks visibility, OpenFormStack |
-| ⏳ Blocked | 5 | Form instructions, Conditional questions, Legal, Trademark, User testing |
+| ✓ Ready | 6 | Form instructions, Company ID, Logo, Colors, Benchmarks visibility, OpenFormStack |
+| ⏳ Blocked | 4 | Conditional questions, Legal, Trademark, User testing |
 | 🔄 In Progress | 0 | — |
 | ✅ Completed | 0 | — |
 
@@ -59,6 +59,17 @@ git mv blocked/02-task-1-form-instructions.md ready/
 git commit -m "chore(task): [task-1] unblocked - questionnaire received"
 ```
 
+## Questionnaire sources (reference)
+
+- **Proposed questionnaire (wording, instructions, conditional structure)**:  
+  `input-assets/251217_CLIMB_cuestionario_2.0.docx`  
+  Use for preamble text, applicability/skip logic, and question wording.
+- **Original questionnaire (canonical field set)**:  
+  **projects/data-analysis** — `data/input/surveys/` (XLSX survey files) and `config/schemas/` (e.g. `climb_institute_combined.json`).  
+  These define the fields/variables the form and pipeline must align with.
+
+Tasks 1 and 2 were previously blocked on “Paula’s original DOCX”; the sources above are now documented and available, so those tasks can be moved to **ready** when prioritised.
+
 ## Task Details
 
 Each task file contains:
@@ -90,12 +101,12 @@ See `~/.claude/rules/task-management.md` for complete workflow documentation.
 ## Next Steps
 
 1. **Review READY tasks** and prioritize which to implement first
-2. **Wait for Paula's input** to unblock:
-   - Original DOCX questionnaire (for tasks 1, 2)
+2. **Unblock Tasks 1 & 2** (optional): They have sources now — proposed questionnaire `input-assets/251217_CLIMB_cuestionario_2.0.docx` and data-analysis fields. Move from `blocked/` to `ready/` when you want to implement.
+3. **Wait for Paula's input** to unblock:
    - Legal text/disclaimers (for task 6)
    - Trademark clarification (for task 7)
-3. **Start implementation** on highest-priority READY tasks
-4. **Move completed tasks** to `../completed/` as you finish them
+4. **Start implementation** on highest-priority READY tasks
+5. **Move completed tasks** to `../completed/` as you finish them
 
 ## Master Reference
 
@@ -106,6 +117,6 @@ For full context and rationale, see:
 ---
 
 **Last Updated**: 2026-02-27
-**Total Tasks**: 10 (5 ready, 5 blocked)
+**Total Tasks**: 10 (6 ready, 4 blocked)
 **Planning Status**: ✓ Complete
 **Implementation Status**: ⏳ Ready to begin

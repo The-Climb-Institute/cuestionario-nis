@@ -23,8 +23,9 @@ Example flow:
 - Scoring handles N/A indicators correctly
 
 ## Dependencies
-- [ ] Original DOCX questionnaire (review conditional patterns)
-- [ ] Task 3 partially (both affect form structure)
+- [x] **Proposed questionnaire (conditional patterns)**: `input-assets/251217_CLIMB_cuestionario_2.0.docx` — use for applicability/skip logic and wording.
+- [x] **Original questionnaire (field set)**: `projects/data-analysis` — `data/input/surveys/` and `config/schemas/` define canonical fields; conditionals must align with these.
+- [ ] Task 3 partially (both affect form structure; can be done in parallel)
 
 ## Acceptance Criteria
 - [ ] Conditional questions reduce form length for non-applicable companies
@@ -43,8 +44,8 @@ Example flow:
 - Existing tests should still pass
 
 ## Implementation Approach
-1. Review DOCX for conditional patterns
-2. Map applicability questions for each section
+1. Review proposed questionnaire (`input-assets/251217_CLIMB_cuestionario_2.0.docx`) for conditional patterns
+2. Cross-reference with data-analysis schemas for field names; map applicability questions for each section
 3. Modify form field structure
 4. Implement conditional rendering logic
 5. Update scoring for N/A handling
@@ -53,6 +54,7 @@ Example flow:
 
 ## Status History
 - 2026-02-27: Created planning file, marked as Blocked (waiting for questionnaire patterns)
+- 2026-02-27: Clarified sources — proposed questionnaire = `input-assets/251217_CLIMB_cuestionario_2.0.docx`; original fields = data-analysis. Dependency satisfied; can move to ready when prioritised (Task 3 may be done in parallel).
 
 ## Blockers
-- **Paula's DOCX questionnaire** - Need to identify all conditional question patterns
+- None for questionnaire source. **Proposed questionnaire**: `input-assets/251217_CLIMB_cuestionario_2.0.docx`. **Original fields**: `projects/data-analysis` input surveys and config/schemas. Optional: confirm with Paula that 2.0 is the source for conditionals.
