@@ -1027,3 +1027,13 @@ footer p {
 .submission-modal .btn-close:hover {
   opacity: 0.9;
 }
+
+.submission-modal .submission-thankyou-link {
+  color: var(--color-dark);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.submission-modal .submission-thankyou-link:hover {
+  opacity: 0.85;
+}
