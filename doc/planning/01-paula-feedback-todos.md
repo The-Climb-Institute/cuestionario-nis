@@ -311,7 +311,53 @@ Create a company identification section at the START of the form (before scoring
 
 ### Testing & Validation
 
-#### Task 9: Test Form with Users Unable to Answer All Questions
+#### Task 9: Integrate OpenFormStack Backend Storage
+**Priority**: CRITICAL
+**Status**: Pending
+**Owner**: TBD
+**Depends on**: None (can work in parallel)
+
+**Description**:
+Connect the form to OpenFormStack backend platform for data persistence and storage.
+
+**Endpoint Details**:
+- **URL**: `https://openformstack.com/f/cmm3yej4l00004nan9zcn7laj`
+- **Purpose**: Store form submissions with company data and scoring results
+- **Integration**: Form submission should POST to this endpoint
+
+**Implementation Requirements**:
+- Map form fields to OpenFormStack schema
+- Handle form submission to endpoint
+- Display confirmation after successful submission
+- Handle errors and validation failures
+- Implement retry logic for failed submissions
+- Store locally during offline (if needed)
+
+**Technical Details**:
+- Method: POST/PUT to OpenFormStack endpoint
+- Include all form fields:
+  - Company identification data
+  - All scoring indicators
+  - Calculated scores (ambiental, social, gobernanza, total)
+  - Timestamp and metadata
+- Expect response with submission ID for reference
+
+**Acceptance Criteria**:
+- Form submission POSTs to OpenFormStack
+- Responses are stored and retrievable
+- Confirmation message shown to user
+- Error handling for network/validation failures
+- Submission data includes all form fields and scores
+- User can reference submission ID
+
+**Notes**:
+- This is parallel-path work (doesn't block other form improvements)
+- Can be tested with mock submissions during development
+- Need to understand OpenFormStack API requirements
+
+---
+
+#### Task 10: Test Form with Users Unable to Answer All Questions
 **Priority**: HIGH
 **Status**: Pending
 **Owner**: Paula (primary tester)
