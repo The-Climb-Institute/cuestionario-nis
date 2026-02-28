@@ -1,6 +1,6 @@
 # TODO - Project Status
 
-**Status**: 60% Complete (6 of 10 tasks) | **Tests**: 45/45 passing ✅
+**Status**: 70% Complete (7 of 10 tasks) | **Tests**: 45/45 passing ✅
 
 **See detailed descriptions**: [doc/planning/](doc/planning/)
 
@@ -44,16 +44,17 @@
   - ✓ Foundation for results page ready
   - ✓ [doc/planning/completed/09-task-8-benchmarks-visibility.md](doc/planning/completed/09-task-8-benchmarks-visibility.md)
 
+- [x] **Task 2**: Implement conditional questions (ask if applies first)
+  - ✓ Four applicability gates in Ambiental (emisiones/energía, agua, ozono, residuos)
+  - ✓ Gobernanza: consejo de administración → composición
+  - ✓ Hide/clear dependent fields when gate = No; scoring excludes N/A
+  - ✓ [doc/planning/completed/03-task-2-conditional-questions.md](doc/planning/completed/03-task-2-conditional-questions.md)
+
 ---
 
 ## BLOCKED (Waiting for External Input) 🔴
 
 ### Form UX & Data Collection
-- [ ] **Task 2**: Implement conditional questions (ask if applies first)
-  - 📋 Dependencies available (questionnaire + schemas)
-  - 🚫 Blocker: Requires design analysis + Paula's guidance
-  - 📄 [doc/planning/blocked/03-task-2-conditional-questions.md](doc/planning/blocked/03-task-2-conditional-questions.md)
-
 - [ ] **Task 10**: Test form with real users
   - 📋 Tasks 1 & 3 (prerequisites) complete
   - 🚫 Blocker: Depends on Task 2 completion

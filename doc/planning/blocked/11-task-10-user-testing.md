@@ -20,7 +20,7 @@ Conduct user testing with real users who don't have all the exact values. Valida
 
 ## Dependencies
 - [ ] Task 1: Form instructions (completed)
-- [ ] Task 2: Conditional questions (completed)
+- [x] Task 2: Conditional questions (completed)
 - [ ] Task 3: Company identification (completed)
 
 ## Acceptance Criteria

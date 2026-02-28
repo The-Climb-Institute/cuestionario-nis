@@ -6,7 +6,7 @@
 
 - **Overview & Context**: `00-meeting-notes-2026-02-26.md` | `01-paula-feedback-todos.md`
 - **Ready to Start**: `ready/` (6 tasks)
-- **Blocked**: `blocked/` (4 tasks waiting for dependencies)
+- **Blocked**: `blocked/` (3 tasks waiting for dependencies)
 - **In Progress**: `in-progress/` (currently being worked on)
 - **Completed**: `../completed/` (finished tasks)
 
@@ -15,7 +15,7 @@
 | Status | Count | Details |
 |--------|-------|---------|
 | ✓ Ready | 6 | Form instructions, Company ID, Logo, Colors, Benchmarks visibility, OpenFormStack |
-| ⏳ Blocked | 4 | Conditional questions, Legal, Trademark, User testing |
+| ⏳ Blocked | 3 | Legal, Trademark, User testing |
 | 🔄 In Progress | 0 | — |
 | ✅ Completed | 0 | — |
 
@@ -117,6 +117,6 @@ For full context and rationale, see:
 ---
 
 **Last Updated**: 2026-02-27
-**Total Tasks**: 10 (6 ready, 4 blocked)
+**Total Tasks**: 10 (7 completed, 3 blocked)
 **Planning Status**: ✓ Complete
 **Implementation Status**: ⏳ Ready to begin

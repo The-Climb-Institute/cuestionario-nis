@@ -25,13 +25,19 @@ async function initApp() {
     // Renderizar formulario
     formRenderer.render('form-container', updateScores);
 
-    // Listener para campos condicionales
-    const inputs = document.querySelectorAll('.field-input');
-    inputs.forEach(input => {
-      input.addEventListener('change', () => {
+    // Delegación: cualquier cambio en el formulario (incl. bloques de año añadidos después) actualiza condicionales y scores
+    const formContainer = document.getElementById('form-container');
+    formContainer.addEventListener('change', (e) => {
+      if (e.target.classList.contains('field-input') || e.target.closest('.form-field')) {
         const values = formRenderer.getFormValues();
         formRenderer.updateConditionalFields(values);
-      });
+        updateScores();
+      }
+    });
+    formContainer.addEventListener('input', (e) => {
+      if (e.target.classList.contains('field-input') || e.target.closest('.form-field')) {
+        updateScores();
+      }
     });
 
     // Listener para benchmarks
@@ -366,17 +372,20 @@ function printForm() {
  */
 function resetForm() {
   if (confirm('¿Deseas limpiar todos los campos del formulario?')) {
-    const inputs = document.querySelectorAll('.field-input');
-    inputs.forEach(input => {
+    document.querySelectorAll('.field-input').forEach(input => {
       if (input.type === 'radio') {
         input.checked = false;
-      } else if (input.type === 'number') {
+      } else if (input.type !== 'hidden') {
         input.value = '';
       }
     });
+    document.querySelectorAll('.energy-bimestral-json').forEach(input => {
+      input.value = '[]';
+    });
+    document.querySelectorAll('.bimestral-row').forEach(row => row.remove());
 
     updateScores();
-    formRenderer.updateConditionalFields({});
+    formRenderer.updateConditionalFields(formRenderer.getFormValues());
   }
 }
 

@@ -255,6 +255,123 @@ header .logo-image {
   opacity: 0.6;
 }
 
+/* === MULTI-YEAR BLOCKS === */
+.year-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.year-block {
+  padding: var(--spacing-lg);
+  background: var(--color-gray-light);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-gold-dark);
+}
+
+.year-block-header {
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-gold-medium);
+}
+
+.year-block-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-dark);
+}
+
+.add-year-row {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.add-year-row label {
+  margin: 0;
+}
+
+.year-select-add {
+  min-width: 140px;
+}
+
+/* === ENERGY: TOTAL ANUAL / BIMESTRAL === */
+.form-field-energy .energy-mode-choice {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.form-field-energy .energy-mode-choice .radio-label {
+  margin: 0;
+}
+
+.energy-anual-wrap,
+.energy-bimestral-wrap {
+  margin-top: var(--spacing-sm);
+}
+
+.energy-bimestral-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
+}
+
+.bimestral-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.bimestral-row .bimestral-period {
+  min-width: 100px;
+  font-weight: 500;
+  color: var(--color-dark);
+}
+
+.bimestral-row .bimestral-kwh {
+  width: 100px;
+}
+
+.bimestral-row .btn-remove-period {
+  background: none;
+  border: 1px solid var(--color-gray-medium);
+  color: var(--color-gray-dark);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+}
+
+.bimestral-row .btn-remove-period:hover {
+  background: var(--color-gray-light);
+  color: var(--color-red);
+}
+
+.btn-add-period {
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--color-dark);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+}
+
+.btn-add-period:hover {
+  background: #333;
+}
+
 /* === MODAL === */
 .modal-overlay {
   position: fixed;

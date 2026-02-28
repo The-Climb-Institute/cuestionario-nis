@@ -137,11 +137,20 @@ Todos los benchmarks están citados en formato APA 7. Al hacer clic en 📊, ves
 - Tipografía: Helvetica
 - Diseño profesional y consistente con reportes PDF del programa principal
 
+## Fuentes del cuestionario
+
+El texto de las preguntas proviene del **Cuestionario Maestro** oficial:
+
+- **Archivo:** `input-assets/251217_CLIMB_cuestionario_2.0.docx`
+- La carpeta `input-assets` en la raíz del proyecto es un enlace a la carpeta compartida del workspace (donde está el DOCX).
+- Detalle de secciones y mapeo: ver [doc/FUENTES.md](doc/FUENTES.md).
+
 ## Archivos del Proyecto
 
 ```
 projects/cuestionario-nis/
 ├── index.html              # Página principal
+├── input-assets/           # Enlace a ../../input-assets (DOCX del cuestionario)
 ├── css/
 │   └── styles.css          # Estilos y branding TCI
 ├── js/
@@ -150,6 +159,8 @@ projects/cuestionario-nis/
 │   └── scoring.js          # Lógica de cálculo de scores
 ├── data/
 │   └── benchmarks.json     # Parámetros OCDE con citas APA
+├── doc/
+│   └── FUENTES.md          # Mapeo DOCX ↔ formulario
 └── README.md               # Este archivo
 ```
 
