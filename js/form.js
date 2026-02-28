@@ -420,6 +420,52 @@ class NISFormRenderer {
 
     container.innerHTML = '';
 
+    // Renderizar sección de instrucciones
+    const instructionsDiv = document.createElement('div');
+    instructionsDiv.className = 'nis-instructions';
+    instructionsDiv.innerHTML = `
+      <div class="instructions-header">
+        <h2>CLIMB INSTITUTE: CUESTIONARIO NIS</h2>
+        <p class="instructions-subtitle">Sostenibilidad, Equidad y Reputación Corporativa</p>
+      </div>
+
+      <div class="instructions-content">
+        <div class="instruction-block">
+          <h3 class="instruction-title">Mensaje de Bienvenida</h3>
+          <p>¡Bienvenido a nuestra encuesta sobre el programa Climb Institute! Tu participación es clave para comprender las expectativas y avances de las empresas que participan en el Programa de Aceleración. ¡Gracias por dedicar tu tiempo y experiencia!</p>
+
+          <p>Con el presente estudio se aplicará un cuestionario diseñado para recopilar información clave sobre distintos aspectos que influyen en la gestión y desempeño de las organizaciones. El propósito es contar con datos que permitan analizar tendencias, identificar áreas de oportunidad y fortalecer las prácticas empresariales.</p>
+        </div>
+
+        <div class="instruction-block">
+          <h3 class="instruction-title">Objetivo</h3>
+          <p>Medir el avance e impacto de las acciones de igualdad, diversidad y sostenibilidad empresarial.</p>
+        </div>
+
+        <div class="instruction-block">
+          <h3 class="instruction-title">Instrucciones</h3>
+          <p>Llenar todos los campos del cuestionario. Para pasar a la siguiente sección, tienes que responder todos los campos requeridos. Los campos marcados con <span class="required-indicator">*</span> son obligatorios.</p>
+          <p>Si desconoces un dato o no es aplicable a tu empresa, puedes dejar en blanco los campos opcionales o seleccionar "No disponible" donde se indique.</p>
+        </div>
+
+        <div class="instruction-block">
+          <h3 class="instruction-title">Nota Importante: Valores Financieros en USD</h3>
+          <p>Todas las preguntas financieras en esta encuesta están expresadas en dólares estadounidenses (USD) para facilitar la comparación entre países. Si tu empresa opera en otra moneda local, por favor convierte tus valores a USD utilizando el tipo de cambio oficial vigente en tu país el día de hoy.</p>
+          <p><strong>Ejemplo:</strong> Si el tipo de cambio de hoy es 18.50 MXN/USD y tu cifra local es de 185,000 MXN, deberás reportar 10,000 USD.</p>
+        </div>
+
+        <div class="instruction-block">
+          <h3 class="instruction-title">Aviso de Privacidad</h3>
+          <p>En cumplimiento de los principios éticos de investigación y de las disposiciones de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, los datos se tratarán de forma confidencial y anónima, utilizándose únicamente con fines de investigación. La información recolectada no será compartida con terceros sin autorización expresa. Se aplican las medidas necesarias para resguardar la seguridad de la base de datos.</p>
+        </div>
+      </div>
+
+      <div class="instructions-footer">
+        <p>Para comenzar, por favor proporciona la información de tu empresa en la primera sección.</p>
+      </div>
+    `;
+    container.appendChild(instructionsDiv);
+
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
       const seccionData = this.benchmarks.secciones[seccion];

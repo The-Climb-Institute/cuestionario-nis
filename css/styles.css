@@ -111,6 +111,85 @@ header .logo-image {
   border-bottom: none;
 }
 
+/* === INSTRUCTIONS SECTION === */
+.nis-instructions {
+  background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+  border-left: 5px solid var(--color-gold-primary);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-light);
+}
+
+.instructions-header {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--color-gold-primary);
+}
+
+.instructions-header h2 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-dark);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.instructions-subtitle {
+  margin: var(--spacing-sm) 0 0 0;
+  color: var(--color-gray-dark);
+  font-size: var(--font-size-base);
+  font-style: italic;
+}
+
+.instructions-content {
+  margin-bottom: var(--spacing-lg);
+}
+
+.instruction-block {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-gray-medium);
+}
+
+.instruction-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.instruction-title {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  color: var(--color-gold-primary);
+}
+
+.instruction-block p {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-gray-dark);
+  line-height: 1.7;
+}
+
+.instruction-block p:last-child {
+  margin-bottom: 0;
+}
+
+.required-indicator {
+  color: var(--color-red);
+  font-weight: bold;
+}
+
+.instructions-footer {
+  text-align: center;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-gray-medium);
+  color: var(--color-gray-dark);
+  font-weight: 600;
+}
+
 .seccion-header {
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
