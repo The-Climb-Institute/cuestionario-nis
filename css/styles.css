@@ -1,12 +1,12 @@
 /**
  * Estilos para Cuestionario NIS
- * Branding The Climb Institute: Gold #C9A961, Black background, Helvetica
+ * Branding The Climb Institute: White/Neutral, Black background, Helvetica
  */
 
 :root {
-  --color-gold-primary: #C9A961;
-  --color-gold-medium: #A68F5F;
-  --color-gold-dark: #8B7355;
+  --color-gold-primary: #ffffff;
+  --color-gold-medium: #e8e8e8;
+  --color-gold-dark: #d0d0d0;
   --color-dark: #1a1a1a;
   --color-white: #ffffff;
   --color-gray-light: #f5f5f5;
