@@ -489,22 +489,14 @@ class NISFormRenderer {
     label.className = 'field-label';
     label.setAttribute('for', field.id);
 
-    // Mostrar benchmark si existe
-    let benchmarkSpan = '';
-    if (field.benchmarkId) {
-      const benchmark = this.benchmarks.benchmarks.find(b => b.id === field.benchmarkId);
-      if (benchmark) {
-        benchmarkSpan = `<span class="benchmark-indicator" title="Clic para ver benchmark" data-benchmark-id="${field.benchmarkId}">📊</span>`;
-      }
-    }
-
     // Mostrar indicador de campo requerido
     let requiredSpan = '';
     if (field.required) {
       requiredSpan = `<span class="required-indicator" title="Campo requerido">*</span>`;
     }
 
-    label.innerHTML = `${field.label} ${requiredSpan} ${benchmarkSpan}`;
+    // Benchmark information is hidden during form filling and shown in results page
+    label.innerHTML = `${field.label} ${requiredSpan}`;
     fieldDiv.appendChild(label);
 
     // Help text
