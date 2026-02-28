@@ -1,6 +1,6 @@
 /**
  * Renderizado y gestión del formulario NIS
- * Genera 31 campos organizados en 3 secciones: Ambiental (16), Social (4), Gobernanza (11)
+ * Genera 39 campos organizados en 4 secciones: Empresa (8), Ambiental (16), Social (4), Gobernanza (11)
  */
 
 class NISFormRenderer {
@@ -15,6 +15,102 @@ class NISFormRenderer {
    */
   generateFormFields() {
     return {
+      company: [
+        {
+          id: 'company_name',
+          label: 'Nombre legal de la empresa',
+          type: 'text',
+          required: true,
+          helpText: 'Nombre oficial registrado',
+          benchmarkId: null
+        },
+        {
+          id: 'company_country',
+          label: 'País / Región',
+          type: 'text',
+          required: true,
+          helpText: 'País donde opera la empresa',
+          benchmarkId: null
+        },
+        {
+          id: 'company_sector',
+          label: 'Sector de industria',
+          type: 'select',
+          required: true,
+          options: [
+            'Agricultura, ganadería, pesca',
+            'Minería y canteras',
+            'Manufactura',
+            'Servicios de agua, saneamiento',
+            'Construcción',
+            'Comercio, venta',
+            'Transporte y logística',
+            'Hospedaje y alimentación',
+            'Información y comunicación',
+            'Finanzas y seguros',
+            'Inmuebles',
+            'Actividades profesionales',
+            'Administración pública',
+            'Educación',
+            'Salud',
+            'Artes y entretenimiento',
+            'Otros servicios'
+          ],
+          helpText: 'Categoría principal de negocio',
+          benchmarkId: null
+        },
+        {
+          id: 'company_size',
+          label: 'Tamaño de la empresa',
+          type: 'select',
+          required: true,
+          options: [
+            'Micro (1-10 empleados)',
+            'Pequeña (11-50 empleados)',
+            'Mediana (51-250 empleados)',
+            'Grande (251-1000 empleados)',
+            'Empresa (1000+ empleados)'
+          ],
+          helpText: 'Clasificación por número de empleados',
+          benchmarkId: null
+        },
+        {
+          id: 'company_registration',
+          label: 'Número de registro / RUT / Tax ID',
+          type: 'text',
+          required: false,
+          helpText: 'Identificador fiscal o de registro (opcional)',
+          benchmarkId: null
+        },
+        {
+          id: 'company_employees',
+          label: 'Número de empleados',
+          type: 'number',
+          required: false,
+          unit: 'personas',
+          helpText: 'Cantidad total de empleados (opcional)',
+          benchmarkId: null
+        },
+        {
+          id: 'company_revenue',
+          label: 'Ingresos anuales',
+          type: 'number',
+          required: false,
+          unit: 'USD',
+          helpText: 'Ingresos brutos anuales aproximados (opcional)',
+          benchmarkId: null
+        },
+        {
+          id: 'company_year_founded',
+          label: 'Año de fundación',
+          type: 'number',
+          required: false,
+          min: 1900,
+          max: new Date().getFullYear(),
+          helpText: 'Año en que se fundó la empresa (opcional)',
+          benchmarkId: null
+        }
+      ],
       ambiental: [
         {
           id: 'gei_alcance1',
@@ -353,18 +449,20 @@ class NISFormRenderer {
 
       seccionDiv.appendChild(fieldsContainer);
 
-      // Footer con score (al final de la sección)
-      const footer = document.createElement('div');
-      footer.className = 'seccion-footer';
-      footer.innerHTML = `
-        <div class="seccion-score">
-          <span class="score-label">Score:</span>
-          <span class="score-value" data-score-${seccion}>-</span>
-          <span class="score-percent" data-percent-${seccion}>%</span>
-          <span class="score-semaforo" data-semaforo-${seccion}>●</span>
-        </div>
-      `;
-      seccionDiv.appendChild(footer);
+      // Footer con score (al final de la sección, excepto para company)
+      if (seccion !== 'company') {
+        const footer = document.createElement('div');
+        footer.className = 'seccion-footer';
+        footer.innerHTML = `
+          <div class="seccion-score">
+            <span class="score-label">Score:</span>
+            <span class="score-value" data-score-${seccion}>-</span>
+            <span class="score-percent" data-percent-${seccion}>%</span>
+            <span class="score-semaforo" data-semaforo-${seccion}>●</span>
+          </div>
+        `;
+        seccionDiv.appendChild(footer);
+      }
 
       container.appendChild(seccionDiv);
     });
@@ -400,7 +498,13 @@ class NISFormRenderer {
       }
     }
 
-    label.innerHTML = `${field.label} ${benchmarkSpan}`;
+    // Mostrar indicador de campo requerido
+    let requiredSpan = '';
+    if (field.required) {
+      requiredSpan = `<span class="required-indicator" title="Campo requerido">*</span>`;
+    }
+
+    label.innerHTML = `${field.label} ${requiredSpan} ${benchmarkSpan}`;
     fieldDiv.appendChild(label);
 
     // Help text
@@ -413,7 +517,15 @@ class NISFormRenderer {
 
     // Input según tipo
     let input;
-    if (field.type === 'number') {
+    if (field.type === 'text') {
+      input = document.createElement('input');
+      input.type = 'text';
+      input.id = field.id;
+      input.name = field.id;
+      input.className = 'field-input text-input';
+      if (field.required) input.required = true;
+      input.placeholder = field.helpText || '';
+    } else if (field.type === 'number') {
       input = document.createElement('input');
       input.type = 'number';
       input.id = field.id;
@@ -423,6 +535,31 @@ class NISFormRenderer {
       if (field.max !== undefined) input.max = field.max;
       if (field.unit) {
         input.placeholder = `0 ${field.unit}`;
+      }
+      if (field.required) input.required = true;
+    } else if (field.type === 'select') {
+      input = document.createElement('select');
+      input.id = field.id;
+      input.name = field.id;
+      input.className = 'field-input select-input';
+      if (field.required) input.required = true;
+
+      // Add empty option for required fields
+      if (field.required) {
+        const emptyOption = document.createElement('option');
+        emptyOption.value = '';
+        emptyOption.textContent = 'Seleccionar...';
+        input.appendChild(emptyOption);
+      }
+
+      // Add options
+      if (field.options) {
+        field.options.forEach(option => {
+          const optionElement = document.createElement('option');
+          optionElement.value = option;
+          optionElement.textContent = option;
+          input.appendChild(optionElement);
+        });
       }
     } else if (field.type === 'radio') {
       const radioDiv = document.createElement('div');
@@ -449,7 +586,7 @@ class NISFormRenderer {
 
     if (input) {
       // Listener de cambio
-      if (input instanceof HTMLInputElement) {
+      if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement) {
         input.addEventListener('change', () => onChangeCallback());
         input.addEventListener('input', () => onChangeCallback());
       } else if (input.classList.contains('radio-group')) {

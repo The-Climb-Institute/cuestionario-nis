@@ -189,6 +189,11 @@
     }
   ],
   "secciones": {
+    "company": {
+      "nombre": "Información de la Empresa",
+      "peso": 0,
+      "descripcion": "Información general y contexto sobre la empresa."
+    },
     "ambiental": {
       "nombre": "Ambiental",
       "peso": 0.4,
