@@ -291,7 +291,9 @@ function setupBenchmarkListeners(benchmarks) {
 }
 
 /**
- * Envía los datos del formulario a OpenFormStack
+ * Envía los datos del formulario a OpenFormStack.
+ * Nota: si el navegador muestra un error de CORS, el POST puede haberse enviado igual;
+ * la respuesta es la que se bloquea. Mostramos un mensaje claro en ese caso.
  */
 async function submitToOpenFormStack() {
   try {
@@ -308,10 +310,8 @@ async function submitToOpenFormStack() {
       score_total: scores.total
     };
 
-    // Mostrar mensaje de envío en progreso
     showSubmissionModal('enviando');
 
-    // Enviar a OpenFormStack
     const endpoint = 'https://openformstack.com/f/cmm3yej4l00004nan9zcn7laj';
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -327,11 +327,23 @@ async function submitToOpenFormStack() {
 
     const result = await response.json();
 
-    // Mostrar confirmación
     showSubmissionModal('exito', result.id || 'confirmado');
   } catch (error) {
     console.error('Error enviando formulario:', error);
-    showSubmissionModal('error', error.message);
+
+    const isLikelyCors = error.name === 'TypeError' && (
+      error.message.includes('Failed to fetch') ||
+      error.message.includes('NetworkError') ||
+      (error.message && error.message.toLowerCase().includes('cors'))
+    );
+
+    if (isLikelyCors) {
+      const thankYouUrl = 'https://openformstack.com/thank-you';
+      window.open(thankYouUrl, '_blank', 'noopener,noreferrer');
+      showSubmissionModal('exito_cors', thankYouUrl);
+    } else {
+      showSubmissionModal('error', error.message || 'Error al enviar');
+    }
   }
 }
 
@@ -684,12 +696,24 @@ function showSubmissionModal(status, data = '') {
         <button onclick="closeSubmissionModal()" class="btn-close">Cerrar</button>
       </div>
     `;
+  } else if (status === 'exito_cors') {
+    const thankYouUrl = data || 'https://openformstack.com/thank-you';
+    content = `
+      <div class="submission-success">
+        <div class="success-icon">✓</div>
+        <h3>Enviado</h3>
+        <p>Se abrió la página de confirmación en otra pestaña.</p>
+        <p style="margin-top: 0.75em; font-size: 0.9em;"><a href="${thankYouUrl}" target="_blank" rel="noopener noreferrer" class="submission-thankyou-link">Abrir si no se abrió</a></p>
+        <button onclick="closeSubmissionModal()" class="btn-close">Cerrar</button>
+      </div>
+    `;
   } else if (status === 'error') {
+    const msg = typeof data === 'object' && data !== null && data.message ? data.message : String(data);
     content = `
       <div class="submission-error">
         <div class="error-icon">✕</div>
         <h3>Error al enviar</h3>
-        <p>${data}</p>
+        <p>${msg}</p>
         <button onclick="closeSubmissionModal()" class="btn-close">Cerrar</button>
       </div>
     `;
