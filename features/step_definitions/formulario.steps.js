@@ -9,7 +9,7 @@ Given('que la aplicación está abierta', async function () {
   await this.page.waitForSelector('#form-container .form-field', { timeout: 10000 });
 });
 
-Given('que el backend acepta el envío', async function () {
+Given('el backend está configurado para aceptar el envío', async function () {
   await this.page.route(OPENFORMSTACK_URL, (route) =>
     route.fulfill({
       status: 200,
@@ -19,7 +19,7 @@ Given('que el backend acepta el envío', async function () {
   );
 });
 
-Given('que el backend devuelve error de servidor', async function () {
+Given('el backend está configurado para responder con error de servidor', async function () {
   await this.page.route(OPENFORMSTACK_URL, (route) =>
     route.fulfill({
       status: 500,
@@ -29,7 +29,7 @@ Given('que el backend devuelve error de servidor', async function () {
   );
 });
 
-Given('que el backend simula fallo de red', async function () {
+Given('el backend está configurado para simular fallo de red', async function () {
   await this.page.route(OPENFORMSTACK_URL, (route) => route.abort('failed'));
 });
 

@@ -5,22 +5,22 @@ Característica: Envío del formulario NIS
 
   Escenario: Envío exitoso cuando el backend acepta el envío
     Dado que la aplicación está abierta
-    Y que el backend acepta el envío
+    Y el backend está configurado para aceptar el envío
     Cuando el usuario rellena los datos mínimos de empresa
     Y el usuario hace clic en Enviar
     Entonces se muestra el modal de envío exitoso
     Y el modal muestra un ID de envío
 
-  Escenario: Se muestra error cuando el backend falla
+  Escenario: Se muestra error cuando el backend responde con fallo
     Dado que la aplicación está abierta
-    Y que el backend devuelve error de servidor
+    Y el backend está configurado para responder con error de servidor
     Cuando el usuario rellena los datos mínimos de empresa
     Y el usuario hace clic en Enviar
     Entonces se muestra un modal de error
 
   Escenario: Se muestra confirmación CORS cuando la red falla
     Dado que la aplicación está abierta
-    Y que el backend simula fallo de red
+    Y el backend está configurado para simular fallo de red
     Cuando el usuario rellena los datos mínimos de empresa
     Y el usuario hace clic en Enviar
     Entonces se muestra el modal "Enviado" con enlace de confirmación
