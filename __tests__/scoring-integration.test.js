@@ -3,8 +3,8 @@
  * Tests the actual NISScorer class from js/scoring.js with real benchmarks.json
  */
 
-const NISScorer = require('../js/scoring.js');
-const benchmarks = require('../data/benchmarks.json');
+const NISScorer = require('../docs/js/scoring.js');
+const benchmarks = require('../docs/data/benchmarks.json');
 
 describe('NISScorer - Integration Tests with Real Benchmarks', () => {
   let scorer;

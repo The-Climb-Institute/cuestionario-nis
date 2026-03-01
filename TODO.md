@@ -2,7 +2,7 @@
 
 **Status**: 70% Complete (7 of 10 tasks) | **Tests**: 45/45 passing ✅
 
-**See detailed descriptions**: [doc/planning/](doc/planning/)
+**See detailed descriptions**: [documentation/planning/](documentation/planning/)
 
 ---
 
@@ -12,43 +12,43 @@
 - [x] **Task 1**: Add form instructions from questionnaire
   - ✓ Extracted from official DOCX
   - ✓ 5-section professional layout (Welcome, Objective, Instructions, Currency, Privacy)
-  - ✓ [doc/planning/completed/02-task-1-form-instructions.md](doc/planning/completed/02-task-1-form-instructions.md)
+  - ✓ [documentation/planning/completed/02-task-1-form-instructions.md](documentation/planning/completed/02-task-1-form-instructions.md)
 
 - [x] **Task 3**: Add company identification section
   - ✓ 8 form fields (4 required, 4 optional)
   - ✓ Country, Sector, Size with select options
-  - ✓ [doc/planning/completed/04-task-3-company-identification.md](doc/planning/completed/04-task-3-company-identification.md)
+  - ✓ [documentation/planning/completed/04-task-3-company-identification.md](documentation/planning/completed/04-task-3-company-identification.md)
 
 ### Backend Integration & Data Persistence
 - [x] **Task 9**: Integrate OpenFormStack backend
   - ✓ Async form submission to endpoint
   - ✓ Modal feedback system (enviando/exito/error)
   - ✓ Includes all scores + form data
-  - ✓ [doc/planning/completed/10-task-9-openformstack.md](doc/planning/completed/10-task-9-openformstack.md)
+  - ✓ [documentation/planning/completed/10-task-9-openformstack.md](documentation/planning/completed/10-task-9-openformstack.md)
 
 ### Branding & Legal Compliance
 - [x] **Task 4**: Add The Climb Institute logo
   - ✓ Responsive sizing (200px desktop, 150px mobile)
   - ✓ Professional header placement
-  - ✓ [doc/planning/completed/05-task-4-logo.md](doc/planning/completed/05-task-4-logo.md)
+  - ✓ [documentation/planning/completed/05-task-4-logo.md](documentation/planning/completed/05-task-4-logo.md)
 
 - [x] **Task 5**: Change colors from gold to white
   - ✓ White/neutral theme applied globally
   - ✓ All sections updated via CSS variables
-  - ✓ [doc/planning/completed/06-task-5-colors.md](doc/planning/completed/06-task-5-colors.md)
+  - ✓ [documentation/planning/completed/06-task-5-colors.md](documentation/planning/completed/06-task-5-colors.md)
 
 ### Polish & Optimization
 - [x] **Task 8**: Move benchmark descriptions to results page
   - ✓ Removed bias indicators from form fields
   - ✓ Benchmarks preserved for internal scoring
   - ✓ Foundation for results page ready
-  - ✓ [doc/planning/completed/09-task-8-benchmarks-visibility.md](doc/planning/completed/09-task-8-benchmarks-visibility.md)
+  - ✓ [documentation/planning/completed/09-task-8-benchmarks-visibility.md](documentation/planning/completed/09-task-8-benchmarks-visibility.md)
 
 - [x] **Task 2**: Implement conditional questions (ask if applies first)
   - ✓ Four applicability gates in Ambiental (emisiones/energía, agua, ozono, residuos)
   - ✓ Gobernanza: consejo de administración → composición
   - ✓ Hide/clear dependent fields when gate = No; scoring excludes N/A
-  - ✓ [doc/planning/completed/03-task-2-conditional-questions.md](doc/planning/completed/03-task-2-conditional-questions.md)
+  - ✓ [documentation/planning/completed/03-task-2-conditional-questions.md](documentation/planning/completed/03-task-2-conditional-questions.md)
 
 ---
 
@@ -58,16 +58,16 @@
 - [ ] **Task 10**: Test form with real users
   - 📋 Tasks 1 & 3 (prerequisites) complete
   - 🚫 Blocker: Depends on Task 2 completion
-  - 📄 [doc/planning/blocked/11-task-10-user-testing.md](doc/planning/blocked/11-task-10-user-testing.md)
+  - 📄 [documentation/planning/blocked/11-task-10-user-testing.md](documentation/planning/blocked/11-task-10-user-testing.md)
 
 ### Branding & Legal Compliance
 - [ ] **Task 6**: Add legal disclaimers
   - 🚫 Blocker: Waiting for Paula's legal text
-  - 📄 [doc/planning/blocked/07-task-6-legal-disclaimers.md](doc/planning/blocked/07-task-6-legal-disclaimers.md)
+  - 📄 [documentation/planning/blocked/07-task-6-legal-disclaimers.md](documentation/planning/blocked/07-task-6-legal-disclaimers.md)
 
 - [ ] **Task 7**: Add trademark information
   - 🚫 Blocker: Waiting for Paula's clarification (which trademark + placement)
-  - 📄 [doc/planning/blocked/08-task-7-trademark.md](doc/planning/blocked/08-task-7-trademark.md)
+  - 📄 [documentation/planning/blocked/08-task-7-trademark.md](documentation/planning/blocked/08-task-7-trademark.md)
 
 ---
 
@@ -98,4 +98,4 @@
 
 ---
 
-**Project Files**: [doc/planning/](doc/planning/) | **Meeting Notes**: [doc/planning/00-meeting-notes-2026-02-26.md](doc/planning/00-meeting-notes-2026-02-26.md)
+**Project Files**: [documentation/planning/](documentation/planning/) | **Meeting Notes**: [documentation/planning/00-meeting-notes-2026-02-26.md](documentation/planning/00-meeting-notes-2026-02-26.md)

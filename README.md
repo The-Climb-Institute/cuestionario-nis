@@ -143,41 +143,43 @@ El texto de las preguntas proviene del **Cuestionario Maestro** oficial:
 
 - **Archivo:** `input-assets/251217_CLIMB_cuestionario_2.0.docx`
 - La carpeta `input-assets` en la raíz del proyecto es un enlace a la carpeta compartida del workspace (donde está el DOCX).
-- Detalle de secciones y mapeo: ver [doc/FUENTES.md](doc/FUENTES.md).
+- Detalle de secciones y mapeo: ver [documentation/FUENTES.md](documentation/FUENTES.md).
 
 ## Archivos del Proyecto
 
 ```
 projects/cuestionario-nis/
-├── index.html              # Página principal
-├── input-assets/           # Enlace a ../../input-assets (DOCX del cuestionario)
-├── css/
-│   └── styles.css          # Estilos y branding TCI
-├── js/
-│   ├── app.js              # Orquestación principal
-│   ├── form.js             # Renderizado de campos
-│   └── scoring.js          # Lógica de cálculo de scores
-├── data/
-│   └── benchmarks.json     # Parámetros OCDE con citas APA
-├── doc/
+├── docs/                   # Public site (deployed, e.g. gh-pages)
+│   ├── index.html          # Página principal
+│   ├── css/
+│   │   └── styles.css      # Estilos y branding TCI
+│   ├── js/
+│   │   ├── app.js          # Orquestación principal
+│   │   ├── form.js         # Renderizado de campos
+│   │   └── scoring.js      # Lógica de cálculo de scores
+│   ├── data/
+│   │   └── benchmarks.json # Parámetros OCDE con citas APA
+│   └── assets/
+├── documentation/          # Project documentation
 │   └── FUENTES.md          # Mapeo DOCX ↔ formulario
+├── input-assets/           # Enlace a ../../input-assets (DOCX del cuestionario)
 └── README.md               # Este archivo
 ```
 
 ## Desarrollo
 
 ### Agregar un Nuevo Indicador
-1. Abre `js/form.js`
+1. Abre `docs/js/form.js`
 2. En el objeto `generateFormFields()`, añade un nuevo campo a la sección correspondiente
-3. Si tiene un benchmark OCDE, agrega la entrada en `data/benchmarks.json`
+3. Si tiene un benchmark OCDE, agrega la entrada en `docs/data/benchmarks.json`
 4. Actualiza la tabla en este README
 
 ### Cambiar Colores o Branding
-1. Edita `css/styles.css` — variables CSS en las primeras líneas
+1. Edita `docs/css/styles.css` — variables CSS en las primeras líneas
 2. Todos los colores están centralizados en `:root {}`
 
 ### Ajustar Pesos de Secciones
-1. En `js/scoring.js`, modifica el objeto `this.weights` en el constructor
+1. En `docs/js/scoring.js`, modifica el objeto `this.weights` en el constructor
 2. Actualmente: Ambiental 40%, Social 40%, Gobernanza 20%
 
 ## Requisitos
