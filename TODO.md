@@ -52,15 +52,15 @@
 
 ---
 
-## BLOCKED (Waiting for External Input) 🔴
+## PENDING (Waiting for External Action) ⏳
 
 ### Form UX & Data Collection
 - [ ] **Task 10**: Test form with real users
-  - 📋 Tasks 1 & 3 (prerequisites) complete
-  - 🚫 Blocker: Depends on Task 2 completion
-  - 📄 [documentation/planning/blocked/11-task-10-user-testing.md](documentation/planning/blocked/11-task-10-user-testing.md)
+  - ✅ All technical prerequisites complete (Tasks 1, 2, 3)
+  - ⏳ Waiting: Paula to recruit testers and conduct sessions
+  - 📄 [documentation/planning/pending/11-task-10-user-testing.md](documentation/planning/pending/11-task-10-user-testing.md)
 
-### Branding & Legal Compliance
+### Branding & Legal Compliance (BLOCKED)
 - [ ] **Task 6**: Add legal disclaimers
   - 🚫 Blocker: Waiting for Paula's legal text
   - 📄 [documentation/planning/blocked/07-task-6-legal-disclaimers.md](documentation/planning/blocked/07-task-6-legal-disclaimers.md)
