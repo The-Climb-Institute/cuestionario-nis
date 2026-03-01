@@ -4,10 +4,19 @@
   "description": "Formulario interactivo para evaluar el cumplimiento de **Normas de Información de Sostenibilidad (NIS)** en empresas, comparando contra benchmarks OCDE y organismos internacionales.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:e2e": "start-server-and-test 'npx serve . -l 3000' http://localhost:3000 'cucumber-js --config cucumber.js'",
+    "test:e2e:ci": "CI=1 start-server-and-test 'npx serve . -l 3000' http://localhost:3000 'cucumber-js --config cucumber.js'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "@cucumber/cucumber": "^12.7.0",
+    "@playwright/test": "^1.58.2",
+    "playwright": "^1.58.2",
+    "start-server-and-test": "^2.1.5",
+    "tslib": "^2.8.1"
+  }
 }
