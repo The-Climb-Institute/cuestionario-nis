@@ -1,6 +1,6 @@
 # TODO - Project Status
 
-**Status**: 70% Complete (7 of 10 tasks) | **Tests**: 45/45 passing ✅
+**Status**: 80% Complete (8 of 10 tasks) | **Tests**: 45/45 passing ✅
 
 **See detailed descriptions**: [documentation/planning/](documentation/planning/)
 
@@ -50,6 +50,11 @@
   - ✓ Hide/clear dependent fields when gate = No; scoring excludes N/A
   - ✓ [documentation/planning/completed/03-task-2-conditional-questions.md](documentation/planning/completed/03-task-2-conditional-questions.md)
 
+- [x] **Task 7**: Add trademark information
+  - ✓ "The Climb Institute®" registered trademark added to footer
+  - ✓ Professional placement in footer section
+  - ✓ [documentation/planning/completed/08-task-7-trademark.md](documentation/planning/completed/08-task-7-trademark.md)
+
 ---
 
 ## PENDING (Waiting for External Action) ⏳
@@ -64,10 +69,6 @@
 - [ ] **Task 6**: Add legal disclaimers
   - 🚫 Blocker: Waiting for Paula's legal text
   - 📄 [documentation/planning/blocked/07-task-6-legal-disclaimers.md](documentation/planning/blocked/07-task-6-legal-disclaimers.md)
-
-- [ ] **Task 7**: Add trademark information
-  - 🚫 Blocker: Waiting for Paula's clarification (which trademark + placement)
-  - 📄 [documentation/planning/blocked/08-task-7-trademark.md](documentation/planning/blocked/08-task-7-trademark.md)
 
 ---
 
