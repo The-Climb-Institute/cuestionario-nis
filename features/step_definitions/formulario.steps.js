@@ -38,6 +38,8 @@ When('el usuario rellena los datos mínimos de empresa', async function () {
   await this.page.getByRole('textbox', { name: /país/i }).fill('México');
   await this.page.getByRole('combobox', { name: /sector de industria/i }).selectOption('Servicios de agua, saneamiento');
   await this.page.getByRole('combobox', { name: /tamaño de la empresa/i }).selectOption('Mediana (51-250 empleados)');
+  await this.page.getByRole('spinbutton', { name: /número de empleados/i }).fill('100');
+  await this.page.getByRole('spinbutton', { name: /ingresos anuales/i }).fill('500000');
 });
 
 When('el usuario hace clic en Enviar', async function () {

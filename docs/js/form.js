@@ -113,39 +113,21 @@ class NISFormRenderer {
           benchmarkId: null
         },
         {
-          id: 'company_registration',
-          label: 'Número de registro / RUT / Tax ID',
-          type: 'text',
-          required: false,
-          helpText: 'Identificador fiscal o de registro (opcional)',
-          benchmarkId: null
-        },
-        {
           id: 'company_employees',
           label: 'Número de empleados',
           type: 'number',
-          required: false,
+          required: true,
           unit: 'personas',
-          helpText: 'Cantidad total de empleados (opcional)',
+          helpText: 'Cantidad total de empleados',
           benchmarkId: null
         },
         {
           id: 'company_revenue',
           label: 'Ingresos anuales',
           type: 'number',
-          required: false,
+          required: true,
           unit: 'USD',
-          helpText: 'Ingresos brutos anuales aproximados (opcional)',
-          benchmarkId: null
-        },
-        {
-          id: 'company_year_founded',
-          label: 'Año de fundación',
-          type: 'number',
-          required: false,
-          min: 1900,
-          max: new Date().getFullYear(),
-          helpText: 'Año en que se fundó la empresa (opcional)',
+          helpText: 'Ingresos brutos anuales aproximados',
           benchmarkId: null
         }
       ],
