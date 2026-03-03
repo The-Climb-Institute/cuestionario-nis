@@ -40,8 +40,9 @@ function getNextBimonthPeriod(lastPeriod) {
 }
 
 class NISFormRenderer {
-  constructor(benchmarks, questions) {
+  constructor(benchmarks, questions, countries = []) {
     this.benchmarks = benchmarks;
+    this.countries = countries;
     this.formFields = this._buildFormFields(questions);
     this.MULTI_YEAR_SECTIONS = ['ambiental', 'social', 'gobernanza'];
     this.dataYears = [new Date().getFullYear()];
@@ -56,6 +57,39 @@ class NISFormRenderer {
       result[key] = questions.sections[key].fields;
     });
     return result;
+  }
+
+  /**
+   * Actualiza las opciones de región basadas en el país seleccionado
+   */
+  _updateRegionOptions(countryName, regionSelect, nameSuffix = '') {
+    // Limpiar opciones existentes
+    regionSelect.innerHTML = '';
+
+    // Agregar opción vacía
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.textContent = 'Seleccionar...';
+    regionSelect.appendChild(emptyOption);
+
+    if (!countryName) {
+      regionSelect.disabled = true;
+      return;
+    }
+
+    // Encontrar el país en los datos
+    const country = this.countries.find(c => c.name === countryName);
+    if (country && country.states && country.states.length > 0) {
+      country.states.forEach(state => {
+        const optionElement = document.createElement('option');
+        optionElement.value = state.name;
+        optionElement.textContent = state.name;
+        regionSelect.appendChild(optionElement);
+      });
+      regionSelect.disabled = false;
+    } else {
+      regionSelect.disabled = true;
+    }
   }
 
   /**
@@ -440,6 +474,12 @@ class NISFormRenderer {
       input.name = fieldName;
       input.className = 'field-input select-input';
       if (field.required) input.required = true;
+      if (field.dataSource) {
+        input.setAttribute('data-source', field.dataSource);
+        if (field.dataSourceParent) {
+          input.setAttribute('data-parent', field.dataSourceParent + nameSuffix);
+        }
+      }
 
       if (field.required) {
         const emptyOption = document.createElement('option');
@@ -448,13 +488,38 @@ class NISFormRenderer {
         input.appendChild(emptyOption);
       }
 
-      if (field.options) {
+      // Populate options from dataSource or field.options
+      if (field.dataSource === 'countries') {
+        this.countries.forEach(country => {
+          const optionElement = document.createElement('option');
+          optionElement.value = country.name;
+          optionElement.textContent = country.name;
+          input.appendChild(optionElement);
+        });
+      } else if (field.dataSource === 'regions') {
+        // Regions will be populated dynamically when country changes
+        input.setAttribute('data-placeholder', 'Selecciona primero un país');
+        input.disabled = true;
+      } else if (field.options) {
         field.options.forEach(option => {
           const optionElement = document.createElement('option');
           optionElement.value = option;
           optionElement.textContent = option;
           input.appendChild(optionElement);
         });
+      }
+
+      // Add listener for country change to update regions
+      if (field.id === 'company_country') {
+        input.addEventListener('change', () => {
+          const regionSelect = document.querySelector(`[name="company_region${nameSuffix}"]`);
+          if (regionSelect) {
+            this._updateRegionOptions(input.value, regionSelect, nameSuffix);
+          }
+          onChangeCallback();
+        });
+      } else {
+        input.addEventListener('change', () => onChangeCallback());
       }
     } else if (field.type === 'radio') {
       const radioDiv = document.createElement('div');

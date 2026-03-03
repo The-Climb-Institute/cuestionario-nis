@@ -13,11 +13,23 @@
         },
         {
           "id": "company_country",
-          "label": "País / Región",
-          "type": "text",
+          "label": "País",
+          "type": "select",
           "required": true,
+          "dataSource": "countries",
           "helpText": "País donde opera la empresa",
           "benchmarkId": null
+        },
+        {
+          "id": "company_region",
+          "label": "Región / Estado",
+          "type": "select",
+          "required": true,
+          "dataSource": "regions",
+          "dataSourceParent": "company_country",
+          "helpText": "Región o estado dentro del país",
+          "benchmarkId": null,
+          "conditional": "company_country"
         },
         {
           "id": "company_sector",
