@@ -11,16 +11,23 @@ let formRenderer;
  */
 async function initApp() {
   try {
-    // Cargar benchmarks
-    const response = await fetch('./data/benchmarks.json');
-    if (!response.ok) {
-      throw new Error(`Error cargando benchmarks: ${response.statusText}`);
+    // Cargar benchmarks y preguntas en paralelo
+    const [benchmarksRes, questionsRes] = await Promise.all([
+      fetch('./data/benchmarks.json'),
+      fetch('./data/questions.json')
+    ]);
+    if (!benchmarksRes.ok) {
+      throw new Error(`Error cargando benchmarks: ${benchmarksRes.statusText}`);
     }
-    const benchmarks = await response.json();
+    if (!questionsRes.ok) {
+      throw new Error(`Error cargando preguntas: ${questionsRes.statusText}`);
+    }
+    const benchmarks = await benchmarksRes.json();
+    const questions = await questionsRes.json();
 
     // Inicializar scorer y renderer
     scorer = new NISScorer(benchmarks);
-    formRenderer = new NISFormRenderer(benchmarks);
+    formRenderer = new NISFormRenderer(benchmarks, questions);
 
     // Renderizar formulario
     formRenderer.render('form-container', updateScores);
