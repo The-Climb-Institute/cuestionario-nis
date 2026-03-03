@@ -47,21 +47,6 @@
           "benchmarkId": null
         },
         {
-          "id": "company_size",
-          "label": "Tamaño de la empresa",
-          "type": "select",
-          "required": true,
-          "options": [
-            "Micro (1-10 empleados)",
-            "Pequeña (11-50 empleados)",
-            "Mediana (51-250 empleados)",
-            "Grande (251-1000 empleados)",
-            "Empresa (1000+ empleados)"
-          ],
-          "helpText": "Clasificación por número de empleados",
-          "benchmarkId": null
-        },
-        {
           "id": "company_employees",
           "label": "Número de empleados",
           "type": "number",
