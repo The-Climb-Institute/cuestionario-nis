@@ -352,12 +352,115 @@ function buildPayload(values, scores) {
 }
 
 /**
+ * Muestra errores de validación al usuario
+ */
+function showValidationErrors(errors) {
+  // Create a modal-like overlay for validation errors
+  const existingError = document.getElementById('validation-error-modal');
+  if (existingError) existingError.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'validation-error-modal';
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  `;
+
+  const content = document.createElement('div');
+  content.style.cssText = `
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  `;
+
+  const title = document.createElement('h2');
+  title.textContent = 'Formulario incompleto';
+  title.style.cssText = 'color: #D32F2F; margin-bottom: 16px; font-size: 18px;';
+
+  const message = document.createElement('p');
+  message.textContent = 'Por favor, complete los siguientes campos requeridos:';
+  message.style.cssText = 'color: #666; margin-bottom: 16px;';
+
+  const errorList = document.createElement('ul');
+  errorList.style.cssText = `
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+  `;
+
+  errors.forEach(error => {
+    const li = document.createElement('li');
+    li.style.cssText = `
+      padding: 8px 12px;
+      margin-bottom: 8px;
+      background: #FFEBEE;
+      border-left: 4px solid #D32F2F;
+      color: #C62828;
+      font-size: 14px;
+    `;
+    li.textContent = error.error;
+    errorList.appendChild(li);
+  });
+
+  const closeButton = document.createElement('button');
+  closeButton.textContent = 'Entendido';
+  closeButton.style.cssText = `
+    width: 100%;
+    padding: 12px;
+    background: #1976D2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+  `;
+  closeButton.onclick = () => modal.remove();
+
+  content.appendChild(title);
+  content.appendChild(message);
+  content.appendChild(errorList);
+  content.appendChild(closeButton);
+
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+
+  // Scroll to first error field if possible
+  if (errors.length > 0) {
+    const firstError = errors[0];
+    const fieldEl = document.querySelector(`[name="${firstError.fieldId}"]`);
+    if (fieldEl) {
+      fieldEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+}
+
+/**
  * Envía los datos del formulario a OpenFormStack.
  * Nota: si el navegador muestra un error de CORS, el POST puede haberse enviado igual;
  * la respuesta es la que se bloquea. Mostramos un mensaje claro en ese caso.
  */
 async function submitToOpenFormStack() {
   try {
+    // Validar que todos los campos requeridos estén completos
+    const validation = formRenderer.validateForm();
+    if (!validation.valid) {
+      showValidationErrors(validation.errors);
+      return;
+    }
+
     const values = formRenderer.getFormValues();
     const scores = scorer.getAllScores(values);
 

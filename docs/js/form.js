@@ -1007,6 +1007,174 @@ class NISFormRenderer {
       }
     });
   }
+
+  /**
+   * Valida que todos los campos visibles y requeridos tengan valores válidos.
+   * Retorna un objeto { valid: boolean, errors: Array<{fieldId, label, error}> }
+   */
+  validateForm() {
+    const errors = [];
+
+    // Validar campos de empresa
+    this.formFields.company.forEach(field => {
+      if (!field.required) return;
+
+      const input = document.querySelector(`[name="${field.id}"]`);
+      if (!input) return;
+
+      const { isValid } = this._getFieldValueAndValidity(input, field);
+      if (!isValid) {
+        errors.push({
+          fieldId: field.id,
+          label: field.label,
+          error: `${field.label} es requerido`
+        });
+      }
+    });
+
+    // Validar campos multi-año (ambiental, social, gobernanza)
+    this.MULTI_YEAR_SECTIONS.forEach(seccion => {
+      const blocks = document.querySelectorAll(`.nis-seccion-${seccion} .year-block`);
+      blocks.forEach(block => {
+        const year = parseInt(block.getAttribute('data-year'), 10);
+        if (isNaN(year)) return;
+
+        this.formFields[seccion].forEach(field => {
+          if (!field.required) return;
+
+          // Check if field is hidden by conditional
+          const fieldEl = block.querySelector(`[data-field-id="${field.id}"]`);
+          if (!fieldEl || fieldEl.style.display === 'none') return;
+
+          const name = field.id + '_y_' + year;
+          let isValid = false;
+
+          if (field.type === 'matrix') {
+            // Validate matrix field - at least one sub-field must be valid
+            field.rows.forEach(row => {
+              row.ids.forEach(id => {
+                const input = document.querySelector(`[name="${id}_y_${year}"]`);
+                if (input) {
+                  const validity = this._getFieldValueAndValidity(input, { allowUnknown: true });
+                  if (validity.isValid) {
+                    isValid = true;
+                  }
+                }
+              });
+            });
+          } else if (field.id === 'energia_kwh') {
+            // Special handling for energia_kwh with bimestral mode
+            const modeInput = document.querySelector(`[name="energia_kwh_mode_y_${year}"]:checked`);
+            const mode = modeInput ? modeInput.value : 'anual';
+            if (mode === 'bimestral') {
+              const hidden = document.querySelector(`[name="energia_kwh_bimestral_y_${year}"]`);
+              if (hidden && hidden.value) {
+                try {
+                  const arr = JSON.parse(hidden.value);
+                  const total = arr.reduce((sum, p) => sum + (Number(p.kWh) || 0), 0);
+                  isValid = total > 0;
+                } catch (e) {}
+              }
+            } else {
+              const input = document.querySelector(`[name="${name}"]`);
+              if (input) {
+                const validity = this._getFieldValueAndValidity(input, field);
+                isValid = validity.isValid;
+              }
+            }
+          } else {
+            const input = document.querySelector(`[name="${name}"]`);
+            if (input) {
+              const validity = this._getFieldValueAndValidity(input, field);
+              isValid = validity.isValid;
+            }
+          }
+
+          if (!isValid) {
+            errors.push({
+              fieldId: field.id,
+              label: field.label,
+              year,
+              error: `${field.label} (${year}) es requerido`
+            });
+          }
+        });
+
+        // Validate extra past-year inputs
+        const extraInputs = block.querySelectorAll('[data-extra-year-field]');
+        extraInputs.forEach(input => {
+          const fieldId = input.dataset.extraYearField;
+          const yearStr = input.dataset.extraYear;
+          if (!yearStr) return;
+
+          // Find the corresponding field definition
+          const fieldDef = this.formFields[seccion].find(f => f.id === fieldId);
+          if (!fieldDef || !fieldDef.required) return;
+
+          const validity = this._getFieldValueAndValidity(input, fieldDef);
+          if (!validity.isValid) {
+            errors.push({
+              fieldId,
+              label: fieldDef.label,
+              year: yearStr,
+              error: `${fieldDef.label} (${yearStr}) es requerido`
+            });
+          }
+        });
+      });
+    });
+
+    return {
+      valid: errors.length === 0,
+      errors
+    };
+  }
+
+  /**
+   * Obtiene el valor de un campo input y su estado de validez
+   * Retorna { value, isValid, isUnknown }
+   */
+  _getFieldValueAndValidity(input, field) {
+    if (input.type === 'radio') {
+      const checked = document.querySelector(`[name="${input.name}"]:checked`);
+      const value = checked ? (checked.value || null) : null;
+      return { value, isValid: value !== null, isUnknown: false };
+    } else if (input.type === 'checkbox') {
+      const value = input.checked ? input.value : null;
+      return { value, isValid: value !== null, isUnknown: false };
+    } else if (input.type === 'number') {
+      // Check for "No sé" checkbox in parent wrapper
+      const wrapper = input.parentElement;
+      const unknownCheckbox = wrapper?.querySelector('.unknown-checkbox');
+      const isUnknown = field?.allowUnknown && unknownCheckbox?.checked;
+      const hasValue = input.value && !isNaN(parseFloat(input.value));
+      const value = hasValue ? parseFloat(input.value) : null;
+
+      // Valid if: has numeric value OR "No sé" is checked
+      const isValid = hasValue || isUnknown;
+      return { value, isValid, isUnknown };
+    } else {
+      const value = input.value || null;
+      return { value, isValid: value !== null, isUnknown: false };
+    }
+  }
+
+  /**
+   * Obtiene el valor de un campo input (para compatibilidad)
+   */
+  _getFieldValue(input, field) {
+    const { value } = this._getFieldValueAndValidity(input, field);
+    return value;
+  }
+
+  /**
+   * Valida si un valor es válido para un campo
+   * Para campos con allowUnknown, null es válido solo si "No sé" está marcado
+   * Para otros campos, debe haber un valor
+   */
+  _isValidValue(value, field) {
+    return value !== null && value !== '';
+  }
 }
 
 // Exportar para uso en HTML
