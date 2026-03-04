@@ -9641,16 +9641,11 @@
   {
     "code2": "MX",
     "code3": "MEX",
-    "name": "Mexico",
+    "name": "México",
     "capital": "Mexico City",
     "region": "Americas",
     "subregion": "Central America",
     "states": [
-      {
-        "code": "CDMX",
-        "name": "Ciudad de México",
-        "subdivision": "federal district"
-      },
       {
         "code": "AGU",
         "name": "Aguascalientes",
@@ -9680,6 +9675,11 @@
         "code": "CHH",
         "name": "Chihuahua",
         "subdivision": "state"
+      },
+      {
+        "code": "CDMX",
+        "name": "Ciudad de México",
+        "subdivision": "federal district"
       },
       {
         "code": "COA",
@@ -9717,6 +9717,11 @@
         "subdivision": "state"
       },
       {
+        "code": "MEX",
+        "name": "México",
+        "subdivision": "state"
+      },
+      {
         "code": "MIC",
         "name": "Michoacán",
         "subdivision": "state"
@@ -9724,11 +9729,6 @@
       {
         "code": "MOR",
         "name": "Morelos",
-        "subdivision": "state"
-      },
-      {
-        "code": "MEX",
-        "name": "México",
         "subdivision": "state"
       },
       {
