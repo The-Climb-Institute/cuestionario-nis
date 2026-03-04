@@ -74,6 +74,7 @@ class NISFormRenderer {
 
     if (!countryName) {
       regionSelect.disabled = true;
+      regionSelect.removeAttribute('required');
       return;
     }
 
@@ -87,8 +88,10 @@ class NISFormRenderer {
         regionSelect.appendChild(optionElement);
       });
       regionSelect.disabled = false;
+      regionSelect.required = true;
     } else {
       regionSelect.disabled = true;
+      regionSelect.removeAttribute('required');
     }
   }
 
@@ -131,7 +134,7 @@ class NISFormRenderer {
         <div class="instruction-block">
           <h3 class="instruction-title">Instrucciones</h3>
           <p>Llenar todos los campos del cuestionario. Para pasar a la siguiente sección, tienes que responder todos los campos requeridos. Los campos marcados con <span class="required-indicator">*</span> son obligatorios.</p>
-          <p>Si desconoces un dato o no es aplicable a tu empresa, puedes dejar en blanco los campos opcionales o seleccionar "No disponible" donde se indique.</p>
+          <p>Si desconoces un dato o no es aplicable a tu empresa, puedes dejar en blanco los campos opcionales.</p>
         </div>
 
         <div class="instruction-block">
@@ -415,6 +418,10 @@ class NISFormRenderer {
     const fieldName = field.id + nameSuffix;
     const fieldId = field.id + nameSuffix;
 
+    if (field.type === 'matrix') {
+      return this.renderMatrixField(field, seccion, onChangeCallback, year);
+    }
+
     if (field.id === 'energia_kwh' && year != null) {
       return this.renderEnergyField(field, seccion, year, fieldName, onChangeCallback);
     }
@@ -525,7 +532,7 @@ class NISFormRenderer {
       const radioDiv = document.createElement('div');
       radioDiv.className = 'radio-group';
 
-      [['Sí', 'Sí'], ['No', 'No'], ['No disponible', '']].forEach(([label, val]) => {
+      [['Sí', 'Sí'], ['No', 'No']].forEach(([label, val]) => {
         const radioLabel = document.createElement('label');
         radioLabel.className = 'radio-label';
 
@@ -534,7 +541,7 @@ class NISFormRenderer {
         radioInput.name = fieldName;
         radioInput.value = val;
         radioInput.className = 'field-input radio-input';
-        radioInput.id = `${fieldId}-${val || 'nd'}`;
+        radioInput.id = `${fieldId}-${val}`;
 
         radioLabel.appendChild(radioInput);
         radioLabel.appendChild(document.createTextNode(label));
@@ -591,6 +598,88 @@ class NISFormRenderer {
   }
 
   /**
+   * Renderiza un campo de tipo matriz (tabla con filas y columnas).
+   * @param {object} field - Definición del campo matrix
+   * @param {string} seccion - Sección actual
+   * @param {function} onChangeCallback - Callback de cambios
+   * @param {number|null} year - Año (si aplica)
+   * @returns {HTMLElement} Elemento del campo matriz
+   */
+  renderMatrixField(field, seccion, onChangeCallback, year) {
+    const nameSuffix = year != null ? `_y_${year}` : '';
+
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'form-field matrix-group';
+    groupDiv.setAttribute('data-field-id', field.id);
+    if (year != null) groupDiv.setAttribute('data-year', year);
+
+    if (field.conditional) {
+      groupDiv.setAttribute('data-conditional', field.conditional + nameSuffix);
+      groupDiv.style.display = 'none';
+    }
+
+    const label = document.createElement('label');
+    label.className = 'field-label';
+    label.textContent = field.label;
+    groupDiv.appendChild(label);
+
+    const table = document.createElement('table');
+    table.className = 'matrix-table';
+
+    // Header row
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    headerRow.appendChild(document.createElement('th')); // empty corner
+    field.columns.forEach(col => {
+      const th = document.createElement('th');
+      th.textContent = col;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Data rows
+    const tbody = document.createElement('tbody');
+    field.rows.forEach(row => {
+      const tr = document.createElement('tr');
+      const labelTd = document.createElement('td');
+      labelTd.className = 'matrix-row-label';
+      labelTd.textContent = row.label;
+      tr.appendChild(labelTd);
+
+      row.ids.forEach(id => {
+        const td = document.createElement('td');
+        const inputName = id + nameSuffix;
+        const input = document.createElement('input');
+        input.type = field.inputType || 'number';
+        input.name = inputName;
+        input.id = inputName;
+        input.className = 'field-input number-input matrix-cell-input';
+        if (field.min !== undefined) input.min = field.min;
+        if (field.max !== undefined) input.max = field.max;
+        input.placeholder = '0';
+        input.addEventListener('change', () => onChangeCallback());
+        input.addEventListener('input', () => onChangeCallback());
+        td.appendChild(input);
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    groupDiv.appendChild(table);
+
+    if (field.unit) {
+      const unitSpan = document.createElement('span');
+      unitSpan.className = 'field-unit';
+      unitSpan.textContent = field.unit;
+      groupDiv.appendChild(unitSpan);
+    }
+
+    return groupDiv;
+  }
+
+  /**
    * Extrae todos los valores del formulario.
    * Con multi-año: devuelve datos por año (annualData) y un objeto plano para el año primario (scoring).
    * @returns {object} { fieldId: value, ... flatPrimary; dataYears; annualData }
@@ -641,6 +730,14 @@ class NISFormRenderer {
               const input = document.querySelector(`[name="${name}"]`);
               yearData[field.id] = input && input.value ? parseFloat(input.value) : null;
             }
+          } else if (field.type === 'matrix') {
+            field.rows.forEach(row => {
+              row.ids.forEach(id => {
+                const matrixName = id + '_y_' + year;
+                const input = document.querySelector(`[name="${matrixName}"]`);
+                if (input) yearData[id] = input.value ? parseFloat(input.value) : null;
+              });
+            });
           } else {
             const input = document.querySelector(`[name="${name}"]`);
             if (!input) return;
@@ -693,20 +790,26 @@ class NISFormRenderer {
       } else {
         value = formValues[conditional] != null ? formValues[conditional] : formValues[conditional.replace(/_y_\d+$/, '')];
       }
-      const show = value === 'Sí';
+      // Region/state field: show when parent (country) has any value; others: show when "Sí"
+      const isRegionField = fieldEl.querySelector('select[data-source="regions"]');
+      const show = isRegionField ? (value != null && value !== '') : value === 'Sí';
 
       if (show) {
         fieldEl.style.display = 'block';
       } else {
         fieldEl.style.display = 'none';
-        const namePrefix = fieldId + (year != null ? '_y_' + year : '');
-        document.querySelectorAll(`[name="${namePrefix}"], [name^="${namePrefix}_"]`).forEach(input => {
-          if (input.type === 'radio') {
-            input.checked = false;
-          } else if (input.type !== 'hidden') {
-            input.value = '';
-          }
-        });
+        if (fieldEl.classList.contains('matrix-group')) {
+          fieldEl.querySelectorAll('input').forEach(inp => { inp.value = ''; });
+        } else {
+          const namePrefix = fieldId + (year != null ? '_y_' + year : '');
+          document.querySelectorAll(`[name="${namePrefix}"], [name^="${namePrefix}_"]`).forEach(input => {
+            if (input.type === 'radio') {
+              input.checked = false;
+            } else if (input.type !== 'hidden') {
+              input.value = '';
+            }
+          });
+        }
       }
     });
   }

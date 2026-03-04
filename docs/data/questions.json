@@ -41,23 +41,23 @@
           "type": "select",
           "required": true,
           "options": [
-            "Agricultura, ganadería, pesca",
-            "Minería y canteras",
-            "Manufactura",
-            "Servicios de agua, saneamiento",
-            "Construcción",
-            "Comercio, venta",
-            "Transporte y logística",
-            "Hospedaje y alimentación",
-            "Información y comunicación",
-            "Finanzas y seguros",
-            "Inmuebles",
             "Actividades profesionales",
             "Administración pública",
-            "Educación",
-            "Salud",
+            "Agricultura, ganadería, pesca",
             "Artes y entretenimiento",
-            "Otros servicios"
+            "Comercio, venta",
+            "Construcción",
+            "Educación",
+            "Finanzas y seguros",
+            "Hospedaje y alimentación",
+            "Información y comunicación",
+            "Inmuebles",
+            "Manufactura",
+            "Minería y canteras",
+            "Otros servicios",
+            "Salud",
+            "Servicios de agua, saneamiento",
+            "Transporte y logística"
           ],
           "helpText": "Categoría principal de negocio",
           "docCode": "B2.4",
@@ -381,64 +381,19 @@
           "benchmarkId": "tasa_accidentes"
         },
         {
-          "id": "mujeres_puestos_gerenciales",
-          "label": "¿Cuántas mujeres ocupan puestos gerenciales?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "D1.10 – Participación económica.",
+          "id": "liderazgo_genero",
+          "type": "matrix",
+          "label": "Composición de puestos de liderazgo por género",
           "docCode": "D1.10",
-          "ibsoId": null,
-          "benchmarkId": null
-        },
-        {
-          "id": "hombres_puestos_gerenciales",
-          "label": "¿Cuántos hombres ocupan puestos gerenciales?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "D1.10 – Participación económica.",
-          "docCode": "D1.10",
-          "ibsoId": null,
-          "benchmarkId": null
-        },
-        {
-          "id": "mujeres_puestos_directivos",
-          "label": "¿Cuántas mujeres ocupan puestos directivos?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "D1.10 – Participación económica.",
-          "docCode": "D1.10",
-          "ibsoId": null,
-          "benchmarkId": null
-        },
-        {
-          "id": "hombres_puestos_directivos",
-          "label": "¿Cuántos hombres ocupan puestos directivos?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "D1.10 – Participación económica.",
-          "docCode": "D1.10",
-          "ibsoId": null,
-          "benchmarkId": null
-        },
-        {
-          "id": "mujeres_consejo_admin",
-          "label": "¿Cuántas mujeres son miembros del consejo de administración?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "D1.10 – Participación económica.",
-          "docCode": "D1.10",
-          "ibsoId": null,
-          "benchmarkId": null
-        },
-        {
-          "id": "hombres_consejo_admin",
-          "label": "¿Cuántos hombres son miembros del consejo de administración?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "D1.10 – Participación económica.",
-          "docCode": "D1.10",
-          "ibsoId": null,
-          "benchmarkId": null
+          "columns": ["Mujeres", "Hombres"],
+          "rows": [
+            { "label": "Gerenciales",               "ids": ["mujeres_puestos_gerenciales", "hombres_puestos_gerenciales"] },
+            { "label": "Directivos",                "ids": ["mujeres_puestos_directivos",  "hombres_puestos_directivos"]  },
+            { "label": "Consejo de Administración", "ids": ["mujeres_consejo_admin",        "hombres_consejo_admin"]       }
+          ],
+          "inputType": "number",
+          "min": 0,
+          "unit": "personas"
         }
       ]
     },
@@ -507,37 +462,20 @@
           "benchmarkId": null
         },
         {
-          "id": "composicion_consejo_mujeres",
-          "label": "¿Cuántas mujeres integran el consejo de administración?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "Composición del consejo de administración.",
+          "id": "composicion_consejo",
+          "type": "matrix",
+          "label": "Composición del consejo de administración por género",
           "docCode": "E1.7",
-          "ibsoId": null,
-          "benchmarkId": null,
-          "conditional": "tienen_consejo"
-        },
-        {
-          "id": "composicion_consejo_hombres",
-          "label": "¿Cuántos hombres integran el consejo de administración?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "Composición del consejo de administración.",
-          "docCode": "E1.7",
-          "ibsoId": null,
-          "benchmarkId": null,
-          "conditional": "tienen_consejo"
-        },
-        {
-          "id": "composicion_consejo_nobinarias",
-          "label": "¿Cuántas personas no binarias integran el consejo de administración?",
-          "type": "number",
-          "unit": "personas",
-          "helpText": "Composición del consejo de administración.",
-          "docCode": "E1.7",
-          "ibsoId": null,
-          "benchmarkId": null,
-          "conditional": "tienen_consejo"
+          "conditional": "tienen_consejo",
+          "columns": ["Cantidad"],
+          "rows": [
+            { "label": "Mujeres",              "ids": ["composicion_consejo_mujeres"]   },
+            { "label": "Hombres",              "ids": ["composicion_consejo_hombres"]   },
+            { "label": "Personas no binarias", "ids": ["composicion_consejo_nobinarias"] }
+          ],
+          "inputType": "number",
+          "min": 0,
+          "unit": "personas"
         },
         {
           "id": "mujeres_consejo",
