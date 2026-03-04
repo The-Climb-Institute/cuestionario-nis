@@ -521,6 +521,27 @@ class NISFormRenderer {
       } else {
         input.addEventListener('change', () => onChangeCallback());
       }
+    } else if (field.type === 'boolean') {
+      const radioDiv = document.createElement('div');
+      radioDiv.className = 'radio-group';
+
+      [['Sí', 'Sí'], ['No', 'No'], ['No disponible', '']].forEach(([label, val]) => {
+        const radioLabel = document.createElement('label');
+        radioLabel.className = 'radio-label';
+
+        const radioInput = document.createElement('input');
+        radioInput.type = 'radio';
+        radioInput.name = fieldName;
+        radioInput.value = val;
+        radioInput.className = 'field-input radio-input';
+        radioInput.id = `${fieldId}-${val || 'nd'}`;
+
+        radioLabel.appendChild(radioInput);
+        radioLabel.appendChild(document.createTextNode(label));
+        radioDiv.appendChild(radioLabel);
+      });
+
+      input = radioDiv;
     } else if (field.type === 'radio') {
       const radioDiv = document.createElement('div');
       radioDiv.className = 'radio-group';
@@ -581,7 +602,7 @@ class NISFormRenderer {
       if (input) {
         if (input.type === 'radio') {
           const checked = document.querySelector(`[name="${field.id}"]:checked`);
-          company[field.id] = checked ? checked.value : null;
+          company[field.id] = checked ? (checked.value || null) : null;
         } else if (input.type === 'number') {
           company[field.id] = input.value ? parseFloat(input.value) : null;
         } else {
@@ -625,7 +646,7 @@ class NISFormRenderer {
             if (!input) return;
             if (input.type === 'radio') {
               const checked = document.querySelector(`[name="${name}"]:checked`);
-              yearData[field.id] = checked ? checked.value : null;
+              yearData[field.id] = checked ? (checked.value || null) : null;
             } else if (input.type === 'number') {
               yearData[field.id] = input.value ? parseFloat(input.value) : null;
             } else {
