@@ -1,7 +1,6 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 
-const OPENFORMSTACK_URL = '**/openformstack.com/**';
 const MOCK_SUCCESS_BODY = JSON.stringify({ id: 'e2e-mock-id' });
 
 Given('que la aplicación está abierta', async function () {
@@ -10,7 +9,7 @@ Given('que la aplicación está abierta', async function () {
 });
 
 Given('el backend está configurado para aceptar el envío', async function () {
-  await this.page.route(OPENFORMSTACK_URL, (route) =>
+  await this.page.route((url) => String(url).includes('openformstack.com'), (route) =>
     route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -20,7 +19,7 @@ Given('el backend está configurado para aceptar el envío', async function () {
 });
 
 Given('el backend está configurado para responder con error de servidor', async function () {
-  await this.page.route(OPENFORMSTACK_URL, (route) =>
+  await this.page.route((url) => String(url).includes('openformstack.com'), (route) =>
     route.fulfill({
       status: 500,
       contentType: 'application/json',
@@ -30,14 +29,20 @@ Given('el backend está configurado para responder con error de servidor', async
 });
 
 Given('el backend está configurado para simular fallo de red', async function () {
-  await this.page.route(OPENFORMSTACK_URL, (route) => route.abort('failed'));
+  await this.page.route((url) => String(url).includes('openformstack.com'), (route) => route.abort('failed'));
 });
 
 When('el usuario rellena los datos mínimos de empresa', async function () {
   await this.page.getByRole('textbox', { name: /nombre legal/i }).fill('Empresa E2E Test');
-  await this.page.getByRole('textbox', { name: /país/i }).fill('México');
+  await this.page.getByRole('combobox', { name: /país/i }).selectOption('México');
+  // México tiene regiones; seleccionar la primera para pasar validación de campo requerido
+  const regionSelect = this.page.getByRole('combobox', { name: /región|estado/i });
+  await this.page.waitForTimeout(400);
+  if (await regionSelect.isVisible()) {
+    const firstOption = await regionSelect.locator('option').nth(1).getAttribute('value');
+    if (firstOption) await regionSelect.selectOption(firstOption);
+  }
   await this.page.getByRole('combobox', { name: /sector de industria/i }).selectOption('Servicios de agua, saneamiento');
-  await this.page.getByRole('combobox', { name: /tamaño de la empresa/i }).selectOption('Mediana (51-250 empleados)');
   await this.page.getByRole('spinbutton', { name: /número de empleados/i }).fill('100');
   await this.page.getByRole('spinbutton', { name: /ingresos anuales/i }).fill('500000');
 });

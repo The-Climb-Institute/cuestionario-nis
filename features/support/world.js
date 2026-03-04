@@ -11,9 +11,8 @@ class PlaywrightWorld extends World {
   }
 }
 
-async function initBrowser() {
-  const headless = process.env.CI === 'true';
-  return chromium.launch({ headless });
+async function initBrowser(headless = true) {
+  return chromium.launch({ headless: headless !== false });
 }
 
 module.exports = { PlaywrightWorld, initBrowser };

@@ -1,10 +1,11 @@
-const { Before, After, setWorldConstructor } = require('@cucumber/cucumber');
+const { Before, After, setWorldConstructor, setDefaultTimeout } = require('@cucumber/cucumber');
 const { PlaywrightWorld, initBrowser } = require('./world');
 
+setDefaultTimeout(15000);
 setWorldConstructor(PlaywrightWorld);
 
 Before(async function () {
-  this.browser = await initBrowser();
+  this.browser = await initBrowser(this.parameters.headless);
   this.page = await this.browser.newPage();
 });
 

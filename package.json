@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:e2e": "start-server-and-test 'npx serve docs -l 3000' http://localhost:3000 'cucumber-js --config cucumber.js'",
+    "test:e2e:headed": "HEADLESS=false start-server-and-test 'npx serve docs -l 3000' http://localhost:3000 'cucumber-js --config cucumber.js'",
     "test:e2e:ci": "CI=1 start-server-and-test 'npx serve docs -l 3000' http://localhost:3000 'cucumber-js --config cucumber.js'"
   },
   "keywords": [],

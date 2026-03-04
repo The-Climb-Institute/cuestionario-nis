@@ -186,6 +186,12 @@ projects/cuestionario-nis/
 1. En `docs/js/scoring.js`, modifica el objeto `this.weights` en el constructor
 2. Actualmente: Ambiental 40%, Social 40%, Gobernanza 20%
 
+## Pruebas
+
+- **Unitarias e integración (Jest):** `npm test`
+- **E2E con Cucumber + Playwright:** `npm run test:e2e` (arranca el servidor, ejecuta los escenarios y apaga). Las pruebas e2e se ejecutan en **headless** por defecto (sin ventana del navegador). Para ver el navegador: `npm run test:e2e:headed` o `HEADLESS=false npm run test:e2e`.
+- Escenarios BDD: envío del formulario (`features/formulario.feature`) y comportamiento en situaciones límite (`features/formulario-edge.feature`).
+
 ## Requisitos
 - Navegador web moderno (Chrome, Firefox, Safari, Edge)
 - No requiere instalación ni dependencias
