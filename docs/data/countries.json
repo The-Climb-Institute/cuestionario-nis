@@ -2006,79 +2006,6 @@
     "states": []
   },
   {
-    "code2": "UM",
-    "code3": "UMI",
-    "name": "United States Minor Outlying Islands",
-    "capital": "",
-    "region": "Americas",
-    "subregion": "Northern America",
-    "states": [
-      {
-        "code": "81",
-        "name": "Baker Island",
-        "subdivision": null
-      },
-      {
-        "code": "84",
-        "name": "Howland Island",
-        "subdivision": null
-      },
-      {
-        "code": "86",
-        "name": "Jarvis Island",
-        "subdivision": null
-      },
-      {
-        "code": "67",
-        "name": "Johnston Atoll",
-        "subdivision": null
-      },
-      {
-        "code": "89",
-        "name": "Kingman Reef",
-        "subdivision": null
-      },
-      {
-        "code": "71",
-        "name": "Midway Islands",
-        "subdivision": null
-      },
-      {
-        "code": "76",
-        "name": "Navassa Island",
-        "subdivision": null
-      },
-      {
-        "code": "95",
-        "name": "Palmyra Atoll",
-        "subdivision": null
-      },
-      {
-        "code": "79",
-        "name": "Wake Island",
-        "subdivision": null
-      }
-    ]
-  },
-  {
-    "code2": "VG",
-    "code3": "VGB",
-    "name": "Virgin Islands (British)",
-    "capital": "Road Town",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "states": []
-  },
-  {
-    "code2": "VI",
-    "code3": "VIR",
-    "name": "Virgin Islands (U.S.)",
-    "capital": "Charlotte Amalie",
-    "region": "Americas",
-    "subregion": "Caribbean",
-    "states": []
-  },
-  {
     "code2": "BN",
     "code3": "BRN",
     "name": "Brunei",
@@ -3436,141 +3363,6 @@
     ]
   },
   {
-    "code2": "CG",
-    "code3": "COG",
-    "name": "Republic of the Congo",
-    "capital": "Brazzaville",
-    "region": "Africa",
-    "subregion": "Middle Africa",
-    "states": [
-      {
-        "code": "11",
-        "name": "Bouenza",
-        "subdivision": null
-      },
-      {
-        "code": "BZV",
-        "name": "Brazzaville",
-        "subdivision": null
-      },
-      {
-        "code": "8",
-        "name": "Cuvette",
-        "subdivision": null
-      },
-      {
-        "code": "15",
-        "name": "Cuvette-Ouest",
-        "subdivision": null
-      },
-      {
-        "code": "5",
-        "name": "Kouilou",
-        "subdivision": null
-      },
-      {
-        "code": "7",
-        "name": "Likouala",
-        "subdivision": null
-      },
-      {
-        "code": "2",
-        "name": "Lékoumou",
-        "subdivision": null
-      },
-      {
-        "code": "9",
-        "name": "Niari",
-        "subdivision": null
-      },
-      {
-        "code": "14",
-        "name": "Plateaux",
-        "subdivision": null
-      },
-      {
-        "code": "16",
-        "name": "Pointe-Noire",
-        "subdivision": null
-      },
-      {
-        "code": "12",
-        "name": "Pool",
-        "subdivision": null
-      },
-      {
-        "code": "13",
-        "name": "Sangha",
-        "subdivision": null
-      }
-    ]
-  },
-  {
-    "code2": "CD",
-    "code3": "COD",
-    "name": "Democratic Republic of the Congo",
-    "capital": "Kinshasa",
-    "region": "Africa",
-    "subregion": "Middle Africa",
-    "states": [
-      {
-        "code": "BN",
-        "name": "Bandundu",
-        "subdivision": null
-      },
-      {
-        "code": "BC",
-        "name": "Bas-Congo",
-        "subdivision": null
-      },
-      {
-        "code": "KW",
-        "name": "Kasai-Occidental",
-        "subdivision": null
-      },
-      {
-        "code": "KE",
-        "name": "Kasai-Oriental",
-        "subdivision": null
-      },
-      {
-        "code": "KA",
-        "name": "Katanga",
-        "subdivision": null
-      },
-      {
-        "code": "KN",
-        "name": "Kinshasa",
-        "subdivision": null
-      },
-      {
-        "code": "MA",
-        "name": "Maniema",
-        "subdivision": null
-      },
-      {
-        "code": "NK",
-        "name": "Nord-Kivu",
-        "subdivision": null
-      },
-      {
-        "code": "OR",
-        "name": "Orientale",
-        "subdivision": null
-      },
-      {
-        "code": "SK",
-        "name": "Sud-Kivu",
-        "subdivision": null
-      },
-      {
-        "code": "EQ",
-        "name": "Équateur",
-        "subdivision": null
-      }
-    ]
-  },
-  {
     "code2": "CK",
     "code3": "COK",
     "name": "Cook Islands",
@@ -3959,6 +3751,71 @@
     ]
   },
   {
+    "code2": "CD",
+    "code3": "COD",
+    "name": "Democratic Republic of the Congo",
+    "capital": "Kinshasa",
+    "region": "Africa",
+    "subregion": "Middle Africa",
+    "states": [
+      {
+        "code": "BN",
+        "name": "Bandundu",
+        "subdivision": null
+      },
+      {
+        "code": "BC",
+        "name": "Bas-Congo",
+        "subdivision": null
+      },
+      {
+        "code": "KW",
+        "name": "Kasai-Occidental",
+        "subdivision": null
+      },
+      {
+        "code": "KE",
+        "name": "Kasai-Oriental",
+        "subdivision": null
+      },
+      {
+        "code": "KA",
+        "name": "Katanga",
+        "subdivision": null
+      },
+      {
+        "code": "KN",
+        "name": "Kinshasa",
+        "subdivision": null
+      },
+      {
+        "code": "MA",
+        "name": "Maniema",
+        "subdivision": null
+      },
+      {
+        "code": "NK",
+        "name": "Nord-Kivu",
+        "subdivision": null
+      },
+      {
+        "code": "OR",
+        "name": "Orientale",
+        "subdivision": null
+      },
+      {
+        "code": "SK",
+        "name": "Sud-Kivu",
+        "subdivision": null
+      },
+      {
+        "code": "EQ",
+        "name": "Équateur",
+        "subdivision": null
+      }
+    ]
+  },
+  {
     "code2": "DK",
     "code3": "DNK",
     "name": "Denmark",
@@ -4149,6 +4006,81 @@
       {
         "code": "42",
         "name": "Yuma",
+        "subdivision": null
+      }
+    ]
+  },
+  {
+    "code2": "TL",
+    "code3": "TLS",
+    "name": "East Timor",
+    "capital": "Dili",
+    "region": "Asia",
+    "subregion": "South-Eastern Asia",
+    "states": [
+      {
+        "code": "AL",
+        "name": "Aileu",
+        "subdivision": null
+      },
+      {
+        "code": "AN",
+        "name": "Ainaro",
+        "subdivision": null
+      },
+      {
+        "code": "BA",
+        "name": "Baucau",
+        "subdivision": null
+      },
+      {
+        "code": "BO",
+        "name": "Bobonaro",
+        "subdivision": null
+      },
+      {
+        "code": "CO",
+        "name": "Cova Lima",
+        "subdivision": null
+      },
+      {
+        "code": "DI",
+        "name": "Díli",
+        "subdivision": null
+      },
+      {
+        "code": "ER",
+        "name": "Ermera",
+        "subdivision": null
+      },
+      {
+        "code": "LA",
+        "name": "Lautem",
+        "subdivision": null
+      },
+      {
+        "code": "LI",
+        "name": "Liquiça",
+        "subdivision": null
+      },
+      {
+        "code": "MT",
+        "name": "Manatuto",
+        "subdivision": null
+      },
+      {
+        "code": "MF",
+        "name": "Manufahi",
+        "subdivision": null
+      },
+      {
+        "code": "OE",
+        "name": "Oecussi",
+        "subdivision": null
+      },
+      {
+        "code": "VI",
+        "name": "Viqueque",
         "subdivision": null
       }
     ]
@@ -4745,6 +4677,36 @@
     "region": "Europe",
     "subregion": "Northern Europe",
     "states": []
+  },
+  {
+    "code2": "FM",
+    "code3": "FSM",
+    "name": "Federated States of Micronesia",
+    "capital": "Palikir",
+    "region": "Oceania",
+    "subregion": "Micronesia",
+    "states": [
+      {
+        "code": "TRK",
+        "name": "Chuuk",
+        "subdivision": null
+      },
+      {
+        "code": "KSA",
+        "name": "Kosrae",
+        "subdivision": null
+      },
+      {
+        "code": "PNI",
+        "name": "Pohnpei",
+        "subdivision": null
+      },
+      {
+        "code": "YAP",
+        "name": "Yap",
+        "subdivision": null
+      }
+    ]
   },
   {
     "code2": "FJ",
@@ -6492,111 +6454,6 @@
     ]
   },
   {
-    "code2": "CI",
-    "code3": "CIV",
-    "name": "Ivory Coast",
-    "capital": "Yamoussoukro",
-    "region": "Africa",
-    "subregion": "Western Africa",
-    "states": [
-      {
-        "code": "06",
-        "name": "18 Montagnes",
-        "subdivision": null
-      },
-      {
-        "code": "16",
-        "name": "Agnébi",
-        "subdivision": null
-      },
-      {
-        "code": "17",
-        "name": "Bafing",
-        "subdivision": null
-      },
-      {
-        "code": "09",
-        "name": "Bas-Sassandra",
-        "subdivision": null
-      },
-      {
-        "code": "10",
-        "name": "Denguélé",
-        "subdivision": null
-      },
-      {
-        "code": "18",
-        "name": "Fromager",
-        "subdivision": null
-      },
-      {
-        "code": "02",
-        "name": "Haut-Sassandra",
-        "subdivision": null
-      },
-      {
-        "code": "07",
-        "name": "Lacs",
-        "subdivision": null
-      },
-      {
-        "code": "01",
-        "name": "Lagunes",
-        "subdivision": null
-      },
-      {
-        "code": "12",
-        "name": "Marahoué",
-        "subdivision": null
-      },
-      {
-        "code": "19",
-        "name": "Moyen-Cavally",
-        "subdivision": null
-      },
-      {
-        "code": "05",
-        "name": "Moyen-Comoé",
-        "subdivision": null
-      },
-      {
-        "code": "11",
-        "name": "Nzi-Comoé",
-        "subdivision": null
-      },
-      {
-        "code": "03",
-        "name": "Savanes",
-        "subdivision": null
-      },
-      {
-        "code": "15",
-        "name": "Sud-Bandama",
-        "subdivision": null
-      },
-      {
-        "code": "13",
-        "name": "Sud-Comoé",
-        "subdivision": null
-      },
-      {
-        "code": "04",
-        "name": "Vallée du Bandama",
-        "subdivision": null
-      },
-      {
-        "code": "14",
-        "name": "Worodougou",
-        "subdivision": null
-      },
-      {
-        "code": "08",
-        "name": "Zanzan",
-        "subdivision": null
-      }
-    ]
-  },
-  {
     "code2": "IR",
     "code3": "IRN",
     "name": "Iran",
@@ -6862,36 +6719,6 @@
     ]
   },
   {
-    "code2": "IE",
-    "code3": "IRL",
-    "name": "Republic of Ireland",
-    "capital": "Dublin",
-    "region": "Europe",
-    "subregion": "Northern Europe",
-    "states": [
-      {
-        "code": "C",
-        "name": "Connaught",
-        "subdivision": null
-      },
-      {
-        "code": "L",
-        "name": "Leinster",
-        "subdivision": null
-      },
-      {
-        "code": "M",
-        "name": "Munster",
-        "subdivision": null
-      },
-      {
-        "code": "U",
-        "name": "Ulster",
-        "subdivision": null
-      }
-    ]
-  },
-  {
     "code2": "IM",
     "code3": "IMN",
     "name": "Isle of Man",
@@ -7046,6 +6873,111 @@
       {
         "code": "34",
         "name": "Veneto",
+        "subdivision": null
+      }
+    ]
+  },
+  {
+    "code2": "CI",
+    "code3": "CIV",
+    "name": "Ivory Coast",
+    "capital": "Yamoussoukro",
+    "region": "Africa",
+    "subregion": "Western Africa",
+    "states": [
+      {
+        "code": "06",
+        "name": "18 Montagnes",
+        "subdivision": null
+      },
+      {
+        "code": "16",
+        "name": "Agnébi",
+        "subdivision": null
+      },
+      {
+        "code": "17",
+        "name": "Bafing",
+        "subdivision": null
+      },
+      {
+        "code": "09",
+        "name": "Bas-Sassandra",
+        "subdivision": null
+      },
+      {
+        "code": "10",
+        "name": "Denguélé",
+        "subdivision": null
+      },
+      {
+        "code": "18",
+        "name": "Fromager",
+        "subdivision": null
+      },
+      {
+        "code": "02",
+        "name": "Haut-Sassandra",
+        "subdivision": null
+      },
+      {
+        "code": "07",
+        "name": "Lacs",
+        "subdivision": null
+      },
+      {
+        "code": "01",
+        "name": "Lagunes",
+        "subdivision": null
+      },
+      {
+        "code": "12",
+        "name": "Marahoué",
+        "subdivision": null
+      },
+      {
+        "code": "19",
+        "name": "Moyen-Cavally",
+        "subdivision": null
+      },
+      {
+        "code": "05",
+        "name": "Moyen-Comoé",
+        "subdivision": null
+      },
+      {
+        "code": "11",
+        "name": "Nzi-Comoé",
+        "subdivision": null
+      },
+      {
+        "code": "03",
+        "name": "Savanes",
+        "subdivision": null
+      },
+      {
+        "code": "15",
+        "name": "Sud-Bandama",
+        "subdivision": null
+      },
+      {
+        "code": "13",
+        "name": "Sud-Comoé",
+        "subdivision": null
+      },
+      {
+        "code": "04",
+        "name": "Vallée du Bandama",
+        "subdivision": null
+      },
+      {
+        "code": "14",
+        "name": "Worodougou",
+        "subdivision": null
+      },
+      {
+        "code": "08",
+        "name": "Zanzan",
         "subdivision": null
       }
     ]
@@ -8889,436 +8821,6 @@
     "states": []
   },
   {
-    "code2": "MK",
-    "code3": "MKD",
-    "name": "Republic of Macedonia",
-    "capital": "Skopje",
-    "region": "Europe",
-    "subregion": "Southern Europe",
-    "states": [
-      {
-        "code": "01",
-        "name": "Aerodrom",
-        "subdivision": null
-      },
-      {
-        "code": "02",
-        "name": "Aračinovo",
-        "subdivision": null
-      },
-      {
-        "code": "03",
-        "name": "Berovo",
-        "subdivision": null
-      },
-      {
-        "code": "04",
-        "name": "Bitola",
-        "subdivision": null
-      },
-      {
-        "code": "05",
-        "name": "Bogdanci",
-        "subdivision": null
-      },
-      {
-        "code": "06",
-        "name": "Bogovinje",
-        "subdivision": null
-      },
-      {
-        "code": "07",
-        "name": "Bosilovo",
-        "subdivision": null
-      },
-      {
-        "code": "08",
-        "name": "Brvenica",
-        "subdivision": null
-      },
-      {
-        "code": "09",
-        "name": "Butel",
-        "subdivision": null
-      },
-      {
-        "code": "77",
-        "name": "Centar",
-        "subdivision": null
-      },
-      {
-        "code": "78",
-        "name": "Centar Župa",
-        "subdivision": null
-      },
-      {
-        "code": "21",
-        "name": "Debar",
-        "subdivision": null
-      },
-      {
-        "code": "22",
-        "name": "Debarca",
-        "subdivision": null
-      },
-      {
-        "code": "23",
-        "name": "Delčevo",
-        "subdivision": null
-      },
-      {
-        "code": "25",
-        "name": "Demir Hisar",
-        "subdivision": null
-      },
-      {
-        "code": "24",
-        "name": "Demir Kapija",
-        "subdivision": null
-      },
-      {
-        "code": "26",
-        "name": "Dojran",
-        "subdivision": null
-      },
-      {
-        "code": "27",
-        "name": "Dolneni",
-        "subdivision": null
-      },
-      {
-        "code": "28",
-        "name": "Drugovo",
-        "subdivision": null
-      },
-      {
-        "code": "17",
-        "name": "Gazi Baba",
-        "subdivision": null
-      },
-      {
-        "code": "18",
-        "name": "Gevgelija",
-        "subdivision": null
-      },
-      {
-        "code": "29",
-        "name": "Gjorče Petrov",
-        "subdivision": null
-      },
-      {
-        "code": "19",
-        "name": "Gostivar",
-        "subdivision": null
-      },
-      {
-        "code": "20",
-        "name": "Gradsko",
-        "subdivision": null
-      },
-      {
-        "code": "34",
-        "name": "Ilinden",
-        "subdivision": null
-      },
-      {
-        "code": "35",
-        "name": "Jegunovce",
-        "subdivision": null
-      },
-      {
-        "code": "37",
-        "name": "Karbinci",
-        "subdivision": null
-      },
-      {
-        "code": "38",
-        "name": "Karpoš",
-        "subdivision": null
-      },
-      {
-        "code": "36",
-        "name": "Kavadarci",
-        "subdivision": null
-      },
-      {
-        "code": "39",
-        "name": "Kisela Voda",
-        "subdivision": null
-      },
-      {
-        "code": "40",
-        "name": "Kičevo",
-        "subdivision": null
-      },
-      {
-        "code": "41",
-        "name": "Konče",
-        "subdivision": null
-      },
-      {
-        "code": "42",
-        "name": "Kočani",
-        "subdivision": null
-      },
-      {
-        "code": "43",
-        "name": "Kratovo",
-        "subdivision": null
-      },
-      {
-        "code": "44",
-        "name": "Kriva Palanka",
-        "subdivision": null
-      },
-      {
-        "code": "45",
-        "name": "Krivogaštani",
-        "subdivision": null
-      },
-      {
-        "code": "46",
-        "name": "Kruševo",
-        "subdivision": null
-      },
-      {
-        "code": "47",
-        "name": "Kumanovo",
-        "subdivision": null
-      },
-      {
-        "code": "48",
-        "name": "Lipkovo",
-        "subdivision": null
-      },
-      {
-        "code": "49",
-        "name": "Lozovo",
-        "subdivision": null
-      },
-      {
-        "code": "51",
-        "name": "Makedonska Kamenica",
-        "subdivision": null
-      },
-      {
-        "code": "52",
-        "name": "Makedonski Brod",
-        "subdivision": null
-      },
-      {
-        "code": "50",
-        "name": "Mavrovo i Rostuša",
-        "subdivision": null
-      },
-      {
-        "code": "53",
-        "name": "Mogila",
-        "subdivision": null
-      },
-      {
-        "code": "54",
-        "name": "Negotino",
-        "subdivision": null
-      },
-      {
-        "code": "55",
-        "name": "Novaci",
-        "subdivision": null
-      },
-      {
-        "code": "56",
-        "name": "Novo Selo",
-        "subdivision": null
-      },
-      {
-        "code": "58",
-        "name": "Ohrid",
-        "subdivision": null
-      },
-      {
-        "code": "57",
-        "name": "Oslomej",
-        "subdivision": null
-      },
-      {
-        "code": "60",
-        "name": "Pehčevo",
-        "subdivision": null
-      },
-      {
-        "code": "59",
-        "name": "Petrovec",
-        "subdivision": null
-      },
-      {
-        "code": "61",
-        "name": "Plasnica",
-        "subdivision": null
-      },
-      {
-        "code": "62",
-        "name": "Prilep",
-        "subdivision": null
-      },
-      {
-        "code": "63",
-        "name": "Probištip",
-        "subdivision": null
-      },
-      {
-        "code": "64",
-        "name": "Radoviš",
-        "subdivision": null
-      },
-      {
-        "code": "65",
-        "name": "Rankovce",
-        "subdivision": null
-      },
-      {
-        "code": "66",
-        "name": "Resen",
-        "subdivision": null
-      },
-      {
-        "code": "67",
-        "name": "Rosoman",
-        "subdivision": null
-      },
-      {
-        "code": "68",
-        "name": "Saraj",
-        "subdivision": null
-      },
-      {
-        "code": "70",
-        "name": "Sopište",
-        "subdivision": null
-      },
-      {
-        "code": "71",
-        "name": "Staro Nagoričane",
-        "subdivision": null
-      },
-      {
-        "code": "72",
-        "name": "Struga",
-        "subdivision": null
-      },
-      {
-        "code": "73",
-        "name": "Strumica",
-        "subdivision": null
-      },
-      {
-        "code": "74",
-        "name": "Studeničani",
-        "subdivision": null
-      },
-      {
-        "code": "69",
-        "name": "Sveti Nikole",
-        "subdivision": null
-      },
-      {
-        "code": "75",
-        "name": "Tearce",
-        "subdivision": null
-      },
-      {
-        "code": "76",
-        "name": "Tetovo",
-        "subdivision": null
-      },
-      {
-        "code": "10",
-        "name": "Valandovo",
-        "subdivision": null
-      },
-      {
-        "code": "11",
-        "name": "Vasilevo",
-        "subdivision": null
-      },
-      {
-        "code": "13",
-        "name": "Veles",
-        "subdivision": null
-      },
-      {
-        "code": "12",
-        "name": "Vevčani",
-        "subdivision": null
-      },
-      {
-        "code": "14",
-        "name": "Vinica",
-        "subdivision": null
-      },
-      {
-        "code": "15",
-        "name": "Vraneštica",
-        "subdivision": null
-      },
-      {
-        "code": "16",
-        "name": "Vrapčište",
-        "subdivision": null
-      },
-      {
-        "code": "31",
-        "name": "Zajas",
-        "subdivision": null
-      },
-      {
-        "code": "32",
-        "name": "Zelenikovo",
-        "subdivision": null
-      },
-      {
-        "code": "33",
-        "name": "Zrnovci",
-        "subdivision": null
-      },
-      {
-        "code": "79",
-        "name": "Čair",
-        "subdivision": null
-      },
-      {
-        "code": "80",
-        "name": "Čaška",
-        "subdivision": null
-      },
-      {
-        "code": "81",
-        "name": "Češinovo-Obleševo",
-        "subdivision": null
-      },
-      {
-        "code": "82",
-        "name": "Čučer Sandevo",
-        "subdivision": null
-      },
-      {
-        "code": "83",
-        "name": "Štip",
-        "subdivision": null
-      },
-      {
-        "code": "84",
-        "name": "Šuto Orizari",
-        "subdivision": null
-      },
-      {
-        "code": "30",
-        "name": "Želino",
-        "subdivision": null
-      }
-    ]
-  },
-  {
     "code2": "MG",
     "code3": "MDG",
     "name": "Madagascar",
@@ -10303,36 +9805,6 @@
         "code": "ZAC",
         "name": "Zacatecas",
         "subdivision": "state"
-      }
-    ]
-  },
-  {
-    "code2": "FM",
-    "code3": "FSM",
-    "name": "Federated States of Micronesia",
-    "capital": "Palikir",
-    "region": "Oceania",
-    "subregion": "Micronesia",
-    "states": [
-      {
-        "code": "TRK",
-        "name": "Chuuk",
-        "subdivision": null
-      },
-      {
-        "code": "KSA",
-        "name": "Kosrae",
-        "subdivision": null
-      },
-      {
-        "code": "PNI",
-        "name": "Pohnpei",
-        "subdivision": null
-      },
-      {
-        "code": "YAP",
-        "name": "Yap",
-        "subdivision": null
       }
     ]
   },
@@ -13946,6 +13418,36 @@
     ]
   },
   {
+    "code2": "IE",
+    "code3": "IRL",
+    "name": "Republic of Ireland",
+    "capital": "Dublin",
+    "region": "Europe",
+    "subregion": "Northern Europe",
+    "states": [
+      {
+        "code": "C",
+        "name": "Connaught",
+        "subdivision": null
+      },
+      {
+        "code": "L",
+        "name": "Leinster",
+        "subdivision": null
+      },
+      {
+        "code": "M",
+        "name": "Munster",
+        "subdivision": null
+      },
+      {
+        "code": "U",
+        "name": "Ulster",
+        "subdivision": null
+      }
+    ]
+  },
+  {
     "code2": "XK",
     "code3": "KOS",
     "name": "Republic of Kosovo",
@@ -13953,6 +13455,506 @@
     "region": "Europe",
     "subregion": "Eastern Europe",
     "states": []
+  },
+  {
+    "code2": "MK",
+    "code3": "MKD",
+    "name": "Republic of Macedonia",
+    "capital": "Skopje",
+    "region": "Europe",
+    "subregion": "Southern Europe",
+    "states": [
+      {
+        "code": "01",
+        "name": "Aerodrom",
+        "subdivision": null
+      },
+      {
+        "code": "02",
+        "name": "Aračinovo",
+        "subdivision": null
+      },
+      {
+        "code": "03",
+        "name": "Berovo",
+        "subdivision": null
+      },
+      {
+        "code": "04",
+        "name": "Bitola",
+        "subdivision": null
+      },
+      {
+        "code": "05",
+        "name": "Bogdanci",
+        "subdivision": null
+      },
+      {
+        "code": "06",
+        "name": "Bogovinje",
+        "subdivision": null
+      },
+      {
+        "code": "07",
+        "name": "Bosilovo",
+        "subdivision": null
+      },
+      {
+        "code": "08",
+        "name": "Brvenica",
+        "subdivision": null
+      },
+      {
+        "code": "09",
+        "name": "Butel",
+        "subdivision": null
+      },
+      {
+        "code": "77",
+        "name": "Centar",
+        "subdivision": null
+      },
+      {
+        "code": "78",
+        "name": "Centar Župa",
+        "subdivision": null
+      },
+      {
+        "code": "21",
+        "name": "Debar",
+        "subdivision": null
+      },
+      {
+        "code": "22",
+        "name": "Debarca",
+        "subdivision": null
+      },
+      {
+        "code": "23",
+        "name": "Delčevo",
+        "subdivision": null
+      },
+      {
+        "code": "25",
+        "name": "Demir Hisar",
+        "subdivision": null
+      },
+      {
+        "code": "24",
+        "name": "Demir Kapija",
+        "subdivision": null
+      },
+      {
+        "code": "26",
+        "name": "Dojran",
+        "subdivision": null
+      },
+      {
+        "code": "27",
+        "name": "Dolneni",
+        "subdivision": null
+      },
+      {
+        "code": "28",
+        "name": "Drugovo",
+        "subdivision": null
+      },
+      {
+        "code": "17",
+        "name": "Gazi Baba",
+        "subdivision": null
+      },
+      {
+        "code": "18",
+        "name": "Gevgelija",
+        "subdivision": null
+      },
+      {
+        "code": "29",
+        "name": "Gjorče Petrov",
+        "subdivision": null
+      },
+      {
+        "code": "19",
+        "name": "Gostivar",
+        "subdivision": null
+      },
+      {
+        "code": "20",
+        "name": "Gradsko",
+        "subdivision": null
+      },
+      {
+        "code": "34",
+        "name": "Ilinden",
+        "subdivision": null
+      },
+      {
+        "code": "35",
+        "name": "Jegunovce",
+        "subdivision": null
+      },
+      {
+        "code": "37",
+        "name": "Karbinci",
+        "subdivision": null
+      },
+      {
+        "code": "38",
+        "name": "Karpoš",
+        "subdivision": null
+      },
+      {
+        "code": "36",
+        "name": "Kavadarci",
+        "subdivision": null
+      },
+      {
+        "code": "39",
+        "name": "Kisela Voda",
+        "subdivision": null
+      },
+      {
+        "code": "40",
+        "name": "Kičevo",
+        "subdivision": null
+      },
+      {
+        "code": "41",
+        "name": "Konče",
+        "subdivision": null
+      },
+      {
+        "code": "42",
+        "name": "Kočani",
+        "subdivision": null
+      },
+      {
+        "code": "43",
+        "name": "Kratovo",
+        "subdivision": null
+      },
+      {
+        "code": "44",
+        "name": "Kriva Palanka",
+        "subdivision": null
+      },
+      {
+        "code": "45",
+        "name": "Krivogaštani",
+        "subdivision": null
+      },
+      {
+        "code": "46",
+        "name": "Kruševo",
+        "subdivision": null
+      },
+      {
+        "code": "47",
+        "name": "Kumanovo",
+        "subdivision": null
+      },
+      {
+        "code": "48",
+        "name": "Lipkovo",
+        "subdivision": null
+      },
+      {
+        "code": "49",
+        "name": "Lozovo",
+        "subdivision": null
+      },
+      {
+        "code": "51",
+        "name": "Makedonska Kamenica",
+        "subdivision": null
+      },
+      {
+        "code": "52",
+        "name": "Makedonski Brod",
+        "subdivision": null
+      },
+      {
+        "code": "50",
+        "name": "Mavrovo i Rostuša",
+        "subdivision": null
+      },
+      {
+        "code": "53",
+        "name": "Mogila",
+        "subdivision": null
+      },
+      {
+        "code": "54",
+        "name": "Negotino",
+        "subdivision": null
+      },
+      {
+        "code": "55",
+        "name": "Novaci",
+        "subdivision": null
+      },
+      {
+        "code": "56",
+        "name": "Novo Selo",
+        "subdivision": null
+      },
+      {
+        "code": "58",
+        "name": "Ohrid",
+        "subdivision": null
+      },
+      {
+        "code": "57",
+        "name": "Oslomej",
+        "subdivision": null
+      },
+      {
+        "code": "60",
+        "name": "Pehčevo",
+        "subdivision": null
+      },
+      {
+        "code": "59",
+        "name": "Petrovec",
+        "subdivision": null
+      },
+      {
+        "code": "61",
+        "name": "Plasnica",
+        "subdivision": null
+      },
+      {
+        "code": "62",
+        "name": "Prilep",
+        "subdivision": null
+      },
+      {
+        "code": "63",
+        "name": "Probištip",
+        "subdivision": null
+      },
+      {
+        "code": "64",
+        "name": "Radoviš",
+        "subdivision": null
+      },
+      {
+        "code": "65",
+        "name": "Rankovce",
+        "subdivision": null
+      },
+      {
+        "code": "66",
+        "name": "Resen",
+        "subdivision": null
+      },
+      {
+        "code": "67",
+        "name": "Rosoman",
+        "subdivision": null
+      },
+      {
+        "code": "68",
+        "name": "Saraj",
+        "subdivision": null
+      },
+      {
+        "code": "70",
+        "name": "Sopište",
+        "subdivision": null
+      },
+      {
+        "code": "71",
+        "name": "Staro Nagoričane",
+        "subdivision": null
+      },
+      {
+        "code": "72",
+        "name": "Struga",
+        "subdivision": null
+      },
+      {
+        "code": "73",
+        "name": "Strumica",
+        "subdivision": null
+      },
+      {
+        "code": "74",
+        "name": "Studeničani",
+        "subdivision": null
+      },
+      {
+        "code": "69",
+        "name": "Sveti Nikole",
+        "subdivision": null
+      },
+      {
+        "code": "75",
+        "name": "Tearce",
+        "subdivision": null
+      },
+      {
+        "code": "76",
+        "name": "Tetovo",
+        "subdivision": null
+      },
+      {
+        "code": "10",
+        "name": "Valandovo",
+        "subdivision": null
+      },
+      {
+        "code": "11",
+        "name": "Vasilevo",
+        "subdivision": null
+      },
+      {
+        "code": "13",
+        "name": "Veles",
+        "subdivision": null
+      },
+      {
+        "code": "12",
+        "name": "Vevčani",
+        "subdivision": null
+      },
+      {
+        "code": "14",
+        "name": "Vinica",
+        "subdivision": null
+      },
+      {
+        "code": "15",
+        "name": "Vraneštica",
+        "subdivision": null
+      },
+      {
+        "code": "16",
+        "name": "Vrapčište",
+        "subdivision": null
+      },
+      {
+        "code": "31",
+        "name": "Zajas",
+        "subdivision": null
+      },
+      {
+        "code": "32",
+        "name": "Zelenikovo",
+        "subdivision": null
+      },
+      {
+        "code": "33",
+        "name": "Zrnovci",
+        "subdivision": null
+      },
+      {
+        "code": "79",
+        "name": "Čair",
+        "subdivision": null
+      },
+      {
+        "code": "80",
+        "name": "Čaška",
+        "subdivision": null
+      },
+      {
+        "code": "81",
+        "name": "Češinovo-Obleševo",
+        "subdivision": null
+      },
+      {
+        "code": "82",
+        "name": "Čučer Sandevo",
+        "subdivision": null
+      },
+      {
+        "code": "83",
+        "name": "Štip",
+        "subdivision": null
+      },
+      {
+        "code": "84",
+        "name": "Šuto Orizari",
+        "subdivision": null
+      },
+      {
+        "code": "30",
+        "name": "Želino",
+        "subdivision": null
+      }
+    ]
+  },
+  {
+    "code2": "CG",
+    "code3": "COG",
+    "name": "Republic of the Congo",
+    "capital": "Brazzaville",
+    "region": "Africa",
+    "subregion": "Middle Africa",
+    "states": [
+      {
+        "code": "11",
+        "name": "Bouenza",
+        "subdivision": null
+      },
+      {
+        "code": "BZV",
+        "name": "Brazzaville",
+        "subdivision": null
+      },
+      {
+        "code": "8",
+        "name": "Cuvette",
+        "subdivision": null
+      },
+      {
+        "code": "15",
+        "name": "Cuvette-Ouest",
+        "subdivision": null
+      },
+      {
+        "code": "5",
+        "name": "Kouilou",
+        "subdivision": null
+      },
+      {
+        "code": "7",
+        "name": "Likouala",
+        "subdivision": null
+      },
+      {
+        "code": "2",
+        "name": "Lékoumou",
+        "subdivision": null
+      },
+      {
+        "code": "9",
+        "name": "Niari",
+        "subdivision": null
+      },
+      {
+        "code": "14",
+        "name": "Plateaux",
+        "subdivision": null
+      },
+      {
+        "code": "16",
+        "name": "Pointe-Noire",
+        "subdivision": null
+      },
+      {
+        "code": "12",
+        "name": "Pool",
+        "subdivision": null
+      },
+      {
+        "code": "13",
+        "name": "Sangha",
+        "subdivision": null
+      }
+    ]
   },
   {
     "code2": "RE",
@@ -18468,81 +18470,6 @@
     ]
   },
   {
-    "code2": "TL",
-    "code3": "TLS",
-    "name": "East Timor",
-    "capital": "Dili",
-    "region": "Asia",
-    "subregion": "South-Eastern Asia",
-    "states": [
-      {
-        "code": "AL",
-        "name": "Aileu",
-        "subdivision": null
-      },
-      {
-        "code": "AN",
-        "name": "Ainaro",
-        "subdivision": null
-      },
-      {
-        "code": "BA",
-        "name": "Baucau",
-        "subdivision": null
-      },
-      {
-        "code": "BO",
-        "name": "Bobonaro",
-        "subdivision": null
-      },
-      {
-        "code": "CO",
-        "name": "Cova Lima",
-        "subdivision": null
-      },
-      {
-        "code": "DI",
-        "name": "Díli",
-        "subdivision": null
-      },
-      {
-        "code": "ER",
-        "name": "Ermera",
-        "subdivision": null
-      },
-      {
-        "code": "LA",
-        "name": "Lautem",
-        "subdivision": null
-      },
-      {
-        "code": "LI",
-        "name": "Liquiça",
-        "subdivision": null
-      },
-      {
-        "code": "MT",
-        "name": "Manatuto",
-        "subdivision": null
-      },
-      {
-        "code": "MF",
-        "name": "Manufahi",
-        "subdivision": null
-      },
-      {
-        "code": "OE",
-        "name": "Oecussi",
-        "subdivision": null
-      },
-      {
-        "code": "VI",
-        "name": "Viqueque",
-        "subdivision": null
-      }
-    ]
-  },
-  {
     "code2": "TG",
     "code3": "TGO",
     "name": "Togo",
@@ -21076,6 +21003,61 @@
     ]
   },
   {
+    "code2": "UM",
+    "code3": "UMI",
+    "name": "United States Minor Outlying Islands",
+    "capital": "",
+    "region": "Americas",
+    "subregion": "Northern America",
+    "states": [
+      {
+        "code": "81",
+        "name": "Baker Island",
+        "subdivision": null
+      },
+      {
+        "code": "84",
+        "name": "Howland Island",
+        "subdivision": null
+      },
+      {
+        "code": "86",
+        "name": "Jarvis Island",
+        "subdivision": null
+      },
+      {
+        "code": "67",
+        "name": "Johnston Atoll",
+        "subdivision": null
+      },
+      {
+        "code": "89",
+        "name": "Kingman Reef",
+        "subdivision": null
+      },
+      {
+        "code": "71",
+        "name": "Midway Islands",
+        "subdivision": null
+      },
+      {
+        "code": "76",
+        "name": "Navassa Island",
+        "subdivision": null
+      },
+      {
+        "code": "95",
+        "name": "Palmyra Atoll",
+        "subdivision": null
+      },
+      {
+        "code": "79",
+        "name": "Wake Island",
+        "subdivision": null
+      }
+    ]
+  },
+  {
     "code2": "UY",
     "code3": "URY",
     "name": "Uruguay",
@@ -21764,6 +21746,24 @@
         "subdivision": null
       }
     ]
+  },
+  {
+    "code2": "VG",
+    "code3": "VGB",
+    "name": "Virgin Islands (British)",
+    "capital": "Road Town",
+    "region": "Americas",
+    "subregion": "Caribbean",
+    "states": []
+  },
+  {
+    "code2": "VI",
+    "code3": "VIR",
+    "name": "Virgin Islands (U.S.)",
+    "capital": "Charlotte Amalie",
+    "region": "Americas",
+    "subregion": "Caribbean",
+    "states": []
   },
   {
     "code2": "WF",
