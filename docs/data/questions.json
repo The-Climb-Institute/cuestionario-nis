@@ -73,7 +73,8 @@
           "helpText": "Cantidad total de empleados",
           "docCode": "B2.6",
           "ibsoId": null,
-          "benchmarkId": null
+          "benchmarkId": null,
+          "allowUnknown": true
         },
         {
           "id": "company_revenue",
@@ -84,7 +85,8 @@
           "helpText": "Ingresos brutos anuales aproximados",
           "docCode": "B2.10",
           "ibsoId": null,
-          "benchmarkId": null
+          "benchmarkId": null,
+          "allowUnknown": true
         }
       ]
     },
@@ -109,7 +111,8 @@
           "docCode": "E1.1a",
           "ibsoId": "A.1",
           "benchmarkId": null,
-          "conditional": "aplica_emisiones_energia"
+          "conditional": "aplica_emisiones_energia",
+          "allowUnknown": true
         },
         {
           "id": "gei_alcance2",
@@ -120,7 +123,8 @@
           "docCode": "E1.1b",
           "ibsoId": "A.2",
           "benchmarkId": null,
-          "conditional": "aplica_emisiones_energia"
+          "conditional": "aplica_emisiones_energia",
+          "allowUnknown": true
         },
         {
           "id": "energia_kwh",
@@ -132,7 +136,8 @@
           "ibsoId": "A.4",
           "benchmarkId": null,
           "conditional": "aplica_emisiones_energia",
-          "special": "energia_kwh_bimestral"
+          "special": "energia_kwh_bimestral",
+          "allowUnknown": true
         },
         {
           "id": "energia_renovable",
@@ -145,7 +150,8 @@
           "docCode": "E1.1d",
           "ibsoId": "A.5",
           "benchmarkId": "energia_renovable",
-          "conditional": "aplica_emisiones_energia"
+          "conditional": "aplica_emisiones_energia",
+          "allowUnknown": true
         },
         {
           "id": "inversion_energias_limpias",
@@ -156,7 +162,8 @@
           "docCode": "E1.1e",
           "ibsoId": "A.6",
           "benchmarkId": null,
-          "conditional": "aplica_emisiones_energia"
+          "conditional": "aplica_emisiones_energia",
+          "allowUnknown": true
         },
         {
           "id": "aplica_agua",
@@ -174,7 +181,8 @@
           "docCode": "E1.1f",
           "ibsoId": "A.7",
           "benchmarkId": null,
-          "conditional": "aplica_agua"
+          "conditional": "aplica_agua",
+          "allowUnknown": true
         },
         {
           "id": "agua_residual",
@@ -185,7 +193,8 @@
           "docCode": "E1.1g",
           "ibsoId": "A.9",
           "benchmarkId": null,
-          "conditional": "aplica_agua"
+          "conditional": "aplica_agua",
+          "allowUnknown": true
         },
         {
           "id": "agua_descargada_tratada",
@@ -198,7 +207,8 @@
           "docCode": "E1.1h",
           "ibsoId": "A.10",
           "benchmarkId": "agua_descargada_tratada",
-          "conditional": "aplica_agua"
+          "conditional": "aplica_agua",
+          "allowUnknown": true
         },
         {
           "id": "reutiliza_agua",
@@ -226,7 +236,8 @@
           "docCode": "E1.1i",
           "ibsoId": "A.13",
           "benchmarkId": null,
-          "conditional": "aplica_sustancias_ozono"
+          "conditional": "aplica_sustancias_ozono",
+          "allowUnknown": true
         },
         {
           "id": "aplica_residuos",
@@ -244,7 +255,8 @@
           "docCode": "E1.1j",
           "ibsoId": "A.14",
           "benchmarkId": null,
-          "conditional": "aplica_residuos"
+          "conditional": "aplica_residuos",
+          "allowUnknown": true
         },
         {
           "id": "residuos_reciclados",
@@ -257,7 +269,8 @@
           "docCode": "E1.1k",
           "ibsoId": "A.15",
           "benchmarkId": "residuos_reciclados",
-          "conditional": "aplica_residuos"
+          "conditional": "aplica_residuos",
+          "allowUnknown": true
         },
         {
           "id": "residuos_peligrosos_vol",
@@ -268,7 +281,8 @@
           "docCode": "E1.1l",
           "ibsoId": "A.16",
           "benchmarkId": null,
-          "conditional": "aplica_residuos"
+          "conditional": "aplica_residuos",
+          "allowUnknown": true
         },
         {
           "id": "residuos_peligrosos",
@@ -296,7 +310,8 @@
           "docCode": "E1.1m",
           "ibsoId": "A.3",
           "benchmarkId": null,
-          "conditional": "mide_alcance3"
+          "conditional": "mide_alcance3",
+          "allowUnknown": true
         },
         {
           "id": "estres_hidrico",
@@ -347,7 +362,8 @@
           "helpText": "Benchmark OCDE: ≥40 horas/año de formación continua",
           "docCode": "E1.3a",
           "ibsoId": "B.3",
-          "benchmarkId": "horas_capacitacion"
+          "benchmarkId": "horas_capacitacion",
+          "allowUnknown": true
         },
         {
           "id": "evaluacion_formal_desempeno",
@@ -359,7 +375,8 @@
           "helpText": "Benchmark: ≥80% evaluados anualmente",
           "docCode": "E1.3b",
           "ibsoId": "B.4",
-          "benchmarkId": "evaluacion_formal_desempeno"
+          "benchmarkId": "evaluacion_formal_desempeno",
+          "allowUnknown": true
         },
         {
           "id": "sistema_gestion_sst",
@@ -378,18 +395,40 @@
           "helpText": "Benchmark OIT: <2.0 accidentes por 100 trabajadores",
           "docCode": "E1.3c",
           "ibsoId": "B.6",
-          "benchmarkId": "tasa_accidentes"
+          "benchmarkId": "tasa_accidentes",
+          "allowUnknown": true
         },
         {
           "id": "liderazgo_genero",
           "type": "matrix",
           "label": "Composición de puestos de liderazgo por género",
           "docCode": "D1.10",
-          "columns": ["Mujeres", "Hombres"],
+          "columns": [
+            "Mujeres",
+            "Hombres"
+          ],
           "rows": [
-            { "label": "Gerenciales",               "ids": ["mujeres_puestos_gerenciales", "hombres_puestos_gerenciales"] },
-            { "label": "Directivos",                "ids": ["mujeres_puestos_directivos",  "hombres_puestos_directivos"]  },
-            { "label": "Consejo de Administración", "ids": ["mujeres_consejo_admin",        "hombres_consejo_admin"]       }
+            {
+              "label": "Gerenciales",
+              "ids": [
+                "mujeres_puestos_gerenciales",
+                "hombres_puestos_gerenciales"
+              ]
+            },
+            {
+              "label": "Directivos",
+              "ids": [
+                "mujeres_puestos_directivos",
+                "hombres_puestos_directivos"
+              ]
+            },
+            {
+              "label": "Consejo de Administración",
+              "ids": [
+                "mujeres_consejo_admin",
+                "hombres_consejo_admin"
+              ]
+            }
           ],
           "inputType": "number",
           "min": 0,
@@ -467,11 +506,28 @@
           "label": "Composición del consejo de administración por género",
           "docCode": "E1.7",
           "conditional": "tienen_consejo",
-          "columns": ["Cantidad"],
+          "columns": [
+            "Cantidad"
+          ],
           "rows": [
-            { "label": "Mujeres",              "ids": ["composicion_consejo_mujeres"]   },
-            { "label": "Hombres",              "ids": ["composicion_consejo_hombres"]   },
-            { "label": "Personas no binarias", "ids": ["composicion_consejo_nobinarias"] }
+            {
+              "label": "Mujeres",
+              "ids": [
+                "composicion_consejo_mujeres"
+              ]
+            },
+            {
+              "label": "Hombres",
+              "ids": [
+                "composicion_consejo_hombres"
+              ]
+            },
+            {
+              "label": "Personas no binarias",
+              "ids": [
+                "composicion_consejo_nobinarias"
+              ]
+            }
           ],
           "inputType": "number",
           "min": 0,
@@ -488,7 +544,8 @@
           "docCode": "E1.8",
           "ibsoId": "C.2",
           "benchmarkId": "mujeres_consejo",
-          "conditional": "tienen_consejo"
+          "conditional": "tienen_consejo",
+          "allowUnknown": true
         },
         {
           "id": "incidentes_ciberneticos",
@@ -498,7 +555,8 @@
           "helpText": "Un incidente cibernético ocurre cuando alguien accede, altera o interrumpe sistemas o datos sin autorización. Ejemplos: ransomware, phishing, virus, fugas de información, accesos no autorizados, errores humanos.",
           "docCode": "E1.9",
           "ibsoId": null,
-          "benchmarkId": null
+          "benchmarkId": null,
+          "allowUnknown": true
         },
         {
           "id": "incidentes_riesgo",
@@ -506,7 +564,8 @@
           "type": "number",
           "unit": "incidentes",
           "helpText": "Un incidente de riesgo son situaciones que ponen en riesgo a las personas o a la empresa. Es cualquier evento inesperado que afecta o podría afectar el buen funcionamiento, la reputación o el cumplimiento de la empresa.",
-          "benchmarkId": null
+          "benchmarkId": null,
+          "allowUnknown": true
         }
       ]
     }

@@ -464,6 +464,10 @@ class NISFormRenderer {
       if (field.required) input.required = true;
       input.placeholder = field.helpText || '';
     } else if (field.type === 'number') {
+      // Create wrapper for number input with optional unknown checkbox
+      const wrapper = document.createElement('div');
+      wrapper.className = 'number-field-wrapper';
+
       input = document.createElement('input');
       input.type = 'number';
       input.id = fieldId;
@@ -475,6 +479,40 @@ class NISFormRenderer {
         input.placeholder = `0 ${field.unit}`;
       }
       if (field.required) input.required = true;
+
+      wrapper.appendChild(input);
+
+      // Add "No sé" checkbox if allowUnknown is true
+      if (field.allowUnknown) {
+        const checkboxContainer = document.createElement('label');
+        checkboxContainer.className = 'unknown-checkbox-label';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'unknown-checkbox';
+        checkbox.id = fieldId + '-unknown';
+        checkbox.dataset.field = fieldId;
+
+        const label = document.createElement('span');
+        label.textContent = 'No sé';
+        label.className = 'unknown-label-text';
+
+        checkboxContainer.appendChild(checkbox);
+        checkboxContainer.appendChild(label);
+        wrapper.appendChild(checkboxContainer);
+
+        // Sync checkbox state with input
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            input.disabled = true;
+            input.value = '';
+          } else {
+            input.disabled = false;
+          }
+        });
+      }
+
+      input = wrapper;
     } else if (field.type === 'select') {
       input = document.createElement('select');
       input.id = fieldId;
@@ -693,7 +731,14 @@ class NISFormRenderer {
           const checked = document.querySelector(`[name="${field.id}"]:checked`);
           company[field.id] = checked ? (checked.value || null) : null;
         } else if (input.type === 'number') {
-          company[field.id] = input.value ? parseFloat(input.value) : null;
+          // Check for "No sé" checkbox in parent wrapper
+          const wrapper = input.parentElement;
+          const unknownCheckbox = wrapper?.querySelector('.unknown-checkbox');
+          if (unknownCheckbox?.checked) {
+            company[field.id] = null;
+          } else {
+            company[field.id] = input.value ? parseFloat(input.value) : null;
+          }
         } else {
           company[field.id] = input.value || null;
         }
@@ -745,7 +790,14 @@ class NISFormRenderer {
               const checked = document.querySelector(`[name="${name}"]:checked`);
               yearData[field.id] = checked ? (checked.value || null) : null;
             } else if (input.type === 'number') {
-              yearData[field.id] = input.value ? parseFloat(input.value) : null;
+              // Check for "No sé" checkbox in parent wrapper
+              const wrapper = input.parentElement;
+              const unknownCheckbox = wrapper?.querySelector('.unknown-checkbox');
+              if (unknownCheckbox?.checked) {
+                yearData[field.id] = null;
+              } else {
+                yearData[field.id] = input.value ? parseFloat(input.value) : null;
+              }
             } else {
               yearData[field.id] = input.value || null;
             }
