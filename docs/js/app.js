@@ -334,7 +334,7 @@ function buildPayload(values, scores) {
     });
   });
 
-  return {
+  const payload = {
     timestamp: new Date().toISOString(),
     data_years: dataYears,
     ...companyFields,
@@ -344,6 +344,11 @@ function buildPayload(values, scores) {
     score_gobernanza: scores.gobernanza?.porcentaje ?? null,
     score_total:      scores.total?.porcentaje      ?? null
   };
+
+  // Remove null and empty string values
+  return Object.fromEntries(
+    Object.entries(payload).filter(([, v]) => v !== null && v !== '')
+  );
 }
 
 /**
