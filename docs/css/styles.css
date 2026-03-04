@@ -701,6 +701,16 @@ header .logo-image {
   min-width: 150px;
 }
 
+/* Disabled input styling */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--color-gray-light);
+  color: var(--color-gray-dark);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .unknown-checkbox-label {
   display: flex;
   align-items: center;
@@ -1132,4 +1142,77 @@ footer p {
 
 .matrix-table .matrix-cell-input {
   width: 90px;
+}
+
+/* Per-field year controls for quantitative data */
+.past-year-rows {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-gray-medium);
+}
+
+.btn-add-past-year {
+  background: none;
+  border: none;
+  color: var(--color-dark);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  padding: 0;
+  margin-bottom: var(--spacing-sm);
+  text-decoration: underline;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.btn-add-past-year:hover {
+  opacity: 1;
+}
+
+.past-year-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-gray-light);
+  border-radius: var(--border-radius);
+}
+
+.past-year-select {
+  width: 90px;
+  padding: var(--spacing-xs);
+  border: 1px solid var(--color-gray-medium);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: var(--font-primary);
+}
+
+.past-year-input {
+  flex: 1;
+  min-width: 100px;
+}
+
+.past-year-row .unknown-checkbox-label {
+  flex-shrink: 0;
+}
+
+.btn-delete-past-year {
+  background: var(--color-red);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.btn-delete-past-year:hover {
+  background: #c0392b;
 }

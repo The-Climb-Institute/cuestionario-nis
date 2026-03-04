@@ -45,9 +45,9 @@ class NISFormRenderer {
     this.countries = countries;
     this.formFields = this._buildFormFields(questions);
     this.MULTI_YEAR_SECTIONS = ['ambiental', 'social', 'gobernanza'];
-    // Initialize with current year and previous year (for data entry convenience)
+    // Initialize with previous year by default; past years added per-field via per-year row controls
     const currentYear = new Date().getFullYear();
-    this.dataYears = [currentYear, currentYear - 1];
+    this.dataYears = [currentYear - 1];
   }
 
   /**
@@ -156,43 +156,6 @@ class NISFormRenderer {
       </div>
     `;
     container.appendChild(instructionsDiv);
-
-    // Add global year management control
-    const yearControlDiv = document.createElement('div');
-    yearControlDiv.className = 'global-year-control';
-    yearControlDiv.style.display = 'none'; // Hidden initially; shown only if needed
-    const currentYear = new Date().getFullYear();
-    const availableYears = [];
-    for (let y = currentYear; y >= currentYear - 10; y--) {
-      if (!this.dataYears.includes(y)) {
-        availableYears.push(y);
-      }
-    }
-    if (availableYears.length > 0) {
-      yearControlDiv.style.display = 'block';
-      yearControlDiv.innerHTML = `
-        <div class="year-control-content">
-          <label class="field-label">¿Deseas agregar datos de un año anterior?</label>
-          <div class="year-control-input">
-            <select id="global-year-select" class="field-input year-select-add">
-              <option value="">Seleccionar año...</option>
-              ${availableYears.map(y => `<option value="${y}">${y}</option>`).join('')}
-            </select>
-            <button id="add-year-btn" class="btn-secondary" style="margin-left: var(--spacing-md);">Agregar año</button>
-          </div>
-        </div>
-      `;
-      const addYearBtn = yearControlDiv.querySelector('#add-year-btn');
-      const yearSelect = yearControlDiv.querySelector('#global-year-select');
-      addYearBtn.addEventListener('click', () => {
-        const year = parseInt(yearSelect.value, 10);
-        if (!year || this.dataYears.includes(year)) return;
-        this.addDataYear(year);
-        // Refresh form
-        this.render(containerId, onChangeCallback);
-      });
-    }
-    container.appendChild(yearControlDiv);
 
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
@@ -520,15 +483,146 @@ class NISFormRenderer {
         checkboxContainer.appendChild(label);
         wrapper.appendChild(checkboxContainer);
 
-        // Sync checkbox state with input
-        checkbox.addEventListener('change', () => {
-          if (checkbox.checked) {
-            input.disabled = true;
-            input.value = '';
+        // Sync checkbox state with input - explicitly capture input reference
+        const numberInput = input; // Capture input reference in local variable
+        checkbox.addEventListener('change', (event) => {
+          if (event.target.checked) {
+            numberInput.disabled = true;
+            numberInput.value = '';
           } else {
-            input.disabled = false;
+            numberInput.disabled = false;
           }
         });
+
+        // Also handle direct checkbox state changes (for cases where checked is set programmatically)
+        checkbox.addEventListener('click', (event) => {
+          setTimeout(() => {
+            if (checkbox.checked) {
+              numberInput.disabled = true;
+              numberInput.value = '';
+            } else {
+              numberInput.disabled = false;
+            }
+          }, 0);
+        });
+      }
+
+      // Add per-field past-year controls for multi-year sections
+      if (year != null && this.MULTI_YEAR_SECTIONS.includes(seccion)) {
+        const pastYearContainer = document.createElement('div');
+        pastYearContainer.className = 'past-year-rows';
+        pastYearContainer.setAttribute('data-field-id', field.id);
+
+        const addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.className = 'btn-add-past-year';
+        addButton.textContent = '+ Agregar año anterior';
+
+        let pastYearCount = 0;
+
+        const handleAddPastYear = () => {
+          const currentYear = new Date().getFullYear();
+          pastYearCount++;
+          const rowId = `past-year-row-${field.id}-${pastYearCount}`;
+
+          // Find the minimum year already selected to decrement from it
+          // Start from currentYear - 2 since main year block is currentYear - 1
+          let nextYear = currentYear - 2;
+          const allPastRows = pastYearContainer.querySelectorAll('.past-year-row');
+          if (allPastRows.length > 0) {
+            let minYear = currentYear;
+            allPastRows.forEach(row => {
+              const sel = row.querySelector('.past-year-select');
+              if (sel && sel.value) {
+                const yearVal = parseInt(sel.value, 10);
+                if (yearVal < minYear) minYear = yearVal;
+              }
+            });
+            nextYear = minYear - 1;
+          }
+
+          // Create year selector
+          const yearSelect = document.createElement('select');
+          yearSelect.className = 'past-year-select';
+          const selectLabel = document.createElement('option');
+          selectLabel.value = '';
+          selectLabel.textContent = 'Año...';
+          yearSelect.appendChild(selectLabel);
+
+          // Populate year options: currentYear - 1 down to currentYear - 10
+          for (let y = currentYear - 1; y >= currentYear - 10; y--) {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = y;
+            yearSelect.appendChild(opt);
+          }
+
+          // Create number input for the past year value
+          const pastInput = document.createElement('input');
+          pastInput.type = 'number';
+          pastInput.className = 'past-year-input field-input number-input';
+          pastInput.placeholder = '0';
+          if (field.min !== undefined) pastInput.min = field.min;
+          if (field.max !== undefined) pastInput.max = field.max;
+
+          // When year is selected, set the input's data-extra-year attribute
+          yearSelect.addEventListener('change', () => {
+            pastInput.setAttribute('data-extra-year', yearSelect.value);
+            pastInput.setAttribute('data-extra-year-field', field.id);
+
+            // Update name attribute when year changes
+            if (yearSelect.value) {
+              pastInput.name = `${field.id}_y_${yearSelect.value}`;
+            } else {
+              pastInput.removeAttribute('name');
+            }
+
+            // Disable already-used years
+            const usedYears = new Set();
+            const allRows = pastYearContainer.querySelectorAll('.past-year-row');
+            allRows.forEach(row => {
+              const sel = row.querySelector('.past-year-select');
+              if (sel && sel.value) usedYears.add(sel.value);
+            });
+            Array.from(yearSelect.options).forEach(opt => {
+              opt.disabled = usedYears.has(opt.value);
+            });
+          });
+
+          // Create delete button
+          const deleteBtn = document.createElement('button');
+          deleteBtn.type = 'button';
+          deleteBtn.className = 'btn-delete-past-year';
+          deleteBtn.innerHTML = '&times;';
+          deleteBtn.title = 'Eliminar este año';
+          deleteBtn.addEventListener('click', () => {
+            row.remove();
+            onChangeCallback();
+          });
+
+          // Create row container
+          const row = document.createElement('div');
+          row.className = 'past-year-row';
+          row.id = rowId;
+          row.appendChild(yearSelect);
+          row.appendChild(pastInput);
+          row.appendChild(deleteBtn);
+
+          // Auto-set year to calculated nextYear and trigger change event
+          yearSelect.value = nextYear;
+          yearSelect.dispatchEvent(new Event('change'));
+
+          pastYearContainer.insertBefore(row, addButton);
+          onChangeCallback();
+        };
+
+        addButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          handleAddPastYear();
+        });
+
+        pastYearContainer.appendChild(addButton);
+        wrapper.appendChild(pastYearContainer);
       }
 
       input = wrapper;
@@ -832,6 +926,26 @@ class NISFormRenderer {
           }
         });
         annualData[seccion][year] = yearData;
+      });
+
+      // Collect extra past-year inputs for this section
+      const extraInputs = document.querySelectorAll(
+        `.nis-seccion-${seccion} [data-extra-year-field]`
+      );
+      extraInputs.forEach(input => {
+        const fieldId = input.dataset.extraYearField;
+        const yearStr = input.dataset.extraYear;
+        if (!yearStr) return; // Year not yet selected
+        const year = parseInt(yearStr, 10);
+        if (isNaN(year)) return;
+        if (!annualData[seccion][year]) annualData[seccion][year] = {};
+        const unknownCheckbox = input.parentElement?.querySelector('.unknown-checkbox');
+        if (unknownCheckbox?.checked) {
+          annualData[seccion][year][fieldId] = null;
+        } else {
+          annualData[seccion][year][fieldId] = input.value ? parseFloat(input.value) : null;
+        }
+        if (!dataYears.includes(year)) dataYears.push(year);
       });
     });
 
