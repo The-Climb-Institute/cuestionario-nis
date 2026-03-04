@@ -98,6 +98,7 @@ Ver detalle: [documentation/feedback/incidents.md](documentation/feedback/incide
 | ID | Resumen |
 |----|--------|
 | **INC-01** | Bajo contraste del score en panel de resumen y score total (texto claro sobre fondo claro); mejorar legibilidad. |
+| **INC-02** | Validación del formulario: comprobar correctamente campos requeridos respetando condicionales (ocultos = no requeridos) y opción “No sé” en numéricos. |
 
 ---
 

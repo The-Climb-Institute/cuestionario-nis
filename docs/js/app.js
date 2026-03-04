@@ -728,7 +728,7 @@ function createAttentionModal(seccion, indicators) {
   header.className = 'modal-header';
   header.innerHTML = `
     <h2>Indicadores de ${sectionData.nombre}</h2>
-    <button class="modal-close" aria-label="Cerrar">✕</button>
+    <button class="modal-close" aria-label="Cerrar">[X]</button>
   `;
 
   // Body
@@ -854,7 +854,7 @@ function showBenchmarkDetail(benchmark) {
   detailModal.innerHTML = `
     <div class="modal-header">
       <h2>${benchmark.indicador}</h2>
-      <button class="modal-close" aria-label="Cerrar">✕</button>
+      <button class="modal-close" aria-label="Cerrar">[X]</button>
     </div>
     <div class="modal-body">
       <div class="detail-section">
@@ -914,7 +914,7 @@ function showSubmissionModal(status, data = '') {
   } else if (status === 'exito') {
     content = `
       <div class="submission-success">
-        <div class="success-icon">✓</div>
+        <div class="success-icon">[OK]</div>
         <h3>¡Envío exitoso!</h3>
         <p>Tu formulario se ha guardado correctamente.</p>
         <p class="submission-id"><strong>ID de envío:</strong> ${data}</p>
@@ -925,7 +925,7 @@ function showSubmissionModal(status, data = '') {
     const thankYouUrl = data || 'https://openformstack.com/thank-you';
     content = `
       <div class="submission-success">
-        <div class="success-icon">✓</div>
+        <div class="success-icon">[OK]</div>
         <h3>Enviado</h3>
         <p>Se abrió la página de confirmación en otra pestaña.</p>
         <p style="margin-top: 0.75em; font-size: 0.9em;"><a href="${thankYouUrl}" target="_blank" rel="noopener noreferrer" class="submission-thankyou-link">Abrir si no se abrió</a></p>
@@ -936,7 +936,7 @@ function showSubmissionModal(status, data = '') {
     const msg = typeof data === 'object' && data !== null && data.message ? data.message : String(data);
     content = `
       <div class="submission-error">
-        <div class="error-icon">✕</div>
+        <div class="error-icon">[X]</div>
         <h3>Error al enviar</h3>
         <p>${msg}</p>
         <button onclick="closeSubmissionModal()" class="btn-close">Cerrar</button>
