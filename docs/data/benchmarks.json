@@ -196,7 +196,7 @@
       "seccion": "social",
       "descripcion": "Toda empresa debe contar con una política o sistema de gestión de SST documentado. ISO 45001 establece el estándar internacional para la gestión de la salud y seguridad ocupacional.",
       "fuente_apa": "International Organization for Standardization. (2018). ISO 45001:2018 Occupational health and safety management systems. Geneva: ISO.",
-      "normalizacion": "1.0 si 'Sí', 0.0 si 'No' o 'No disponible'"
+      "normalizacion": "1.0 si 'Sí', 0.0 si 'No' o sin respuesta"
     }
   ],
   "secciones": {
