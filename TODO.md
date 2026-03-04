@@ -97,9 +97,7 @@ Ver detalle: [documentation/incidents.md](documentation/incidents.md)
 
 | ID | Resumen |
 |----|--------|
-| **INC-01** | Score al final de cada sección con bajo contraste (blanco sobre gris); mejorar legibilidad. |
-| **INC-02** | Eliminar "Agregar otro año" por sección; manejar multi-año a nivel pregunta (año anterior por defecto; opción de agregar años pasados). Bimestres de energía: solo fechas pasadas. |
-| **INC-03** | Sanitizar payload al enviar: no incluir campos con valor nulo. |
+| **INC-01** | Bajo contraste del score en panel de resumen y score total (texto claro sobre fondo claro); mejorar legibilidad. |
 
 ---
 
