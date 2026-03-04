@@ -303,6 +303,50 @@ function setupBenchmarkListeners(benchmarks) {
 }
 
 /**
+ * Construye el payload con estructura plana: indicadores como claves top-level con años como sub-claves
+ */
+function buildPayload(values, scores) {
+  const { dataYears, annualData, ...rest } = values;
+
+  // Collect all multi-year field IDs to exclude them from company fields
+  const MULTI_YEAR_SECTIONS = ['ambiental', 'social', 'gobernanza'];
+  const multiYearIds = new Set();
+  MULTI_YEAR_SECTIONS.forEach(sec => {
+    Object.values(annualData[sec] || {}).forEach(yearObj =>
+      Object.keys(yearObj).forEach(id => multiYearIds.add(id))
+    );
+  });
+
+  // Company-only fields (single values, not repeated per year)
+  const companyFields = {};
+  Object.keys(rest).forEach(k => {
+    if (!multiYearIds.has(k)) companyFields[k] = rest[k];
+  });
+
+  // Pivot: indicator → { year: value }
+  const indicators = {};
+  MULTI_YEAR_SECTIONS.forEach(sec => {
+    Object.entries(annualData[sec] || {}).forEach(([year, fields]) => {
+      Object.entries(fields).forEach(([fieldId, value]) => {
+        if (!indicators[fieldId]) indicators[fieldId] = {};
+        indicators[fieldId][year] = value;
+      });
+    });
+  });
+
+  return {
+    timestamp: new Date().toISOString(),
+    data_years: dataYears,
+    ...companyFields,
+    ...indicators,
+    score_ambiental:  scores.ambiental?.porcentaje  ?? null,
+    score_social:     scores.social?.porcentaje     ?? null,
+    score_gobernanza: scores.gobernanza?.porcentaje ?? null,
+    score_total:      scores.total?.porcentaje      ?? null
+  };
+}
+
+/**
  * Envía los datos del formulario a OpenFormStack.
  * Nota: si el navegador muestra un error de CORS, el POST puede haberse enviado igual;
  * la respuesta es la que se bloquea. Mostramos un mensaje claro en ese caso.
@@ -312,15 +356,7 @@ async function submitToOpenFormStack() {
     const values = formRenderer.getFormValues();
     const scores = scorer.getAllScores(values);
 
-    const data = {
-      timestamp: new Date().toISOString(),
-      formulario: values,
-      scores: scores,
-      seccion_ambiental: scores.ambiental,
-      seccion_social: scores.social,
-      seccion_gobernanza: scores.gobernanza,
-      score_total: scores.total
-    };
+    const data = buildPayload(values, scores);
 
     showSubmissionModal('enviando');
 
@@ -366,11 +402,7 @@ function exportAsJSON() {
   const values = formRenderer.getFormValues();
   const scores = scorer.getAllScores(values);
 
-  const data = {
-    timestamp: new Date().toISOString(),
-    formulario: values,
-    scores: scores
-  };
+  const data = buildPayload(values, scores);
 
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
