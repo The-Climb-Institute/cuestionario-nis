@@ -823,7 +823,7 @@ select:disabled {
 .resumen-value {
   font-weight: bold;
   font-size: var(--font-size-lg);
-  color: var(--color-gold-primary);
+  color: var(--color-dark);
   min-width: 60px;
   text-align: right;
 }
@@ -834,7 +834,7 @@ select:disabled {
 }
 
 .total-score {
-  background: linear-gradient(135deg, var(--color-gold-dark) 0%, var(--color-gold-primary) 100%);
+  background: linear-gradient(135deg, var(--color-dark) 0%, #2a2a2a 100%);
   color: var(--color-white);
   padding: var(--spacing-md);
   border-radius: var(--border-radius);
