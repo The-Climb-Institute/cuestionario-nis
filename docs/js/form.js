@@ -45,7 +45,9 @@ class NISFormRenderer {
     this.countries = countries;
     this.formFields = this._buildFormFields(questions);
     this.MULTI_YEAR_SECTIONS = ['ambiental', 'social', 'gobernanza'];
-    this.dataYears = [new Date().getFullYear()];
+    // Initialize with current year and previous year (for data entry convenience)
+    const currentYear = new Date().getFullYear();
+    this.dataYears = [currentYear, currentYear - 1];
   }
 
   /**
@@ -155,6 +157,43 @@ class NISFormRenderer {
     `;
     container.appendChild(instructionsDiv);
 
+    // Add global year management control
+    const yearControlDiv = document.createElement('div');
+    yearControlDiv.className = 'global-year-control';
+    yearControlDiv.style.display = 'none'; // Hidden initially; shown only if needed
+    const currentYear = new Date().getFullYear();
+    const availableYears = [];
+    for (let y = currentYear; y >= currentYear - 10; y--) {
+      if (!this.dataYears.includes(y)) {
+        availableYears.push(y);
+      }
+    }
+    if (availableYears.length > 0) {
+      yearControlDiv.style.display = 'block';
+      yearControlDiv.innerHTML = `
+        <div class="year-control-content">
+          <label class="field-label">¿Deseas agregar datos de un año anterior?</label>
+          <div class="year-control-input">
+            <select id="global-year-select" class="field-input year-select-add">
+              <option value="">Seleccionar año...</option>
+              ${availableYears.map(y => `<option value="${y}">${y}</option>`).join('')}
+            </select>
+            <button id="add-year-btn" class="btn-secondary" style="margin-left: var(--spacing-md);">Agregar año</button>
+          </div>
+        </div>
+      `;
+      const addYearBtn = yearControlDiv.querySelector('#add-year-btn');
+      const yearSelect = yearControlDiv.querySelector('#global-year-select');
+      addYearBtn.addEventListener('click', () => {
+        const year = parseInt(yearSelect.value, 10);
+        if (!year || this.dataYears.includes(year)) return;
+        this.addDataYear(year);
+        // Refresh form
+        this.render(containerId, onChangeCallback);
+      });
+    }
+    container.appendChild(yearControlDiv);
+
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
       const seccionData = this.benchmarks.secciones[seccion];
@@ -180,38 +219,6 @@ class NISFormRenderer {
           yearBlocksContainer.appendChild(this.renderYearBlock(seccion, year, onChangeCallback));
         });
         seccionDiv.appendChild(yearBlocksContainer);
-
-        const addYearRow = document.createElement('div');
-        addYearRow.className = 'add-year-row';
-        const select = document.createElement('select');
-        select.className = 'field-input year-select-add';
-        select.innerHTML = '<option value="">Agregar otro año...</option>';
-        const maxYear = new Date().getFullYear();
-        for (let y = maxYear; y >= maxYear - 10; y--) {
-          if (this.dataYears.includes(y)) continue;
-          const opt = document.createElement('option');
-          opt.value = y;
-          opt.textContent = y;
-          select.appendChild(opt);
-        }
-        const label = document.createElement('label');
-        label.className = 'field-label';
-        label.textContent = '¿Deseas agregar datos de otro año?';
-        addYearRow.appendChild(label);
-        addYearRow.appendChild(select);
-        select.addEventListener('change', () => {
-          const y = parseInt(select.value, 10);
-          if (!y) return;
-          this.dataYears.push(y);
-          this.dataYears.sort((a, b) => b - a);
-          const newBlock = this.renderYearBlock(seccion, y, onChangeCallback);
-          yearBlocksContainer.insertBefore(newBlock, addYearRow);
-          const optToRemove = select.querySelector(`option[value="${y}"]`);
-          if (optToRemove) optToRemove.remove();
-          select.value = '';
-          onChangeCallback();
-        });
-        seccionDiv.appendChild(addYearRow);
       } else {
         const fieldsContainer = document.createElement('div');
         fieldsContainer.className = 'seccion-fields';
@@ -372,6 +379,18 @@ class NISFormRenderer {
       const periods = loadBimestralFromHidden();
       const last = periods.length ? periods[periods.length - 1] : null;
       const next = getNextBimonthPeriod(last);
+
+      // Validate: prevent adding future periods
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentBimonth = monthToBimonth(now.getMonth() + 1);
+
+      // Check if the suggested period is in the future
+      if (next.year > currentYear || (next.year === currentYear && next.bimonth > currentBimonth)) {
+        alert('No se puede agregar periodos futuros. El ultimo periodo disponible es: ' + next.label.replace(` ${next.year}`, ''));
+        return;
+      }
+
       periods.push({ year: next.year, bimonth: next.bimonth, key: next.key, label: next.label, kWh: null });
       saveBimestralToHidden(periods);
       renderBimestralRows(periods);
@@ -715,6 +734,15 @@ class NISFormRenderer {
     }
 
     return groupDiv;
+  }
+
+  /**
+   * Adds a new year to the form data
+   */
+  addDataYear(year) {
+    if (!year || this.dataYears.includes(year)) return;
+    this.dataYears.push(year);
+    this.dataYears.sort((a, b) => b - a);
   }
 
   /**
