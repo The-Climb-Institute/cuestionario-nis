@@ -186,6 +186,17 @@
       "descripcion": "Los Principios de Gobierno Corporativo de la OCDE establecen que toda empresa de tamaño medio o grande debe contar con un órgano de vigilancia independiente que supervise la dirección, los estados financieros y el cumplimiento normativo.",
       "fuente_apa": "Organisation for Economic Co-operation and Development. (2015). G20/OECD Principles of Corporate Governance. OECD Publishing. https://doi.org/10.1787/9789264236882-en",
       "normalizacion": "1.0 si existe, 0.0 si no"
+    },
+    {
+      "id": "sistema_gestion_sst",
+      "indicador": "Sistema formal de gestión de salud y seguridad en el trabajo (SST)",
+      "meta": 1,
+      "unidad": "Sí/No",
+      "tipo": "binary",
+      "seccion": "social",
+      "descripcion": "Toda empresa debe contar con una política o sistema de gestión de SST documentado. ISO 45001 establece el estándar internacional para la gestión de la salud y seguridad ocupacional.",
+      "fuente_apa": "International Organization for Standardization. (2018). ISO 45001:2018 Occupational health and safety management systems. Geneva: ISO.",
+      "normalizacion": "1.0 si 'Sí', 0.0 si 'No' o 'No disponible'"
     }
   ],
   "secciones": {

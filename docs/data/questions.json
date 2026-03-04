@@ -9,6 +9,8 @@
           "type": "text",
           "required": true,
           "helpText": "Nombre oficial registrado",
+          "docCode": "B2.1",
+          "ibsoId": null,
           "benchmarkId": null
         },
         {
@@ -18,6 +20,8 @@
           "required": true,
           "dataSource": "countries",
           "helpText": "País donde opera la empresa",
+          "docCode": "B2.2",
+          "ibsoId": null,
           "benchmarkId": null
         },
         {
@@ -56,6 +60,8 @@
             "Otros servicios"
           ],
           "helpText": "Categoría principal de negocio",
+          "docCode": "B2.4",
+          "ibsoId": null,
           "benchmarkId": null
         },
         {
@@ -65,6 +71,8 @@
           "required": true,
           "unit": "personas",
           "helpText": "Cantidad total de empleados",
+          "docCode": "B2.6",
+          "ibsoId": null,
           "benchmarkId": null
         },
         {
@@ -74,6 +82,8 @@
           "required": true,
           "unit": "USD",
           "helpText": "Ingresos brutos anuales aproximados",
+          "docCode": "B2.10",
+          "ibsoId": null,
           "benchmarkId": null
         }
       ]
@@ -84,9 +94,10 @@
         {
           "id": "aplica_emisiones_energia",
           "label": "¿La empresa reporta emisiones de GEI (alcance 1 o 2) o tiene consumo de energía relevante para reportar?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Si no aplica (p. ej. no hay combustión propia ni datos de electricidad), seleccione No; se omitirán las preguntas siguientes de emisiones y energía.",
+          "docCode": "E1.1a",
+          "ibsoId": "A.1",
           "benchmarkId": null
         },
         {
@@ -95,6 +106,8 @@
           "type": "number",
           "unit": "toneladas",
           "helpText": "Se incluye las emisiones de logística, transporte, etc.",
+          "docCode": "E1.1a",
+          "ibsoId": "A.1",
           "benchmarkId": null,
           "conditional": "aplica_emisiones_energia"
         },
@@ -104,6 +117,8 @@
           "type": "number",
           "unit": "toneladas",
           "helpText": "Emisiones en planta y oficinas administrativas",
+          "docCode": "E1.1b",
+          "ibsoId": "A.2",
           "benchmarkId": null,
           "conditional": "aplica_emisiones_energia"
         },
@@ -113,6 +128,8 @@
           "type": "number",
           "unit": "kWh",
           "helpText": "Consumo en planta y oficinas",
+          "docCode": "E1.1c",
+          "ibsoId": "A.4",
           "benchmarkId": null,
           "conditional": "aplica_emisiones_energia",
           "special": "energia_kwh_bimestral"
@@ -125,6 +142,8 @@
           "min": 0,
           "max": 100,
           "helpText": "Benchmark OCDE: ≥30% para 2030",
+          "docCode": "E1.1d",
+          "ibsoId": "A.5",
           "benchmarkId": "energia_renovable",
           "conditional": "aplica_emisiones_energia"
         },
@@ -134,14 +153,15 @@
           "type": "number",
           "unit": "USD",
           "helpText": "Inversión en energías renovables e infraestructura limpia",
+          "docCode": "E1.1e",
+          "ibsoId": "A.6",
           "benchmarkId": null,
           "conditional": "aplica_emisiones_energia"
         },
         {
           "id": "aplica_agua",
           "label": "¿La empresa utiliza o descarga agua en sus operaciones?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Si no aplica (p. ej. solo oficina sin uso operativo de agua), seleccione No; se omitirán las preguntas siguientes de agua.",
           "benchmarkId": null
         },
@@ -151,6 +171,8 @@
           "type": "number",
           "unit": "m³",
           "helpText": "Volumen total de agua retirada de fuentes",
+          "docCode": "E1.1f",
+          "ibsoId": "A.7",
           "benchmarkId": null,
           "conditional": "aplica_agua"
         },
@@ -160,6 +182,8 @@
           "type": "number",
           "unit": "m³",
           "helpText": "Volumen de agua descargada tras uso en operaciones",
+          "docCode": "E1.1g",
+          "ibsoId": "A.9",
           "benchmarkId": null,
           "conditional": "aplica_agua"
         },
@@ -171,23 +195,25 @@
           "min": 0,
           "max": 100,
           "helpText": "Benchmark UNESCO: ≥80% tratada",
+          "docCode": "E1.1h",
+          "ibsoId": "A.10",
           "benchmarkId": "agua_descargada_tratada",
           "conditional": "aplica_agua"
         },
         {
           "id": "reutiliza_agua",
           "label": "¿Reutilizan agua tratada en procesos?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Implementación de economía circular en agua",
+          "docCode": "E1.1n",
+          "ibsoId": "A.8",
           "benchmarkId": "reutiliza_agua",
           "conditional": "aplica_agua"
         },
         {
           "id": "aplica_sustancias_ozono",
           "label": "¿La empresa utiliza sustancias que agotan la capa de ozono (Protocolo de Montreal)?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Refrigerantes, disolventes u otras sustancias controladas. Si no utiliza ninguna, seleccione No; se omitirá la pregunta de volumen.",
           "benchmarkId": null
         },
@@ -197,14 +223,15 @@
           "type": "number",
           "unit": "toneladas",
           "helpText": "Sustancias controladas por el Protocolo de Montreal",
+          "docCode": "E1.1i",
+          "ibsoId": "A.13",
           "benchmarkId": null,
           "conditional": "aplica_sustancias_ozono"
         },
         {
           "id": "aplica_residuos",
           "label": "¿La empresa genera residuos (sólidos o peligrosos) en sus operaciones?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Si no genera residuos significativos para reportar, seleccione No; se omitirán las preguntas siguientes de residuos.",
           "benchmarkId": null
         },
@@ -214,6 +241,8 @@
           "type": "number",
           "unit": "toneladas",
           "helpText": "Una persona genera aproximadamente 0,36 a 0,45 toneladas al año; puede multiplicar por el número de empleados.",
+          "docCode": "E1.1j",
+          "ibsoId": "A.14",
           "benchmarkId": null,
           "conditional": "aplica_residuos"
         },
@@ -225,6 +254,8 @@
           "min": 0,
           "max": 100,
           "helpText": "Benchmark PNUMA/EU: ≥50% reciclado o reutilizado",
+          "docCode": "E1.1k",
+          "ibsoId": "A.15",
           "benchmarkId": "residuos_reciclados",
           "conditional": "aplica_residuos"
         },
@@ -234,14 +265,15 @@
           "type": "number",
           "unit": "toneladas",
           "helpText": "Residuos con características corrosivas, reactivas, explosivas.",
+          "docCode": "E1.1l",
+          "ibsoId": "A.16",
           "benchmarkId": null,
           "conditional": "aplica_residuos"
         },
         {
           "id": "residuos_peligrosos",
           "label": "¿Tienen protocolo formal de gestión de residuos peligrosos?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Benchmark Convenio de Basilea: protocolo documentado requerido",
           "benchmarkId": "residuos_peligrosos",
           "conditional": "aplica_residuos"
@@ -249,25 +281,39 @@
         {
           "id": "mide_alcance3",
           "label": "¿La empresa mide emisiones en su cadena de valor (alcance 3)?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Análisis de alcance 3 en cadena de suministro",
+          "docCode": "E1.1m",
+          "ibsoId": "A.3",
           "benchmarkId": "mide_alcance3"
+        },
+        {
+          "id": "gei_alcance3_toneladas",
+          "label": "¿Cuántas toneladas de GEI de alcance 3 reporta la empresa?",
+          "type": "number",
+          "unit": "toneladas",
+          "helpText": "Opcional. Solo si se miden emisiones en la cadena de valor (alcance 3).",
+          "docCode": "E1.1m",
+          "ibsoId": "A.3",
+          "benchmarkId": null,
+          "conditional": "mide_alcance3"
         },
         {
           "id": "estres_hidrico",
           "label": "¿Operan en zonas de estrés hídrico?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "CDMX es zona de estrés hídrico. Mapa oficial: https://smn.conagua.gob.mx/es/climatologia/monitor-de-sequia/monitor-de-sequia-en-mexico",
+          "docCode": "E1.1o",
+          "ibsoId": "A.11",
           "benchmarkId": null
         },
         {
           "id": "biodiversidad_sensible",
           "label": "¿La empresa opera en zonas con biodiversidad sensible?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Ubicación en zonas con biodiversidad sensible.",
+          "docCode": "E1.1p",
+          "ibsoId": "A.12",
           "benchmarkId": null
         }
       ]
@@ -276,11 +322,31 @@
       "multiYear": true,
       "fields": [
         {
+          "id": "politicas_igualdad",
+          "label": "¿Tienen políticas de igualdad de oportunidades y no discriminación?",
+          "type": "boolean",
+          "helpText": "Benchmark ONU/OIT: obligatorio en toda empresa.",
+          "docCode": "E1.4",
+          "ibsoId": "B.1",
+          "benchmarkId": "politicas_igualdad"
+        },
+        {
+          "id": "salarios_estandarizados_genero",
+          "label": "¿Tu empresa tiene salarios estandarizados por género para cada nivel?",
+          "type": "boolean",
+          "helpText": "Igualdad salarial entre hombres y mujeres en puestos equivalentes.",
+          "docCode": "D1.5",
+          "ibsoId": "B.2",
+          "benchmarkId": null
+        },
+        {
           "id": "horas_capacitacion",
           "label": "¿Cuántas horas de capacitación promedio recibió cada empleado al año?",
           "type": "number",
           "unit": "horas/empleado",
           "helpText": "Benchmark OCDE: ≥40 horas/año de formación continua",
+          "docCode": "E1.3a",
+          "ibsoId": "B.3",
           "benchmarkId": "horas_capacitacion"
         },
         {
@@ -291,7 +357,18 @@
           "min": 0,
           "max": 100,
           "helpText": "Benchmark: ≥80% evaluados anualmente",
+          "docCode": "E1.3b",
+          "ibsoId": "B.4",
           "benchmarkId": "evaluacion_formal_desempeno"
+        },
+        {
+          "id": "sistema_gestion_sst",
+          "label": "¿Cuentan con una política o sistema formal de gestión de salud y seguridad en el trabajo (SST)?",
+          "type": "boolean",
+          "helpText": "Sistema documentado alineado a normas como ISO 45001.",
+          "docCode": "B.5",
+          "ibsoId": "B.5",
+          "benchmarkId": "sistema_gestion_sst"
         },
         {
           "id": "tasa_accidentes",
@@ -299,15 +376,69 @@
           "type": "number",
           "unit": "accidentes/100",
           "helpText": "Benchmark OIT: <2.0 accidentes por 100 trabajadores",
+          "docCode": "E1.3c",
+          "ibsoId": "B.6",
           "benchmarkId": "tasa_accidentes"
         },
         {
-          "id": "politicas_igualdad",
-          "label": "¿Tienen políticas de igualdad de oportunidades y no discriminación?",
-          "type": "radio",
-          "options": ["Sí", "No"],
-          "helpText": "Benchmark ONU/OIT: obligatorio en toda empresa.",
-          "benchmarkId": "politicas_igualdad"
+          "id": "mujeres_puestos_gerenciales",
+          "label": "¿Cuántas mujeres ocupan puestos gerenciales?",
+          "type": "number",
+          "unit": "personas",
+          "helpText": "D1.10 – Participación económica.",
+          "docCode": "D1.10",
+          "ibsoId": null,
+          "benchmarkId": null
+        },
+        {
+          "id": "hombres_puestos_gerenciales",
+          "label": "¿Cuántos hombres ocupan puestos gerenciales?",
+          "type": "number",
+          "unit": "personas",
+          "helpText": "D1.10 – Participación económica.",
+          "docCode": "D1.10",
+          "ibsoId": null,
+          "benchmarkId": null
+        },
+        {
+          "id": "mujeres_puestos_directivos",
+          "label": "¿Cuántas mujeres ocupan puestos directivos?",
+          "type": "number",
+          "unit": "personas",
+          "helpText": "D1.10 – Participación económica.",
+          "docCode": "D1.10",
+          "ibsoId": null,
+          "benchmarkId": null
+        },
+        {
+          "id": "hombres_puestos_directivos",
+          "label": "¿Cuántos hombres ocupan puestos directivos?",
+          "type": "number",
+          "unit": "personas",
+          "helpText": "D1.10 – Participación económica.",
+          "docCode": "D1.10",
+          "ibsoId": null,
+          "benchmarkId": null
+        },
+        {
+          "id": "mujeres_consejo_admin",
+          "label": "¿Cuántas mujeres son miembros del consejo de administración?",
+          "type": "number",
+          "unit": "personas",
+          "helpText": "D1.10 – Participación económica.",
+          "docCode": "D1.10",
+          "ibsoId": null,
+          "benchmarkId": null
+        },
+        {
+          "id": "hombres_consejo_admin",
+          "label": "¿Cuántos hombres son miembros del consejo de administración?",
+          "type": "number",
+          "unit": "personas",
+          "helpText": "D1.10 – Participación económica.",
+          "docCode": "D1.10",
+          "ibsoId": null,
+          "benchmarkId": null
         }
       ]
     },
@@ -317,83 +448,94 @@
         {
           "id": "sistema_gestion_riesgos",
           "label": "¿Tienen un sistema formal de gestión de riesgos?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Benchmark ISO 31000: Sistema documentado y periódicamente revisado",
+          "docCode": "E1.5a",
+          "ibsoId": "C.4",
           "benchmarkId": "sistema_gestion_riesgos"
         },
         {
           "id": "organo_vigilancia",
           "label": "¿Existe un órgano de vigilancia independiente (ej. comité de auditoría)?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Componente clave del buen gobierno corporativo",
+          "docCode": "E1.5b",
+          "ibsoId": "C.3",
           "benchmarkId": "organo_vigilancia"
         },
         {
           "id": "estrategia_sostenibilidad",
           "label": "¿Tienen una estrategia de sostenibilidad formal en el negocio?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Benchmark GRI/ISO 14001: Estrategia documentada e integrada",
+          "docCode": "E1.5c",
+          "ibsoId": "C.5",
           "benchmarkId": "estrategia_sostenibilidad"
         },
         {
           "id": "codigo_etica",
           "label": "¿Cuentan con código de ética aplicado?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Benchmark OCDE Directrices para Empresas Multinacionales",
+          "docCode": "E1.5d",
+          "ibsoId": "C.6",
           "benchmarkId": "codigo_etica"
         },
         {
           "id": "politicas_datos",
           "label": "¿Tienen políticas de protección de datos personales y ciberseguridad?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Benchmark ISO/IEC 27001 y GDPR",
+          "docCode": "E1.5e",
+          "ibsoId": "C.7",
           "benchmarkId": "politicas_datos"
         },
         {
           "id": "canal_denuncias",
           "label": "¿Tienen un canal de denuncias éticas (whistleblowing)?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Benchmark OCDE Anti-Bribery Convention",
+          "docCode": "E1.5f",
+          "ibsoId": null,
           "benchmarkId": "canal_denuncias"
         },
         {
           "id": "tienen_consejo",
           "label": "¿En la empresa tienen consejo de administración?",
-          "type": "radio",
-          "options": ["Sí", "No"],
+          "type": "boolean",
           "helpText": "Si No, se pasa a la siguiente sección.",
           "benchmarkId": null
         },
         {
           "id": "composicion_consejo_mujeres",
-          "label": "Número de mujeres",
+          "label": "¿Cuántas mujeres integran el consejo de administración?",
           "type": "number",
           "unit": "personas",
           "helpText": "Composición del consejo de administración.",
+          "docCode": "E1.7",
+          "ibsoId": null,
           "benchmarkId": null,
           "conditional": "tienen_consejo"
         },
         {
           "id": "composicion_consejo_hombres",
-          "label": "Número de hombres",
+          "label": "¿Cuántos hombres integran el consejo de administración?",
           "type": "number",
           "unit": "personas",
           "helpText": "Composición del consejo de administración.",
+          "docCode": "E1.7",
+          "ibsoId": null,
           "benchmarkId": null,
           "conditional": "tienen_consejo"
         },
         {
           "id": "composicion_consejo_nobinarias",
-          "label": "Número de personas no binarias",
+          "label": "¿Cuántas personas no binarias integran el consejo de administración?",
           "type": "number",
           "unit": "personas",
           "helpText": "Composición del consejo de administración.",
+          "docCode": "E1.7",
+          "ibsoId": null,
           "benchmarkId": null,
           "conditional": "tienen_consejo"
         },
@@ -405,6 +547,8 @@
           "min": 0,
           "max": 100,
           "helpText": "Benchmark OCDE Gobierno Corporativo: ≥30%.",
+          "docCode": "E1.8",
+          "ibsoId": "C.2",
           "benchmarkId": "mujeres_consejo",
           "conditional": "tienen_consejo"
         },
@@ -414,6 +558,8 @@
           "type": "number",
           "unit": "incidentes",
           "helpText": "Un incidente cibernético ocurre cuando alguien accede, altera o interrumpe sistemas o datos sin autorización. Ejemplos: ransomware, phishing, virus, fugas de información, accesos no autorizados, errores humanos.",
+          "docCode": "E1.9",
+          "ibsoId": null,
           "benchmarkId": null
         },
         {
