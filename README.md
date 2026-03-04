@@ -143,13 +143,13 @@ El texto de las preguntas proviene del **Cuestionario Maestro** oficial:
 
 - **Archivo:** `input-assets/251217_CLIMB_cuestionario_2.0.docx`
 - La carpeta `input-assets` en la raíz del proyecto es un enlace a la carpeta compartida del workspace (donde está el DOCX).
-- Detalle de secciones y mapeo: ver [documentation/FUENTES.md](documentation/FUENTES.md).
+- Detalle de secciones y mapeo: ver [documentation/analysis/fuentes-cuestionario.md](documentation/analysis/fuentes-cuestionario.md).
 
 ## Archivos del Proyecto
 
 ```
 projects/cuestionario-nis/
-├── docs/                   # Public site (deployed, e.g. gh-pages)
+├── docs/                   # Sitio público (despliegue, p. ej. gh-pages)
 │   ├── index.html          # Página principal
 │   ├── css/
 │   │   └── styles.css      # Estilos y branding TCI
@@ -160,8 +160,12 @@ projects/cuestionario-nis/
 │   ├── data/
 │   │   └── benchmarks.json # Parámetros OCDE con citas APA
 │   └── assets/
-├── documentation/          # Project documentation
-│   └── FUENTES.md          # Mapeo DOCX ↔ formulario
+├── documentation/          # Documentación del proyecto (entrada: documentation/STATUS.md)
+│   ├── STATUS.md           # Estado actual y próximos pasos
+│   ├── CHANGELOG.md        # Cambios notables (por fecha, español)
+│   ├── analysis/           # Esquema, mapeo, fuentes (DOCX, CEMEX/IBSO)
+│   ├── planning/           # Tareas, planes (a ejecutar), propuestas (en consideración), decisiones
+│   └── feedback/           # Incidentes abiertos; addressed/ = resueltos y notas
 ├── input-assets/           # Enlace a ../../input-assets (DOCX del cuestionario)
 └── README.md               # Este archivo
 ```
