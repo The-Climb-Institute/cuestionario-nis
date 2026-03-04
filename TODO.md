@@ -93,7 +93,7 @@
 
 ## INCIDENTES / MEJORAS DOCUMENTADAS
 
-Ver detalle: [documentation/incidents.md](documentation/incidents.md)
+Ver detalle: [documentation/feedback/incidents.md](documentation/feedback/incidents.md)
 
 | ID | Resumen |
 |----|--------|
@@ -109,4 +109,4 @@ Ver detalle: [documentation/incidents.md](documentation/incidents.md)
 
 ---
 
-**Project Files**: [documentation/planning/](documentation/planning/) | **Meeting Notes**: [documentation/planning/00-meeting-notes-2026-02-26.md](documentation/planning/00-meeting-notes-2026-02-26.md)
+**Project Files**: [documentation/planning/](documentation/planning/) | **Feedback (notes, incidents)**: [documentation/feedback/](documentation/feedback/)
