@@ -1,0 +1,6 @@
+# Project rules: cuestionario-nis
+
+## Documentation and project files
+
+- **No emoji or decorative symbols.** Do not use emoji or decorative Unicode (e.g. checkmarks, clocks, document icons, block signs, arrows, special bullets) in TODO.md, planning docs, READMEs, or any project documentation. Use plain ASCII only: e.g. "Done", "Pending", "Blocked", "Doc:", standard hyphen/dash, and normal punctuation. Exception: (R) for registered trademark when the symbol is not available.
+- **Instruction for LLM:** When editing or creating content in this project, do not add emoji or decorative symbols in the future. Keep all documentation and status text in plain ASCII.

@@ -1,78 +1,78 @@
 # TODO - Project Status
 
-**Status**: 80% Complete (8 of 10 tasks) | **Tests**: 45/45 passing ✅
+**Status**: 80% Complete (8 of 10 tasks) | **Tests**: 45/45 passing
 
 **See detailed descriptions**: [documentation/planning/](documentation/planning/)
 
 ---
 
-## COMPLETED ✅
+## COMPLETED
 
 ### Form UX & Data Collection
 - [x] **Task 1**: Add form instructions from questionnaire
-  - ✓ Extracted from official DOCX
-  - ✓ 5-section professional layout (Welcome, Objective, Instructions, Currency, Privacy)
-  - ✓ [documentation/planning/completed/02-task-1-form-instructions.md](documentation/planning/completed/02-task-1-form-instructions.md)
+  - Done: Extracted from official DOCX
+  - Done: 5-section professional layout (Welcome, Objective, Instructions, Currency, Privacy)
+  - [documentation/planning/completed/02-task-1-form-instructions.md](documentation/planning/completed/02-task-1-form-instructions.md)
 
 - [x] **Task 3**: Add company identification section
-  - ✓ 8 form fields (4 required, 4 optional)
-  - ✓ Country, Sector, Size with select options
-  - ✓ [documentation/planning/completed/04-task-3-company-identification.md](documentation/planning/completed/04-task-3-company-identification.md)
+  - Done: 8 form fields (4 required, 4 optional)
+  - Done: Country, Sector, Size with select options
+  - [documentation/planning/completed/04-task-3-company-identification.md](documentation/planning/completed/04-task-3-company-identification.md)
 
 ### Backend Integration & Data Persistence
 - [x] **Task 9**: Integrate OpenFormStack backend
-  - ✓ Async form submission to endpoint
-  - ✓ Modal feedback system (enviando/exito/error)
-  - ✓ Includes all scores + form data
-  - ✓ [documentation/planning/completed/10-task-9-openformstack.md](documentation/planning/completed/10-task-9-openformstack.md)
+  - Done: Async form submission to endpoint
+  - Done: Modal feedback system (enviando/exito/error)
+  - Done: Includes all scores + form data
+  - [documentation/planning/completed/10-task-9-openformstack.md](documentation/planning/completed/10-task-9-openformstack.md)
 
 ### Branding & Legal Compliance
 - [x] **Task 4**: Add The Climb Institute logo
-  - ✓ Responsive sizing (200px desktop, 150px mobile)
-  - ✓ Professional header placement
-  - ✓ [documentation/planning/completed/05-task-4-logo.md](documentation/planning/completed/05-task-4-logo.md)
+  - Done: Responsive sizing (200px desktop, 150px mobile)
+  - Done: Professional header placement
+  - [documentation/planning/completed/05-task-4-logo.md](documentation/planning/completed/05-task-4-logo.md)
 
 - [x] **Task 5**: Change colors from gold to white
-  - ✓ White/neutral theme applied globally
-  - ✓ All sections updated via CSS variables
-  - ✓ [documentation/planning/completed/06-task-5-colors.md](documentation/planning/completed/06-task-5-colors.md)
+  - Done: White/neutral theme applied globally
+  - Done: All sections updated via CSS variables
+  - [documentation/planning/completed/06-task-5-colors.md](documentation/planning/completed/06-task-5-colors.md)
 
 ### Polish & Optimization
 - [x] **Task 8**: Move benchmark descriptions to results page
-  - ✓ Removed bias indicators from form fields
-  - ✓ Benchmarks preserved for internal scoring
-  - ✓ Foundation for results page ready
-  - ✓ [documentation/planning/completed/09-task-8-benchmarks-visibility.md](documentation/planning/completed/09-task-8-benchmarks-visibility.md)
+  - Done: Removed bias indicators from form fields
+  - Done: Benchmarks preserved for internal scoring
+  - Done: Foundation for results page ready
+  - [documentation/planning/completed/09-task-8-benchmarks-visibility.md](documentation/planning/completed/09-task-8-benchmarks-visibility.md)
 
 - [x] **Task 2**: Implement conditional questions (ask if applies first)
-  - ✓ Four applicability gates in Ambiental (emisiones/energía, agua, ozono, residuos)
-  - ✓ Gobernanza: consejo de administración → composición
-  - ✓ Hide/clear dependent fields when gate = No; scoring excludes N/A
-  - ✓ [documentation/planning/completed/03-task-2-conditional-questions.md](documentation/planning/completed/03-task-2-conditional-questions.md)
+  - Done: Four applicability gates in Ambiental (emisiones/energía, agua, ozono, residuos)
+  - Done: Gobernanza: consejo de administración, composición
+  - Done: Hide/clear dependent fields when gate = No; scoring excludes N/A
+  - [documentation/planning/completed/03-task-2-conditional-questions.md](documentation/planning/completed/03-task-2-conditional-questions.md)
 
 - [x] **Task 7**: Add trademark information
-  - ✓ "The Climb Institute®" registered trademark added to footer
-  - ✓ Professional placement in footer section
-  - ✓ [documentation/planning/completed/08-task-7-trademark.md](documentation/planning/completed/08-task-7-trademark.md)
+  - Done: "The Climb Institute(R)" registered trademark added to footer (R = registered)
+  - Done: Professional placement in footer section
+  - [documentation/planning/completed/08-task-7-trademark.md](documentation/planning/completed/08-task-7-trademark.md)
 
 ---
 
-## PENDING (Waiting for External Action) ⏳
+## PENDING (Waiting for External Action)
 
 ### Form UX & Data Collection
 - [ ] **Task 10**: Test form with real users
-  - ✅ All technical prerequisites complete (Tasks 1, 2, 3)
-  - ⏳ Waiting: Paula to recruit testers and conduct sessions
-  - 📄 [documentation/planning/pending/11-task-10-user-testing.md](documentation/planning/pending/11-task-10-user-testing.md)
+  - All technical prerequisites complete (Tasks 1, 2, 3)
+  - Waiting: Paula to recruit testers and conduct sessions
+  - [documentation/planning/pending/11-task-10-user-testing.md](documentation/planning/pending/11-task-10-user-testing.md)
 
 ### Branding & Legal Compliance (BLOCKED)
 - [ ] **Task 6**: Add legal disclaimers
-  - 🚫 Blocker: Waiting for Paula's legal text
-  - 📄 [documentation/planning/blocked/07-task-6-legal-disclaimers.md](documentation/planning/blocked/07-task-6-legal-disclaimers.md)
+  - Blocker: Waiting for Paula's legal text
+  - [documentation/planning/blocked/07-task-6-legal-disclaimers.md](documentation/planning/blocked/07-task-6-legal-disclaimers.md)
 
 ---
 
-## SCORING SYSTEM ✅
+## SCORING SYSTEM
 
 **17 Active Benchmarks** | **Fully Integrated** | **All Tests Passing**
 
@@ -88,6 +88,18 @@
 - mujeres_consejo, sistema_gestion_riesgos (YES/NO), estrategia_sostenibilidad (YES/NO)
 - codigo_etica (YES/NO), politicas_datos (YES/NO), canal_denuncias (YES/NO)
 - organo_vigilancia (YES/NO)
+
+---
+
+## INCIDENTES / MEJORAS DOCUMENTADAS
+
+Ver detalle: [documentation/incidents.md](documentation/incidents.md)
+
+| ID | Resumen |
+|----|--------|
+| **INC-01** | Score al final de cada sección con bajo contraste (blanco sobre gris); mejorar legibilidad. |
+| **INC-02** | Eliminar "Agregar otro año" por sección; manejar multi-año a nivel pregunta (año anterior por defecto; opción de agregar años pasados). Bimestres de energía: solo fechas pasadas. |
+| **INC-03** | Sanitizar payload al enviar: no incluir campos con valor nulo. |
 
 ---
 
