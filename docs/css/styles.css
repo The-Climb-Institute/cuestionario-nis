@@ -234,7 +234,7 @@ header .logo-image {
 .score-value {
   font-size: var(--font-size-xl);
   font-weight: bold;
-  color: var(--color-gold-primary);
+  color: var(--color-dark);
   min-width: 40px;
   text-align: right;
 }
