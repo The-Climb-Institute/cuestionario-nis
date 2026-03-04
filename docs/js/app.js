@@ -352,6 +352,72 @@ function buildPayload(values, scores) {
 }
 
 /**
+ * Muestra error de consentimiento de privacidad
+ */
+function showPrivacyConsentError() {
+  const existingError = document.getElementById('privacy-consent-error');
+  if (existingError) existingError.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'privacy-consent-error';
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+  `;
+
+  const content = document.createElement('div');
+  content.style.cssText = `
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  `;
+
+  const title = document.createElement('h2');
+  title.textContent = 'Consentimiento de privacidad requerido';
+  title.style.cssText = 'color: #D32F2F; margin-bottom: 16px; font-size: 18px;';
+
+  const message = document.createElement('p');
+  message.textContent = 'Debe aceptar la política de privacidad para continuar con el envío del formulario.';
+  message.style.cssText = 'color: #666; margin-bottom: 24px;';
+
+  const closeButton = document.createElement('button');
+  closeButton.textContent = 'Entendido';
+  closeButton.style.cssText = `
+    width: 100%;
+    padding: 12px;
+    background: #1976D2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+  `;
+  closeButton.onclick = () => {
+    modal.remove();
+    // Scroll to consent checkbox
+    const consent = document.getElementById('privacy-consent');
+    if (consent) consent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  content.appendChild(title);
+  content.appendChild(message);
+  content.appendChild(closeButton);
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+}
+
+/**
  * Muestra errores de validación al usuario
  */
 function showValidationErrors(errors) {
@@ -454,6 +520,13 @@ function showValidationErrors(errors) {
  */
 async function submitToOpenFormStack() {
   try {
+    // Validar consentimiento de privacidad
+    const privacyConsent = document.getElementById('privacy-consent');
+    if (!privacyConsent || !privacyConsent.checked) {
+      showPrivacyConsentError();
+      return;
+    }
+
     // Validar que todos los campos requeridos estén completos
     const validation = formRenderer.validateForm();
     if (!validation.valid) {
