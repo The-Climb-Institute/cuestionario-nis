@@ -100,12 +100,12 @@
 
 ## INCIDENTES / MEJORAS DOCUMENTADAS
 
-Ver detalle: [documentation/feedback/incidents.md](documentation/feedback/incidents.md)
+Todos resueltos. Detalle: [documentation/feedback/addressed/incidents-resolved.md](documentation/feedback/addressed/incidents-resolved.md) y postmortem en [addressed/](documentation/feedback/addressed/).
 
 | ID | Resumen | Estado |
 |----|---------|--------|
-| **INC-01** | Bajo contraste del score en panel de resumen y score total (texto claro sobre fondo claro); mejorar legibilidad. | ✓ RESUELTO - WCAG AAA |
-| **INC-02** | Validación del formulario: comprobar correctamente campos requeridos respetando condicionales (ocultos = no requeridos) y opción “No sé” en numéricos. | ✓ RESUELTO - 11 tests |
+| **INC-01** | Bajo contraste del score en panel de resumen y score total. | RESUELTO - WCAG AAA |
+| **INC-02** | Validación de campos requeridos (condicionales, "No sé"). | RESUELTO - 11 tests |
 
 ---
 
@@ -118,4 +118,4 @@ Ver detalle: [documentation/feedback/incidents.md](documentation/feedback/incide
 
 ---
 
-**Project Files**: [documentation/planning/](documentation/planning/) | **Feedback (notes, incidents)**: [documentation/feedback/](documentation/feedback/)
+**Project Files**: [documentation/planning/](documentation/planning/) | **Feedback (resolved)**: [documentation/feedback/addressed/](documentation/feedback/addressed/)
