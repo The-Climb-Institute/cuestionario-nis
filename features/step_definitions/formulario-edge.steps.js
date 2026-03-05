@@ -146,11 +146,10 @@ When('el usuario selecciona "Por recibo bimestral" en consumo de energía', asyn
 });
 
 When('el usuario añade un periodo bimestral con kWh mayor que cero', async function () {
-  const btn = this.page.getByRole('button', { name: /añadir|agregar periodo/i });
-  if (await btn.isVisible()) await btn.click();
-  const kWhInput = this.page.locator('input[name*="energia"], input[placeholder*="kWh"], .field-input').filter({ has: this.page.locator('..') }).first();
+  const addAfterBtn = this.page.getByRole('button', { name: '+ Agregar periodo' });
+  if (await addAfterBtn.isVisible()) await addAfterBtn.click();
   await this.page.waitForTimeout(300);
-  const visibleNumber = this.page.locator('.nis-seccion-ambiental input[type="number"]').filter({ has: this.page.locator('..') }).last();
+  const visibleNumber = this.page.locator('.nis-seccion-ambiental .bimestral-kwh').first();
   if (await visibleNumber.isVisible()) await visibleNumber.fill('1000');
 });
 

@@ -21,22 +21,44 @@ function monthToBimonth(month) {
   return Math.min(6, Math.ceil(month / 2));
 }
 
-/** Sugiere el siguiente periodo bimestral. Si lastPeriod es null, usa la fecha actual. */
-function getNextBimonthPeriod(lastPeriod) {
+/** Bimonth (1-6) from period index (1-6) and offset (0-5). Offset shifts which calendar bimonth "slot 1" is. */
+function periodIndexToBimonth(periodIndex, offset) {
+  const o = (offset != null && !isNaN(offset)) ? (offset % 6) : 0;
+  return ((o + (periodIndex != null ? periodIndex : 1) - 1) % 6) + 1;
+}
+
+/** Current date minus 2 months → (year, periodIndex) for initial bimestral row. periodIndex 1-6. */
+function getInitialBimestralPeriod() {
+  const d = new Date();
+  d.setMonth(d.getMonth() - 2);
+  const year = d.getFullYear();
+  const periodIndex = monthToBimonth(d.getMonth() + 1);
+  return { year, periodIndex };
+}
+
+/** Previous (year, periodIndex) before the given one (chronological order). */
+function getPreviousPeriodSlot(year, periodIndex) {
+  if (year == null || periodIndex == null) return null;
+  if (periodIndex > 1) return { year, periodIndex: periodIndex - 1 };
+  return { year: year - 1, periodIndex: 6 };
+}
+
+/** Period (year, periodIndex) is in the future given current date (for validation). */
+function isFuturePeriodSlot(year, periodIndex, offset) {
   const now = new Date();
-  if (!lastPeriod || !lastPeriod.year || !lastPeriod.bimonth) {
-    const year = now.getFullYear();
-    const bimonth = monthToBimonth(now.getMonth() + 1);
-    return { year, bimonth, label: getBimonthLabel(year, bimonth), key: `${year}-${bimonth}` };
-  }
-  let { year, bimonth } = lastPeriod;
-  if (bimonth >= 6) {
-    year += 1;
-    bimonth = 1;
-  } else {
-    bimonth += 1;
-  }
-  return { year, bimonth, label: getBimonthLabel(year, bimonth), key: `${year}-${bimonth}` };
+  const currentYear = now.getFullYear();
+  const currentBimonth = monthToBimonth(now.getMonth() + 1);
+  const bimonth = periodIndexToBimonth(periodIndex, offset);
+  return year > currentYear || (year === currentYear && bimonth > currentBimonth);
+}
+
+/** Ordena periodos por año y periodIndex (ascendente). */
+function sortBimestralBySlot(periods) {
+  return [...periods].sort((a, b) => {
+    const y = (a.year != null ? a.year : 0) - (b.year != null ? b.year : 0);
+    if (y !== 0) return y;
+    return (a.periodIndex != null ? a.periodIndex : 0) - (b.periodIndex != null ? b.periodIndex : 0);
+  });
 }
 
 class NISFormRenderer {
@@ -253,13 +275,128 @@ class NISFormRenderer {
     anualUnit.className = 'field-unit';
     anualUnit.textContent = 'kWh';
     anualWrap.appendChild(anualUnit);
+
+    const pastYearContainer = document.createElement('div');
+    pastYearContainer.className = 'past-year-rows';
+    pastYearContainer.setAttribute('data-field-id', 'energia_kwh');
+    const addPastYearBtn = document.createElement('button');
+    addPastYearBtn.type = 'button';
+    addPastYearBtn.className = 'btn-add-past-year';
+    addPastYearBtn.textContent = '+ Agregar año anterior';
+    let pastYearCount = 0;
+    const handleAddPastYearEnergy = () => {
+      const currentYear = new Date().getFullYear();
+      pastYearCount++;
+      const row = document.createElement('div');
+      row.className = 'past-year-row';
+      row.id = `past-year-row-energia_kwh-${pastYearCount}`;
+      const yearSelect = document.createElement('select');
+      yearSelect.className = 'past-year-select';
+      const optPlaceholder = document.createElement('option');
+      optPlaceholder.value = '';
+      optPlaceholder.textContent = 'Año...';
+      yearSelect.appendChild(optPlaceholder);
+      for (let y = currentYear - 1; y >= currentYear - 10; y--) {
+        if (y === year) continue;
+        const opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+      }
+      const pastInput = document.createElement('input');
+      pastInput.type = 'number';
+      pastInput.className = 'past-year-input field-input number-input';
+      pastInput.placeholder = '0 kWh';
+      pastInput.setAttribute('data-extra-year-field', 'energia_kwh');
+      yearSelect.addEventListener('change', () => {
+        pastInput.setAttribute('data-extra-year', yearSelect.value);
+        if (yearSelect.value) {
+          pastInput.name = `energia_kwh_y_${yearSelect.value}`;
+        } else {
+          pastInput.removeAttribute('name');
+        }
+        pastYearContainer.querySelectorAll('.past-year-row').forEach(r => {
+          const sel = r.querySelector('.past-year-select');
+          if (!sel) return;
+          const usedByOthers = new Set();
+          pastYearContainer.querySelectorAll('.past-year-row').forEach(other => {
+            if (other === r) return;
+            const otherSel = other.querySelector('.past-year-select');
+            if (otherSel && otherSel.value) usedByOthers.add(otherSel.value);
+          });
+          Array.from(sel.options).forEach(opt => {
+            opt.disabled = opt.value !== '' && usedByOthers.has(opt.value);
+          });
+        });
+        onChangeCallback();
+      });
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn-delete-past-year';
+      deleteBtn.innerHTML = '&times;';
+      deleteBtn.title = 'Eliminar este año';
+      deleteBtn.addEventListener('click', () => {
+        row.remove();
+        onChangeCallback();
+      });
+      pastInput.addEventListener('input', onChangeCallback);
+      row.appendChild(yearSelect);
+      row.appendChild(pastInput);
+      row.appendChild(deleteBtn);
+      let nextYear = currentYear - 2;
+      const allPastRows = pastYearContainer.querySelectorAll('.past-year-row');
+      if (allPastRows.length > 0) {
+        let minYear = currentYear;
+        allPastRows.forEach(r => {
+          const sel = r.querySelector('.past-year-select');
+          if (sel && sel.value) {
+            const y = parseInt(sel.value, 10);
+            if (y < minYear) minYear = y;
+          }
+        });
+        nextYear = minYear - 1;
+      }
+      if (nextYear === year) nextYear = year - 1;
+      if (yearSelect.querySelector(`option[value="${nextYear}"]`)) {
+        yearSelect.value = nextYear;
+      }
+      yearSelect.dispatchEvent(new Event('change'));
+      pastYearContainer.insertBefore(row, addPastYearBtn);
+      onChangeCallback();
+    };
+    addPastYearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleAddPastYearEnergy();
+    });
+    pastYearContainer.appendChild(addPastYearBtn);
+    anualWrap.appendChild(pastYearContainer);
+
     container.appendChild(anualWrap);
 
     const bimestralWrap = document.createElement('div');
     bimestralWrap.className = 'energy-bimestral-wrap';
     bimestralWrap.setAttribute('data-energy-mode', 'bimestral');
     bimestralWrap.style.display = 'none';
-    bimestralWrap.innerHTML = '<p class="field-help">Agrega cada periodo de facturación (bimestre) y el consumo en kWh. El total anual se calculará automáticamente.</p>';
+    bimestralWrap.innerHTML = '<p class="field-help">El primer periodo se ajusta con las flechas. Agrega periodos anteriores (bimestres previos) con el botón.</p>';
+    const offsetWrap = document.createElement('div');
+    offsetWrap.className = 'energy-bimestral-offset-wrap';
+    const offsetLabel = document.createElement('span');
+    offsetLabel.className = 'energy-bimestral-offset-label';
+    offsetLabel.setAttribute('aria-live', 'polite');
+    const offsetPrevBtn = document.createElement('button');
+    offsetPrevBtn.type = 'button';
+    offsetPrevBtn.className = 'btn-offset-prev';
+    offsetPrevBtn.setAttribute('aria-label', 'Un bimestre atrás');
+    offsetPrevBtn.textContent = '←';
+    const offsetNextBtn = document.createElement('button');
+    offsetNextBtn.type = 'button';
+    offsetNextBtn.className = 'btn-offset-next';
+    offsetNextBtn.setAttribute('aria-label', 'Un bimestre adelante');
+    offsetNextBtn.textContent = '→';
+    offsetWrap.appendChild(offsetPrevBtn);
+    offsetWrap.appendChild(offsetLabel);
+    offsetWrap.appendChild(offsetNextBtn);
+    bimestralWrap.appendChild(offsetWrap);
     const bimestralList = document.createElement('div');
     bimestralList.className = 'energy-bimestral-list';
     bimestralWrap.appendChild(bimestralList);
@@ -275,13 +412,133 @@ class NISFormRenderer {
     bimestralWrap.appendChild(hiddenBimestral);
     container.appendChild(bimestralWrap);
 
+    const DEFAULT_OFFSET = 0;
+    const loadBimestralState = () => {
+      try {
+        const raw = hiddenBimestral.value;
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          const migrated = parsed.map(p => ({
+            year: p.year,
+            periodIndex: p.periodIndex != null ? p.periodIndex : p.bimonth,
+            kWh: p.kWh
+          })).filter(p => p.year != null && (p.periodIndex != null || p.bimonth != null));
+          return { offset: DEFAULT_OFFSET, periods: sortBimestralBySlot(migrated) };
+        }
+        const periods = (parsed.periods || []).map(p => ({
+          year: p.year,
+          periodIndex: p.periodIndex != null ? p.periodIndex : p.bimonth,
+          kWh: p.kWh
+        })).filter(p => p.year != null);
+        return { offset: (parsed.offset != null && !isNaN(parsed.offset)) ? (parsed.offset % 6) : DEFAULT_OFFSET, periods: sortBimestralBySlot(periods) };
+      } catch (e) {
+        return null;
+      }
+    };
+
+    const getInitialState = () => {
+      const init = getInitialBimestralPeriod();
+      return { offset: DEFAULT_OFFSET, periods: [{ year: init.year, periodIndex: init.periodIndex, kWh: null }] };
+    };
+
+    const saveBimestralState = (state) => {
+      hiddenBimestral.value = JSON.stringify(state);
+      onChangeCallback();
+    };
+
+    const updateOffsetLabel = (offset) => {
+      const bimonth = periodIndexToBimonth(1, offset);
+      const b = BIMESES.find(x => x.index === bimonth);
+      offsetLabel.textContent = b ? `Primer bimestre: ${b.label}` : '';
+    };
+
+    const renderBimestralRows = (state) => {
+      if (!state) state = getInitialState();
+      const { offset, periods } = state;
+      const sorted = sortBimestralBySlot(periods).reverse();
+      updateOffsetLabel(offset);
+      bimestralList.innerHTML = '';
+      sorted.forEach((p, i) => {
+        const bimonth = periodIndexToBimonth(p.periodIndex, offset);
+        const periodLabel = getBimonthLabel(p.year, bimonth);
+        const slotKey = `${p.year}-${p.periodIndex}`;
+        const row = document.createElement('div');
+        row.className = 'bimestral-row';
+        row.innerHTML = `
+          <span class="bimestral-period">${periodLabel}</span>
+          <input type="number" min="0" step="any" class="field-input number-input bimestral-kwh" data-slot="${slotKey}" placeholder="kWh" value="${p.kWh != null ? p.kWh : ''}">
+          <span class="field-unit">kWh</span>
+          <button type="button" class="btn-remove-period" aria-label="Quitar periodo">×</button>
+        `;
+        row.querySelector('.bimestral-kwh').addEventListener('input', () => {
+          const s = loadBimestralState() || getInitialState();
+          const idx = s.periods.findIndex(x => `${x.year}-${x.periodIndex}` === slotKey);
+          const num = row.querySelector('.bimestral-kwh').value === '' ? null : parseFloat(row.querySelector('.bimestral-kwh').value);
+          if (idx >= 0) s.periods[idx] = { ...s.periods[idx], kWh: num };
+          else s.periods.push({ year: p.year, periodIndex: p.periodIndex, kWh: num });
+          saveBimestralState(s);
+        });
+        row.querySelector('.btn-remove-period').addEventListener('click', () => {
+          const s = loadBimestralState() || getInitialState();
+          s.periods = s.periods.filter(x => `${x.year}-${x.periodIndex}` !== slotKey);
+          if (s.periods.length === 0) s.periods = [getInitialBimestralPeriod()].map(r => ({ ...r, kWh: null }));
+          saveBimestralState(s);
+          renderBimestralRows(loadBimestralState());
+        });
+        bimestralList.appendChild(row);
+      });
+    };
+
+    offsetPrevBtn.addEventListener('click', () => {
+      const s = loadBimestralState() || getInitialState();
+      s.offset = (s.offset - 1 + 6) % 6;
+      saveBimestralState(s);
+      renderBimestralRows(s);
+    });
+
+    offsetNextBtn.addEventListener('click', () => {
+      const s = loadBimestralState() || getInitialState();
+      s.offset = (s.offset + 1) % 6;
+      saveBimestralState(s);
+      renderBimestralRows(s);
+    });
+
+    addPeriodBtn.addEventListener('click', () => {
+      const s = loadBimestralState() || getInitialState();
+      const first = s.periods.length ? sortBimestralBySlot(s.periods)[0] : null;
+      const prev = first ? getPreviousPeriodSlot(first.year, first.periodIndex) : null;
+      if (!prev) {
+        alert('No hay periodo anterior al primero.');
+        return;
+      }
+      if (isFuturePeriodSlot(prev.year, prev.periodIndex, s.offset)) {
+        alert('No se puede agregar periodos futuros.');
+        return;
+      }
+      s.periods = [{ year: prev.year, periodIndex: prev.periodIndex, kWh: null }, ...s.periods];
+      saveBimestralState(s);
+      renderBimestralRows(s);
+    });
+
     const toggleMode = () => {
       const mode = document.querySelector(`[name="${modeName}"]:checked`);
       const isBimestral = mode && mode.value === 'bimestral';
       anualWrap.style.display = isBimestral ? 'none' : 'block';
       bimestralWrap.style.display = isBimestral ? 'block' : 'none';
-      if (isBimestral) anualInput.removeAttribute('required');
-      else anualInput.removeAttribute('required');
+      if (isBimestral) {
+        anualInput.removeAttribute('required');
+        const state = loadBimestralState();
+        if (!state || !state.periods || state.periods.length === 0) {
+          const init = getInitialState();
+          saveBimestralState(init);
+          renderBimestralRows(init);
+        } else {
+          renderBimestralRows(state);
+        }
+      } else {
+        anualInput.removeAttribute('required');
+      }
       onChangeCallback();
     };
 
@@ -289,75 +546,6 @@ class NISFormRenderer {
       r.addEventListener('change', toggleMode);
     });
     anualInput.addEventListener('input', onChangeCallback);
-
-    const loadBimestralFromHidden = () => {
-      try {
-        const raw = hiddenBimestral.value;
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        return [];
-      }
-    };
-
-    const saveBimestralToHidden = (arr) => {
-      hiddenBimestral.value = JSON.stringify(arr);
-      onChangeCallback();
-    };
-
-    const renderBimestralRows = (periods) => {
-      bimestralList.innerHTML = '';
-      periods.forEach((p, i) => {
-        const row = document.createElement('div');
-        row.className = 'bimestral-row';
-        const periodLabel = p.label != null ? p.label : getBimonthLabel(p.year, p.bimonth);
-        const periodKey = p.key != null ? p.key : (p.year != null && p.bimonth != null ? `${p.year}-${p.bimonth}` : `period-${i}`);
-        row.innerHTML = `
-          <span class="bimestral-period">${periodLabel}</span>
-          <input type="number" min="0" step="any" class="field-input number-input bimestral-kwh" data-key="${periodKey}" placeholder="kWh" value="${p.kWh != null ? p.kWh : ''}">
-          <span class="field-unit">kWh</span>
-          <button type="button" class="btn-remove-period" aria-label="Quitar periodo">×</button>
-        `;
-        row.querySelector('.bimestral-kwh').addEventListener('input', () => {
-          const arr = loadBimestralFromHidden();
-          const idx = arr.findIndex(x => (x.key || getBimonthLabel(x.year, x.bimonth)) === periodKey);
-          const val = row.querySelector('.bimestral-kwh').value;
-          const num = val === '' ? null : parseFloat(val);
-          if (idx >= 0) {
-            arr[idx] = { ...arr[idx], year: arr[idx].year, bimonth: arr[idx].bimonth, key: periodKey, label: periodLabel, kWh: num };
-          } else {
-            arr.push({ year: nextSuggested.year, bimonth: nextSuggested.bimonth, key: periodKey, label: periodLabel, kWh: num });
-          }
-          saveBimestralToHidden(arr);
-        });
-        row.querySelector('.btn-remove-period').addEventListener('click', () => {
-          const arr = loadBimestralFromHidden().filter(x => (x.key || getBimonthLabel(x.year, x.bimonth)) !== periodKey);
-          saveBimestralToHidden(arr);
-          renderBimestralRows(arr);
-        });
-        bimestralList.appendChild(row);
-      });
-    };
-
-    addPeriodBtn.addEventListener('click', () => {
-      const periods = loadBimestralFromHidden();
-      const last = periods.length ? periods[periods.length - 1] : null;
-      const next = getNextBimonthPeriod(last);
-
-      // Validate: prevent adding future periods
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const currentBimonth = monthToBimonth(now.getMonth() + 1);
-
-      // Check if the suggested period is in the future
-      if (next.year > currentYear || (next.year === currentYear && next.bimonth > currentBimonth)) {
-        alert('No se puede agregar periodos futuros. El ultimo periodo disponible es: ' + next.label.replace(` ${next.year}`, ''));
-        return;
-      }
-
-      periods.push({ year: next.year, bimonth: next.bimonth, key: next.key, label: next.label, kWh: null });
-      saveBimestralToHidden(periods);
-      renderBimestralRows(periods);
-    });
 
     container.addEventListener('change', (e) => {
       if (e.target.name === modeName) toggleMode();
@@ -887,8 +1075,9 @@ class NISFormRenderer {
               let total = null;
               if (hidden && hidden.value) {
                 try {
-                  const arr = JSON.parse(hidden.value);
-                  total = arr.reduce((sum, p) => sum + (Number(p.kWh) || 0), 0);
+                  const parsed = JSON.parse(hidden.value);
+                  const periods = Array.isArray(parsed) ? parsed : (parsed.periods || []);
+                  total = periods.reduce((sum, p) => sum + (Number(p.kWh) || 0), 0);
                   if (total === 0) total = null;
                 } catch (e) {}
               }
@@ -938,6 +1127,13 @@ class NISFormRenderer {
         if (!yearStr) return; // Year not yet selected
         const year = parseInt(yearStr, 10);
         if (isNaN(year)) return;
+        if (fieldId === 'energia_kwh') {
+          const block = input.closest('.year-block');
+          if (!block) return;
+          const blockYear = block.getAttribute('data-year');
+          const modeInput = document.querySelector(`[name="energia_kwh_mode_y_${blockYear}"]:checked`);
+          if (!modeInput || modeInput.value !== 'anual') return;
+        }
         if (!annualData[seccion][year]) annualData[seccion][year] = {};
         const unknownCheckbox = input.parentElement?.querySelector('.unknown-checkbox');
         if (unknownCheckbox?.checked) {
@@ -1070,8 +1266,9 @@ class NISFormRenderer {
               const hidden = document.querySelector(`[name="energia_kwh_bimestral_y_${year}"]`);
               if (hidden && hidden.value) {
                 try {
-                  const arr = JSON.parse(hidden.value);
-                  const total = arr.reduce((sum, p) => sum + (Number(p.kWh) || 0), 0);
+                  const parsed = JSON.parse(hidden.value);
+                  const periods = Array.isArray(parsed) ? parsed : (parsed.periods || []);
+                  const total = periods.reduce((sum, p) => sum + (Number(p.kWh) || 0), 0);
                   isValid = total > 0;
                 } catch (e) {}
               }
