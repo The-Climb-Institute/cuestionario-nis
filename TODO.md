@@ -1,8 +1,15 @@
 # TODO - Project Status
 
-**Status**: 80% Complete (8 of 10 tasks) | **Tests**: 45/45 passing
+**Status**: 80% Complete (8 of 10 tasks) | **Tests**: 69/69 passing | **Improvements**: All critical issues resolved
 
 **See detailed descriptions**: [documentation/planning/](documentation/planning/)
+
+**Latest updates (March 5, 2026):**
+- Implemented form validation with conditional field support and "No sé" handling
+- Fixed accessibility contrast issues (WCAG AAA compliance)
+- Updated privacy policy with official legal document (Mexican LFPDPPP compliant)
+- Added mandatory privacy consent checkbox
+- Removed special characters from UI (ASCII-only output)
 
 ---
 
@@ -95,18 +102,19 @@
 
 Ver detalle: [documentation/feedback/incidents.md](documentation/feedback/incidents.md)
 
-| ID | Resumen |
-|----|--------|
-| **INC-01** | Bajo contraste del score en panel de resumen y score total (texto claro sobre fondo claro); mejorar legibilidad. |
-| **INC-02** | Validación del formulario: comprobar correctamente campos requeridos respetando condicionales (ocultos = no requeridos) y opción “No sé” en numéricos. |
+| ID | Resumen | Estado |
+|----|---------|--------|
+| **INC-01** | Bajo contraste del score en panel de resumen y score total (texto claro sobre fondo claro); mejorar legibilidad. | ✓ RESUELTO - WCAG AAA |
+| **INC-02** | Validación del formulario: comprobar correctamente campos requeridos respetando condicionales (ocultos = no requeridos) y opción “No sé” en numéricos. | ✓ RESUELTO - 11 tests |
 
 ---
 
 ## NEXT STEPS
 
-1. **Contact Paula** for Tasks 2, 6, 7, 10 inputs
-2. **Option**: Analyze questionnaire for Task 2 conditional patterns
-3. **Option**: Begin user testing for Task 10 with current implementation
+1. **Task 10 (User Testing)** – Contact Paula to recruit testers and conduct sessions (all technical prerequisites now complete)
+2. **Task 6 (Legal Disclaimers)** – Awaiting Paula's legal text for integration
+3. **Privacy Consent** – Monitor user acceptance rates once live
+4. **Ready for pilot phase** – Form validation, accessibility, and privacy now meet production standards
 
 ---
 
