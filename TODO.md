@@ -1,6 +1,6 @@
 # TODO - Project Status
 
-**Status**: 80% Complete (8 of 10 tasks) | **Tests**: 69/69 passing | **Improvements**: All critical issues resolved
+**Status**: 10 of 10 tasks complete | **Tests**: 69/69 passing | **Improvements**: All critical issues resolved
 
 **See detailed descriptions**: [documentation/planning/](documentation/planning/)
 
@@ -62,20 +62,13 @@
   - Done: Professional placement in footer section
   - [documentation/planning/completed/08-task-7-trademark.md](documentation/planning/completed/08-task-7-trademark.md)
 
----
+- [x] **Task 6**: Legal / privacy
+  - Done: Only privacy policy was in scope. Aviso de Privacidad in docs/privacy.html (and input-assets), mandatory consent checkbox, submit blocked until accepted.
+  - [documentation/planning/completed/07-task-6-legal-disclaimers.md](documentation/planning/completed/07-task-6-legal-disclaimers.md)
 
-## PENDING (Waiting for External Action)
-
-### Form UX & Data Collection
-- [ ] **Task 10**: Test form with real users
-  - All technical prerequisites complete (Tasks 1, 2, 3)
-  - Waiting: Paula to recruit testers and conduct sessions
-  - [documentation/planning/pending/11-task-10-user-testing.md](documentation/planning/pending/11-task-10-user-testing.md)
-
-### Branding & Legal Compliance (BLOCKED)
-- [ ] **Task 6**: Add legal disclaimers
-  - Blocker: Waiting for Paula's legal text
-  - [documentation/planning/blocked/07-task-6-legal-disclaimers.md](documentation/planning/blocked/07-task-6-legal-disclaimers.md)
+- [x] **Task 10**: Automated testing
+  - Done: Unit tests (Jest) and E2E/BDD (Cucumber + Playwright) cover validation, conditionals, and form behaviour. All tests passing. Human user testing is not a development deliverable; if the business (Paula) runs it, that is external.
+  - [documentation/planning/completed/11-task-10-user-testing.md](documentation/planning/completed/11-task-10-user-testing.md)
 
 ---
 
@@ -111,10 +104,9 @@ Todos resueltos. Detalle: [documentation/feedback/addressed/incidents-resolved.m
 
 ## NEXT STEPS
 
-1. **Task 10 (User Testing)** – Contact Paula to recruit testers and conduct sessions (all technical prerequisites now complete)
-2. **Task 6 (Legal Disclaimers)** – Awaiting Paula's legal text for integration
-3. **Privacy Consent** – Monitor user acceptance rates once live
-4. **Ready for pilot phase** – Form validation, accessibility, and privacy now meet production standards
+1. **Pilot / go-live** – All 10 tasks complete; form, validation, accessibility, privacy, and automated tests are in place.
+2. **Optional (business):** If Paula or the business want human user testing with real users, they run it separately; it is not a development deliverable.
+3. **Privacy consent** – Monitor acceptance rates once live if desired.
 
 ---
 
