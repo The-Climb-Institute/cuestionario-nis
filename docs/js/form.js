@@ -1480,28 +1480,31 @@ class NISFormRenderer {
         ? revenueQuestionField.getBoundingClientRect().top + scrollTop
         : docHeight * 0.15;
 
-      // Find end of first section (ambiental section)
+      // Find start of ambiental section (first time-sensitive data)
       const ambientalSection = document.querySelector('[data-section="ambiental"]');
-      const ambientalSectionEnd = ambientalSection
-        ? ambientalSection.getBoundingClientRect().bottom + scrollTop
-        : docHeight * 0.7;
+      const ambientalSectionTop = ambientalSection
+        ? ambientalSection.getBoundingClientRect().top + scrollTop
+        : docHeight * 0.65;
 
       // Calculate opacity progression:
-      // 90% before "Ingresos anuales" → 50% at "Ingresos anuales" → 0% at end of ambiental section
-      let fadeOpacity = 0.9; // Default: 90% opacity
+      // 60% at start → 30% at "Ingresos anuales" → 5% at ambiental section start
+      let fadeOpacity = 0.6; // Default: 60% opacity
 
       if (scrollTop < revenueQuestionTop) {
-        // Before "Ingresos anuales": stay at 90% opacity
-        fadeOpacity = 0.9;
-      } else if (scrollTop < ambientalSectionEnd) {
-        // From "Ingresos anuales" to end of ambiental: fade from 90% to 0%
-        const fadeStart = revenueQuestionTop;
-        const fadeEnd = ambientalSectionEnd;
+        // Before "Ingresos anuales": fade from 60% to 30%
+        const fadeStart = 0;
+        const fadeEnd = revenueQuestionTop;
         const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-        fadeOpacity = Math.max(0, 0.9 - (fadeProgress * 0.9)); // 0.9 to 0.0
+        fadeOpacity = 0.6 - (fadeProgress * 0.3); // 0.6 to 0.3
+      } else if (scrollTop < ambientalSectionTop) {
+        // From "Ingresos anuales" to ambiental section: fade from 30% to 5%
+        const fadeStart = revenueQuestionTop;
+        const fadeEnd = ambientalSectionTop;
+        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+        fadeOpacity = 0.3 - (fadeProgress * 0.25); // 0.3 to 0.05
       } else {
-        // After ambiental section: stay at 0% opacity
-        fadeOpacity = 0;
+        // At/after ambiental section: stay at 5% opacity
+        fadeOpacity = 0.05;
       }
 
       unselectedTab.style.opacity = Math.max(0, fadeOpacity);
@@ -1511,8 +1514,8 @@ class NISFormRenderer {
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
 
-    // Initial opacity: tabA (current year) is unselected initially - 90% opacity
-    tabA.style.opacity = 0.9;
+    // Initial opacity: tabA (current year) is unselected initially - 60% opacity
+    tabA.style.opacity = 0.6;
 
     // Add scroll listener for progressive fade
     window.addEventListener('scroll', handleScrollFade);

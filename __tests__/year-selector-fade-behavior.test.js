@@ -2,12 +2,12 @@
  * Test: Year Selector Opacity Behavior — Progressive Fade on Scroll + Toggle on Year Change
  *
  * Validates that:
- * 1. Unselected year starts at 90% opacity
+ * 1. Unselected year starts at 60% opacity
  * 2. Toggle switches opacity when year is selected (swap which tab is faded)
  * 3. Opacity progresses as user scrolls:
- *    - 90% opacity before "Ingresos anuales" question
- *    - Gradually fades to 50% opacity midway through ambiental section
- *    - Continues fading to 0% opacity by end of ambiental section
+ *    - 60% opacity at start
+ *    - Gradually fades to 30% opacity at "Ingresos anuales" question
+ *    - Continues fading to 5% opacity at ambiental section start
  * 4. Different scroll positions trigger different opacity levels
  */
 
@@ -69,20 +69,20 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
     document.body.innerHTML = '';
   });
 
-  test('Initial state: unselected year is 90% opacity', () => {
+  test('Initial state: unselected year is 60% opacity', () => {
     // Simulate fade initialization
-    tabCurrent.style.opacity = 0.9;
+    tabCurrent.style.opacity = 0.6;
     tabPrevious.style.opacity = 1;
 
     expect(tabCurrent.classList.contains('year-label-unselected')).toBe(true);
     expect(tabPrevious.classList.contains('year-label-selected')).toBe(true);
-    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.9);
+    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.6);
     expect(parseFloat(tabPrevious.style.opacity)).toBe(1);
   });
 
   test('Opacity toggles when year is selected: swap which tab is faded', () => {
     // Initial state
-    tabCurrent.style.opacity = 0.9;
+    tabCurrent.style.opacity = 0.6;
     tabPrevious.style.opacity = 1;
 
     // Click current year to select it
@@ -93,93 +93,96 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
 
     // Simulate opacity toggle: swap opacities
     tabCurrent.style.opacity = 1;
-    tabPrevious.style.opacity = 0.9;
+    tabPrevious.style.opacity = 0.6;
 
     // Verify swap
     expect(tabCurrent.classList.contains('year-label-selected')).toBe(true);
     expect(tabPrevious.classList.contains('year-label-unselected')).toBe(true);
     expect(parseFloat(tabCurrent.style.opacity)).toBe(1);
-    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.9);
+    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.6);
   });
 
-  test('Before company_revenue question: opacity stays at 90%', () => {
+  test('Before company_revenue question: opacity starts at 60%', () => {
     const unselectedTab = document.querySelector('[data-year-label="unselected"]');
 
     // Scroll: 0 (top of form)
     window.scrollY = 0;
-    const opacityAtStart = 0.9; // Before company_revenue question
-    expect(opacityAtStart).toBe(0.9);
+    const opacityAtStart = 0.6; // Start: 60% opacity
+    expect(opacityAtStart).toBe(0.6);
 
-    // Scroll: 400 (still before company_revenue at ~450)
-    window.scrollY = 400;
-    const opacityMid = 0.9; // Still before company_revenue
-    expect(opacityMid).toBe(0.9);
+    // Scroll: 200 (partway to company_revenue at ~450)
+    window.scrollY = 200;
+    // At 200/450 progress: opacity = 0.6 - (200/450 * 0.3) ≈ 0.467
+    const fadeProgress = 200 / 450;
+    const opacityMid = 0.6 - (fadeProgress * 0.3);
+    expect(opacityMid).toBeGreaterThan(0.45);
+    expect(opacityMid).toBeLessThan(0.55);
   });
 
-  test('At company_revenue question: opacity starts transitioning from 90%', () => {
+  test('At company_revenue question: opacity reaches 30%', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
     const revenueQuestionScrollPosition = 450; // company_revenue at 450
-    const ambientalSectionEndScrollPosition = 750; // Ambiental section ends at 750
+    const ambientalSectionScrollPosition = 500; // Ambiental section starts at 500
 
     // Simulate being at company_revenue question
     window.scrollY = revenueQuestionScrollPosition;
 
-    // Opacity should start transitioning from 90% (0.9)
-    const fadeProgress = 0; // Just at company_revenue
-    let opacity = Math.max(0, 0.9 - (fadeProgress * 0.9)); // = 0.9
+    // Opacity should be 30% (0.3) at company_revenue
+    const fadeProgress = (revenueQuestionScrollPosition - 0) / revenueQuestionScrollPosition;
+    let opacity = 0.6 - (fadeProgress * 0.3); // = 0.3
 
-    expect(opacity).toBe(0.9);
+    expect(opacity).toBeCloseTo(0.3, 1);
 
-    // Scroll to midpoint between company_revenue and ambiental end (150 pixels into 300-pixel fade zone)
-    window.scrollY = revenueQuestionScrollPosition + 150;
-    const fadeProgressMid = 150 / (ambientalSectionEndScrollPosition - revenueQuestionScrollPosition);
-    opacity = Math.max(0, 0.9 - (fadeProgressMid * 0.9));
+    // Scroll to midpoint between company_revenue and ambiental section (25 pixels into 50-pixel fade zone)
+    window.scrollY = revenueQuestionScrollPosition + 25;
+    const fadeProgressMid = 25 / (ambientalSectionScrollPosition - revenueQuestionScrollPosition);
+    opacity = 0.3 - (fadeProgressMid * 0.25);
 
-    expect(opacity).toBeGreaterThanOrEqual(0.45);
-    expect(opacity).toBeLessThanOrEqual(0.55);
+    expect(opacity).toBeGreaterThanOrEqual(0.175);
+    expect(opacity).toBeLessThanOrEqual(0.225);
   });
 
-  test('At ambiental section end: opacity reaches 0%', () => {
+  test('At ambiental section start: opacity reaches 5%', () => {
     const revenueQuestionScrollPosition = 450;
-    const ambientalSectionEndScrollPosition = 750;
+    const ambientalSectionScrollPosition = 500;
 
-    // At ambiental section end
-    window.scrollY = ambientalSectionEndScrollPosition;
+    // At ambiental section start
+    window.scrollY = ambientalSectionScrollPosition;
 
-    // Calculate opacity at exactly ambiental section end
-    const fadeProgress = (ambientalSectionEndScrollPosition - revenueQuestionScrollPosition) / (ambientalSectionEndScrollPosition - revenueQuestionScrollPosition);
-    let opacity = Math.max(0, 0.9 - (fadeProgress * 0.9));
+    // Calculate opacity at exactly ambiental section start
+    const fadeProgress = (ambientalSectionScrollPosition - revenueQuestionScrollPosition) / (ambientalSectionScrollPosition - revenueQuestionScrollPosition);
+    let opacity = 0.3 - (fadeProgress * 0.25);
 
-    // At 100% progress: opacity = 0.9 - (1.0 * 0.9) = 0
-    expect(opacity).toBe(0);
+    // At 100% progress: opacity = 0.3 - (1.0 * 0.25) = 0.05
+    expect(opacity).toBeCloseTo(0.05, 2);
   });
 
-  test('After ambiental section: opacity stays at 0%', () => {
+  test('After ambiental section start: opacity stays at 5%', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
-    const ambientalSectionEndScrollPosition = 750;
+    const ambientalSectionScrollPosition = 500;
 
-    // Well past ambiental section end
+    // Well past ambiental section start
     window.scrollY = docHeight;
 
-    // Opacity should stay at 0% after ambiental section
-    let opacity = 0;
+    // Opacity should stay at 5% after ambiental section
+    let opacity = 0.05;
 
-    expect(opacity).toBe(0);
+    expect(opacity).toBeCloseTo(0.05, 2);
   });
 
   test('Multiple scroll positions maintain correct opacity progression', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const revenueQuestionScrollPosition = 450;
-    const ambientalSectionEndScrollPosition = 750;
+    const ambientalSectionScrollPosition = 500;
 
     // Test key positions
     const testCases = [
-      { scroll: 0, expectedOpacity: 0.9, desc: 'Before company_revenue' },
-      { scroll: 400, expectedOpacity: 0.9, desc: 'Still before company_revenue' },
-      { scroll: 450, expectedOpacity: 0.9, desc: 'At company_revenue question' },
-      { scroll: 600, expectedOpacity: 0.5, desc: 'Midway through fade zone' },
-      { scroll: 750, expectedOpacity: 0, desc: 'At end of ambiental section' },
-      { scroll: 800, expectedOpacity: 0, desc: 'After ambiental section' },
+      { scroll: 0, expectedOpacity: 0.6, desc: 'At start' },
+      { scroll: 225, expectedOpacity: 0.45, desc: 'Midway before company_revenue' },
+      { scroll: 450, expectedOpacity: 0.3, desc: 'At company_revenue question' },
+      { scroll: 475, expectedOpacity: 0.175, desc: 'Midway between company_revenue and ambiental' },
+      { scroll: 500, expectedOpacity: 0.05, desc: 'At ambiental section start' },
+      { scroll: 700, expectedOpacity: 0.05, desc: 'After ambiental section' },
     ];
 
     testCases.forEach(({ scroll, expectedOpacity, desc }) => {
@@ -188,30 +191,31 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
       // Calculate expected opacity at this scroll position
       let opacity;
       if (scroll < revenueQuestionScrollPosition) {
-        opacity = 0.9;
-      } else if (scroll < ambientalSectionEndScrollPosition) {
-        const fadeProgress = (scroll - revenueQuestionScrollPosition) / (ambientalSectionEndScrollPosition - revenueQuestionScrollPosition);
-        opacity = Math.max(0, 0.9 - (fadeProgress * 0.9));
+        const fadeProgress = (scroll - 0) / (revenueQuestionScrollPosition - 0);
+        opacity = 0.6 - (fadeProgress * 0.3);
+      } else if (scroll < ambientalSectionScrollPosition) {
+        const fadeProgress = (scroll - revenueQuestionScrollPosition) / (ambientalSectionScrollPosition - revenueQuestionScrollPosition);
+        opacity = 0.3 - (fadeProgress * 0.25);
       } else {
-        opacity = 0;
+        opacity = 0.05;
       }
 
-      expect(opacity).toBeCloseTo(expectedOpacity, 0, `${desc}: scroll ${scroll}`);
+      expect(opacity).toBeCloseTo(expectedOpacity, 1, `${desc}: scroll ${scroll}`);
     });
   });
 
   test('Toggle and scroll: opacity follows toggle, then progresses on scroll', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const revenueQuestionScrollPosition = 450;
-    const ambientalSectionEndScrollPosition = 750;
+    const ambientalSectionScrollPosition = 500;
 
-    // Initial: tabCurrent (2025) faded at 90%, tabPrevious (2024) opaque
-    tabCurrent.style.opacity = 0.9;
+    // Initial: tabCurrent (2025) faded at 60%, tabPrevious (2024) opaque
+    tabCurrent.style.opacity = 0.6;
     tabPrevious.style.opacity = 1;
 
     // Scroll before company_revenue question
     window.scrollY = 300;
-    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.9);
+    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.6);
     expect(parseFloat(tabPrevious.style.opacity)).toBe(1);
 
     // Click to switch: tabPrevious becomes unselected (faded)
@@ -225,17 +229,17 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
     tabCurrent.style.opacity = tabPrevious.style.opacity;
     tabPrevious.style.opacity = tempOpacity;
 
-    // Now tabPrevious is faded at 90%
-    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.9);
+    // Now tabPrevious is faded at 60%
+    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.6);
     expect(parseFloat(tabCurrent.style.opacity)).toBe(1);
 
-    // Scroll to midpoint through fade zone (between company_revenue and ambiental end)
-    window.scrollY = 600; // Midway through fade zone
-    const fadeProgress = (600 - revenueQuestionScrollPosition) / (ambientalSectionEndScrollPosition - revenueQuestionScrollPosition);
-    let progressiveOpacity = Math.max(0, 0.9 - (fadeProgress * 0.9));
+    // Scroll to midpoint between company_revenue and ambiental section
+    window.scrollY = 475; // Midway through fade zone
+    const fadeProgress = (475 - revenueQuestionScrollPosition) / (ambientalSectionScrollPosition - revenueQuestionScrollPosition);
+    let progressiveOpacity = 0.3 - (fadeProgress * 0.25);
 
-    expect(progressiveOpacity).toBeGreaterThanOrEqual(0.4);
-    expect(progressiveOpacity).toBeLessThanOrEqual(0.6);
+    expect(progressiveOpacity).toBeGreaterThanOrEqual(0.15);
+    expect(progressiveOpacity).toBeLessThanOrEqual(0.225);
   });
 
   test('Opacity clamps to [0, 1] range', () => {
