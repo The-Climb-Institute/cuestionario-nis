@@ -41,6 +41,7 @@
 body {
   margin: 0;
   padding: 0;
+  padding-left: 60px;
   font-family: var(--font-primary);
   font-size: var(--font-size-base);
   line-height: 1.6;
@@ -1302,9 +1303,9 @@ footer p {
   transform: translateY(-50%);
   width: 60px;
   height: auto;
-  padding: var(--spacing-lg);
-  background-color: var(--color-white);
-  box-shadow: var(--shadow-medium);
+  padding: 8px 0;
+  background-color: transparent;
+  box-shadow: none;
   z-index: 100;
 }
 
@@ -1337,14 +1338,99 @@ footer p {
 }
 
 /**
+ * Task 12 Phase 2: Year Cylinder - 3D Drum Visual
+ */
+
+.year-cylinder {
+  perspective: 280px;
+  perspective-origin: center center;
+  width: 44px;
+  height: 120px;
+  margin: 0 auto;
+  background: linear-gradient(
+    to right,
+    #1a1a1a 0%,
+    #2e2e2e 15%,
+    #3a3a3a 30%,
+    #2a2a2a 50%,
+    #3a3a3a 70%,
+    #2e2e2e 85%,
+    #1a1a1a 100%
+  );
+  border-radius: 50% / 8px;
+  box-shadow:
+    -4px 0 8px rgba(0, 0, 0, 0.6),
+     4px 0 8px rgba(0, 0, 0, 0.6),
+     0 2px 12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  position: relative;
+}
+
+.year-cylinder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 35%;
+  width: 12%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.year-cylinder-stage {
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.year-cylinder .year-label {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+  padding: 0;
+  backface-visibility: hidden;
+  writing-mode: vertical-rl;
+}
+
+.year-cylinder .year-label-selected {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-gold-primary);
+  letter-spacing: 0.08em;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) translateZ(22px) rotate(180deg);
+  text-shadow:
+    0 1px 3px rgba(255, 255, 255, 0.3),
+    0 -1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.year-cylinder .year-label-unselected {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(180, 180, 180, 0.6);
+  letter-spacing: 0.05em;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) translateZ(22px) rotateX(-65deg) rotate(180deg);
+  opacity: 0.65;
+}
+
+/**
  * Task 12 Phase 2: Year Rail - Horizontal (Mobile) Fallback
  */
 @media (max-width: 767px) {
-  .year-rail {
-    position: static !important;
-    width: auto !important;
-    padding: var(--spacing-md) !important;
-    margin: var(--spacing-md) 0 !important;
+  body {
+    padding-left: 0;
   }
 
   .year-rail-vertical {
@@ -1352,46 +1438,90 @@ footer p {
     left: auto;
     top: auto;
     transform: none;
-    width: 100%;
-    height: auto;
-    box-shadow: var(--shadow-light);
+    width: auto;
+    padding: 0;
+    margin: var(--spacing-md) 0;
+    background: transparent;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .year-cylinder {
+    width: 160px;
+    height: 52px;
+    border-radius: 8px / 50%;
+    background: linear-gradient(
+      to bottom,
+      #1a1a1a 0%,
+      #2e2e2e 15%,
+      #3a3a3a 35%,
+      #2a2a2a 50%,
+      #3a3a3a 65%,
+      #2e2e2e 85%,
+      #1a1a1a 100%
+    );
+    box-shadow:
+      0 -4px 8px rgba(0, 0, 0, 0.6),
+      0  4px 8px rgba(0, 0, 0, 0.6),
+      4px 0 12px rgba(0, 0, 0, 0.4);
+    perspective: 200px;
+    perspective-origin: center center;
+  }
+
+  .year-cylinder .year-label {
+    writing-mode: horizontal-tb;
+  }
+
+  .year-cylinder .year-label-selected {
+    font-size: 22px;
+    font-weight: 700;
+    left: 60%;
+    transform: translateX(-50%) translateY(-50%) translateZ(26px) rotate(0deg);
+    text-shadow:
+      0 1px 3px rgba(255, 255, 255, 0.3),
+      0 -1px 1px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.1em;
+  }
+
+  .year-cylinder .year-label-unselected {
+    font-size: 14px;
+    left: 22%;
+    transform: translateX(-50%) translateY(-50%) translateZ(26px) rotateY(60deg);
+    opacity: 0.6;
+    letter-spacing: 0.05em;
   }
 
   .year-rail-vertical .year-selector-container {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing-lg);
     writing-mode: horizontal-tb;
     transform: none;
-  }
-
-  /**
-   * Task 12: Mobile wheel-like presentation
-   * - Unselected year: smaller, gray, left (visually subordinate)
-   * - Selected year: larger, gold, centered (visually prominent)
-   */
-  .year-label {
-    display: inline-block;
-    padding: 0 var(--spacing-md);
-  }
-
-  .year-label-unselected {
-    font-size: 14px;
-    color: var(--color-gray-dark);
-    order: 1; /* Position to the left */
-  }
-
-  .year-label-selected {
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--color-gold-primary);
-    order: 2; /* Position in the center/after */
+    flex-direction: row;
+    justify-content: center;
+    margin-top: var(--spacing-sm);
   }
 
   .year-selector-label,
   .year-selector-control {
     font-size: var(--font-size-base);
+    writing-mode: horizontal-tb;
+  }
+
+  .year-selector-control {
+    border: none;
+    background: transparent;
+    font-size: 10px;
+    color: var(--color-gray-dark);
+    cursor: pointer;
+    padding: 2px;
+  }
+
+  .year-selector-label {
+    font-size: 9px;
+    color: var(--color-gray-dark);
+    letter-spacing: 0.05em;
   }
 }
 

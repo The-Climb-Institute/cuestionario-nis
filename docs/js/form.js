@@ -289,7 +289,19 @@ class NISFormRenderer {
     selectedDiv.setAttribute('data-year-label', 'selected');
     selectedDiv.textContent = String(this.selectedYear);
 
-    // Create selector container
+    // Task 12 Phase 3: Wrap year labels in cylinder stage
+    const cylinderWrapperDiv = document.createElement('div');
+    cylinderWrapperDiv.className = 'year-cylinder';
+
+    const cylinderStageDiv = document.createElement('div');
+    cylinderStageDiv.className = 'year-cylinder-stage';
+
+    cylinderStageDiv.appendChild(unselectedDiv);
+    cylinderStageDiv.appendChild(selectedDiv);
+    cylinderWrapperDiv.appendChild(cylinderStageDiv);
+    yearRailDiv.appendChild(cylinderWrapperDiv);
+
+    // Create selector container (outside the 3D stage)
     const selectorContainer = document.createElement('div');
     selectorContainer.className = 'year-selector-container';
 
@@ -312,8 +324,6 @@ class NISFormRenderer {
     selectorContainer.appendChild(label);
     selectorContainer.appendChild(selector);
 
-    yearRailDiv.appendChild(unselectedDiv);
-    yearRailDiv.appendChild(selectedDiv);
     yearRailDiv.appendChild(selectorContainer);
     container.appendChild(yearRailDiv);
 
@@ -1379,12 +1389,12 @@ class NISFormRenderer {
         unselectedYearEl.style.opacity = Math.max(0, 1 - scrollProgressClamped);
       }
 
-      // Update selected year position (move up as scroll increases)
-      const selectedYearEl = document.querySelector('[data-year-label="selected"]');
-      if (selectedYearEl) {
-        const initialPosition = 100; // Starting position in pixels
-        const newPosition = Math.max(0, initialPosition - (scrollProgressClamped * initialPosition));
-        selectedYearEl.style.transform = `translateY(-${newPosition}px)`;
+      // Task 12 Phase 3: Rotate cylinder stage for drum-turning effect
+      const cylinderStage = document.querySelector('.year-cylinder-stage');
+      if (cylinderStage) {
+        const maxRotation = 30;
+        const rotation = scrollProgressClamped * maxRotation;
+        cylinderStage.style.transform = `rotateX(${rotation}deg)`;
       }
     };
 
