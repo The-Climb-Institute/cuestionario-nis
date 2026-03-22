@@ -278,17 +278,6 @@ class NISFormRenderer {
       </div>
 
       <div class="instructions-content">
-        <div class="instruction-block">
-          <h3 class="instruction-title">Mensaje de Bienvenida</h3>
-          <p>¡Bienvenido a nuestra encuesta sobre el programa Climb Institute! Tu participación es clave para comprender las expectativas y avances de las empresas que participan en el Programa de Aceleración. ¡Gracias por dedicar tu tiempo y experiencia!</p>
-
-          <p>Con el presente estudio se aplicará un cuestionario diseñado para recopilar información clave sobre distintos aspectos que influyen en la gestión y desempeño de las organizaciones. El propósito es contar con datos que permitan analizar tendencias, identificar áreas de oportunidad y fortalecer las prácticas empresariales.</p>
-        </div>
-
-        <div class="instruction-block">
-          <h3 class="instruction-title">Objetivo</h3>
-          <p>Medir el avance e impacto de las acciones de igualdad, diversidad y sostenibilidad empresarial.</p>
-        </div>
 
         <div class="instruction-block">
           <h3 class="instruction-title">Instrucciones</h3>
