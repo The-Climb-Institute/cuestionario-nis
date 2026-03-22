@@ -1482,22 +1482,25 @@ class NISFormRenderer {
       const ambientalSection = document.querySelector('[data-section="ambiental"]');
       const ambientalSectionTop = ambientalSection ? ambientalSection.getBoundingClientRect().top + scrollTop : docHeight * 0.5;
 
-      // Calculate opacity: 90% before empresa, fade to 50% by ambiental, then stable
-      let fadeOpacity = 0.9; // Default: 90% opacity (very visible)
+      // Calculate opacity progression:
+      // 90% before empresa → 50% at ambiental start → 0% at form end
+      let fadeOpacity = 0.9; // Default: 90% opacity
 
       if (scrollTop < empresaSectionTop) {
         // Before enterprise profile questions: stay at 90% opacity
         fadeOpacity = 0.9;
       } else if (scrollTop < ambientalSectionTop) {
-        // Between empresa and ambiental: fade from 90% to 50% opacity
+        // Between empresa and ambiental: fade from 90% to 50%
         const fadeStart = empresaSectionTop;
         const fadeEnd = ambientalSectionTop;
         const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-        // Interpolate from 0.9 to 0.5 over this range
-        fadeOpacity = 0.9 - (fadeProgress * 0.4);
+        fadeOpacity = 0.9 - (fadeProgress * 0.4); // 0.9 to 0.5
       } else {
-        // At/after ambiental section: stay at 50% opacity
-        fadeOpacity = 0.5;
+        // After ambiental section: fade from 50% to 0% by end of document
+        const fadeStart = ambientalSectionTop;
+        const fadeEnd = docHeight;
+        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+        fadeOpacity = Math.max(0, 0.5 - (fadeProgress * 0.5)); // 0.5 to 0.0
       }
 
       unselectedTab.style.opacity = Math.max(0, fadeOpacity);

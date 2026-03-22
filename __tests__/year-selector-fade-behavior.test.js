@@ -6,8 +6,8 @@
  * 2. Toggle switches opacity when year is selected (swap which tab is faded)
  * 3. Opacity progresses as user scrolls:
  *    - 90% opacity before empresa section
- *    - Gradually fades to 50% opacity by ambiental section
- *    - Stays at 50% opacity after ambiental section
+ *    - Gradually fades to 50% opacity by ambiental section start
+ *    - Continues fading to 0% opacity by end of form
  * 4. Different scroll positions trigger different opacity levels
  */
 
@@ -19,7 +19,7 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
   let energySection;
 
   beforeEach(() => {
-    // Create DOM structure simulating the form with energy section
+    // Create DOM structure simulating the form with empresa and ambiental sections
     document.body.innerHTML = `
       <div class="container">
         <div class="year-rail year-rail-vertical">
@@ -31,8 +31,9 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
           </div>
         </div>
         <main class="nis-form" id="form-container"></main>
-        <section data-section="energia" style="margin-top: 500px; height: 300px;">Energy Section</section>
-        <div style="height: 500px;">Additional Content</div>
+        <section data-section="empresa" style="margin-top: 400px; height: 200px;">Empresa Section</section>
+        <section data-section="ambiental" style="margin-top: 600px; height: 300px;">Ambiental Section</section>
+        <div style="height: 400px;">Additional Content</div>
       </div>
     `;
 
@@ -40,7 +41,7 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
     yearRail = document.querySelector('.year-rail');
     tabCurrent = document.querySelector('[data-year-label="unselected"]');
     tabPrevious = document.querySelector('[data-year-label="selected"]');
-    energySection = document.querySelector('[data-section="energia"]');
+    energySection = document.querySelector('[data-section="ambiental"]');
 
     // Simulate scrolling by modifying window.scrollY
     Object.defineProperty(window, 'scrollY', {
@@ -116,7 +117,8 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
 
   test('At empresa section: opacity transitions from 90% to 50%', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
-    const empresaSectionScrollPosition = 500; // Empresa starts at 500
+    const empresaSectionScrollPosition = 400; // Empresa starts at 400
+    const ambientalSectionScrollPosition = 600; // Ambiental starts at 600
 
     // Simulate being at empresa section start
     window.scrollY = empresaSectionScrollPosition;
@@ -127,52 +129,58 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
 
     expect(opacity).toBe(0.9);
 
-    // Scroll to 12.5% progress into fade zone (50 pixels into 200-pixel fade zone from 500-700)
-    window.scrollY = empresaSectionScrollPosition + 50;
-    const fadeProgress125 = 50 / (docHeight - empresaSectionScrollPosition);
-    opacity = 0.9 - (fadeProgress125 * 0.4);
+    // Scroll to midpoint between empresa and ambiental (100 pixels into 200-pixel fade zone)
+    window.scrollY = empresaSectionScrollPosition + 100;
+    const fadeProgressMid = 100 / (ambientalSectionScrollPosition - empresaSectionScrollPosition);
+    opacity = 0.9 - (fadeProgressMid * 0.4);
 
-    expect(opacity).toBeGreaterThan(0.7);
-    expect(opacity).toBeLessThanOrEqual(0.9);
+    expect(opacity).toBeGreaterThan(0.65);
+    expect(opacity).toBeLessThan(0.75);
   });
 
-  test('Midway through fade zone: opacity fades midway', () => {
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
-    const empresaSectionScrollPosition = 500;
+  test('At ambiental section: opacity reaches 50%', () => {
+    const empresaSectionScrollPosition = 400;
+    const ambientalSectionScrollPosition = 600;
 
-    // At midpoint of fade zone: empresa section + (docHeight - empresaSectionScrollPosition) / 2
-    const midpointScroll = empresaSectionScrollPosition + (docHeight - empresaSectionScrollPosition) / 2;
-    window.scrollY = midpointScroll;
+    // At ambiental section start
+    window.scrollY = ambientalSectionScrollPosition;
 
-    // Calculate opacity at exactly 50% progress through fade zone
-    const fadeProgress = (midpointScroll - empresaSectionScrollPosition) / (docHeight - empresaSectionScrollPosition);
+    // Calculate opacity at exactly ambiental section start
+    const fadeProgress = (ambientalSectionScrollPosition - empresaSectionScrollPosition) / (ambientalSectionScrollPosition - empresaSectionScrollPosition);
     let opacity = 0.9 - (fadeProgress * 0.4);
 
-    // At 50% progress: opacity = 0.9 - (0.5 * 0.4) = 0.9 - 0.2 = 0.7
-    expect(opacity).toBe(0.7);
+    // At 100% progress through empresa-ambiental zone: opacity = 0.9 - (1.0 * 0.4) = 0.5
+    expect(opacity).toBe(0.5);
   });
 
-  test('At end of form: opacity stays at 50%', () => {
+  test('At end of form: opacity reaches 0%', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
+    const ambientalSectionScrollPosition = 600;
 
     // At end of document
     window.scrollY = docHeight;
 
-    // Opacity should be 50% (stable after ambiental section)
-    let opacity = 0.5;
+    // Calculate opacity at exactly end of document
+    const fadeProgress = (docHeight - ambientalSectionScrollPosition) / (docHeight - ambientalSectionScrollPosition);
+    let opacity = Math.max(0, 0.5 - (fadeProgress * 0.5));
 
-    expect(opacity).toBe(0.5);
+    // At 100% progress through ambiental-end zone: opacity = 0.5 - (1.0 * 0.5) = 0
+    expect(opacity).toBe(0);
   });
 
   test('Multiple scroll positions maintain correct opacity progression', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const empresaSectionScrollPosition = 500;
+    const empresaSectionScrollPosition = 400;
+    const ambientalSectionScrollPosition = 600;
 
     // Test key positions
     const testCases = [
       { scroll: 0, expectedOpacity: 0.9, desc: 'Before empresa' },
-      { scroll: 250, expectedOpacity: 0.9, desc: 'Still before empresa' },
-      { scroll: 600, expectedOpacity: 0.5, desc: 'At midpoint' },
+      { scroll: 200, expectedOpacity: 0.9, desc: 'Still before empresa' },
+      { scroll: 500, expectedOpacity: 0.7, desc: 'Midway between empresa and ambiental' },
+      { scroll: 600, expectedOpacity: 0.5, desc: 'At ambiental section start' },
+      { scroll: 650, expectedOpacity: 0.25, desc: 'Halfway through ambiental to end' },
+      { scroll: 700, expectedOpacity: 0, desc: 'At end of form' },
     ];
 
     testCases.forEach(({ scroll, expectedOpacity, desc }) => {
@@ -182,11 +190,12 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
       let opacity;
       if (scroll < empresaSectionScrollPosition) {
         opacity = 0.9;
-      } else if (scroll < docHeight) {
-        const fadeProgress = (scroll - empresaSectionScrollPosition) / (docHeight - empresaSectionScrollPosition);
+      } else if (scroll < ambientalSectionScrollPosition) {
+        const fadeProgress = (scroll - empresaSectionScrollPosition) / (ambientalSectionScrollPosition - empresaSectionScrollPosition);
         opacity = 0.9 - (fadeProgress * 0.4);
       } else {
-        opacity = 0.5;
+        const fadeProgress = (scroll - ambientalSectionScrollPosition) / (docHeight - ambientalSectionScrollPosition);
+        opacity = Math.max(0, 0.5 - (fadeProgress * 0.5));
       }
 
       expect(opacity).toBeCloseTo(expectedOpacity, 0, `${desc}: scroll ${scroll}`);
@@ -195,6 +204,8 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
 
   test('Toggle and scroll: opacity follows toggle, then progresses on scroll', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const empresaSectionScrollPosition = 400;
+    const ambientalSectionScrollPosition = 600;
 
     // Initial: tabCurrent (2025) faded at 90%, tabPrevious (2024) opaque
     tabCurrent.style.opacity = 0.9;
@@ -220,13 +231,13 @@ describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
     expect(parseFloat(tabPrevious.style.opacity)).toBe(0.9);
     expect(parseFloat(tabCurrent.style.opacity)).toBe(1);
 
-    // Scroll past empresa section and verify opacity progression on now-faded tabPrevious
-    window.scrollY = 600; // At/past empresa section
-    const fadeProgress = (600 - 500) / (docHeight - 500);
+    // Scroll to midpoint between empresa and ambiental sections
+    window.scrollY = 500; // Midway through fade zone 1
+    const fadeProgress = (500 - empresaSectionScrollPosition) / (ambientalSectionScrollPosition - empresaSectionScrollPosition);
     let progressiveOpacity = 0.9 - (fadeProgress * 0.4);
 
-    expect(progressiveOpacity).toBeGreaterThanOrEqual(0.5);
-    expect(progressiveOpacity).toBeLessThanOrEqual(0.9);
+    expect(progressiveOpacity).toBeGreaterThanOrEqual(0.65);
+    expect(progressiveOpacity).toBeLessThanOrEqual(0.75);
   });
 
   test('Opacity clamps to [0, 1] range', () => {
