@@ -742,6 +742,100 @@ class NISFormRenderer {
   }
 
   /**
+   * Task 15: Renderiza el campo RFC con lógica condicional requerida para México
+   * RFC es requerido solo cuando el país seleccionado es México (code2 === "MX")
+   */
+  renderRFCField(field, seccion, fieldName, fieldId, onChangeCallback) {
+    const container = document.createElement('div');
+    container.className = 'form-field';
+    container.setAttribute('data-field-id', 'company_rfc');
+
+    const label = document.createElement('label');
+    label.className = 'field-label';
+    label.setAttribute('for', fieldId);
+    label.innerHTML = field.label;
+    container.appendChild(label);
+
+    if (field.helpText) {
+      const help = document.createElement('small');
+      help.className = 'field-help';
+      help.textContent = field.helpText;
+      container.appendChild(help);
+    }
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = fieldId;
+    input.name = fieldName;
+    input.className = 'field-input text-input';
+    input.placeholder = 'Ejemplo: ABC123456XYZ0';
+    input.setAttribute('data-field-type', 'rfc');
+    container.appendChild(input);
+
+    // Task 15: Update required status when country changes
+    const updateRFCRequirement = () => {
+      const countrySelect = document.querySelector('[name="company_country"]');
+      if (!countrySelect) return;
+
+      // Get the selected country option to check code2 attribute
+      const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+      const countryCode = selectedOption?.getAttribute('data-code2') || selectedOption?.value;
+
+      const isMexico = countryCode === 'MX';
+
+      // Update input required attribute
+      if (isMexico) {
+        input.required = true;
+        // Update label to show required indicator if not already present
+        if (!label.querySelector('.required-indicator')) {
+          const requiredSpan = document.createElement('span');
+          requiredSpan.className = 'required-indicator';
+          requiredSpan.title = 'Campo requerido';
+          requiredSpan.textContent = '*';
+          label.appendChild(requiredSpan);
+        }
+      } else {
+        input.required = false;
+        // Remove required indicator
+        const requiredSpan = label.querySelector('.required-indicator');
+        if (requiredSpan) requiredSpan.remove();
+      }
+
+      onChangeCallback();
+    };
+
+    // Listen for country changes
+    const countrySelect = document.querySelector('[name="company_country"]');
+    if (countrySelect) {
+      countrySelect.addEventListener('change', updateRFCRequirement);
+      // Set initial state
+      updateRFCRequirement();
+    }
+
+    // Task 15: RFC validation on input
+    input.addEventListener('change', () => {
+      const value = input.value.trim();
+      if (!value) return; // Empty is OK if not required
+
+      // Validate RFC format
+      const rfcRegex = /^[A-ZÑ&]{6}\d{6}[0-9A-Z]$/;
+      const normalized = value.toUpperCase().replace(/\s+/g, '');
+
+      if (!rfcRegex.test(normalized)) {
+        input.setCustomValidity('RFC debe tener formato válido (13 caracteres: 6 letras + 6 dígitos + 1 carácter)');
+      } else {
+        input.setCustomValidity('');
+        // Update value to normalized form
+        input.value = normalized;
+      }
+    });
+
+    input.addEventListener('input', onChangeCallback);
+
+    return container;
+  }
+
+  /**
    * Renderiza el bloque de campos para un año en una sección multi-año.
    */
   renderYearBlock(seccion, year, onChangeCallback) {
@@ -781,6 +875,11 @@ class NISFormRenderer {
 
     if (field.id === 'energia_kwh' && year != null) {
       return this.renderEnergyField(field, seccion, year, fieldName, onChangeCallback);
+    }
+
+    // Task 15: RFC field with conditional required logic for Mexico (code2 === "MX")
+    if (field.id === 'company_rfc') {
+      return this.renderRFCField(field, seccion, fieldName, fieldId, onChangeCallback);
     }
 
     const fieldDiv = document.createElement('div');

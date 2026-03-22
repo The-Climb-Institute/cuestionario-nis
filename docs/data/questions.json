@@ -14,6 +14,17 @@
           "benchmarkId": null
         },
         {
+          "id": "company_rfc",
+          "label": "RFC (Registro Federal de Contribuyentes)",
+          "type": "text",
+          "required": false,
+          "helpText": "Requerido solo para empresas en México",
+          "conditional": "company_country",
+          "docCode": "B2.3",
+          "ibsoId": null,
+          "benchmarkId": null
+        },
+        {
           "id": "company_country",
           "label": "País",
           "type": "select",

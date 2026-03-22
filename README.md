@@ -23,6 +23,34 @@ Todos los derechos reservados. Prohibida la reproducción total o parcial de est
 
 ---
 
+## Task 15: RFC - Identificación de Empresa (México)
+
+### Características Principales
+- **RFC (Registro Federal de Contribuyentes):** Campo para identificación fiscal de la empresa
+- **Requerido solo para México:** Se solicita automáticamente cuando país = "México" (code2 = "MX")
+- **Opcional para otros países:** No requerido en otros territorios
+- **Validación automática:** Verifica formato correcto (6 letras + 6 dígitos + 1 carácter verificador)
+- **Normalización:** Convierte automáticamente a mayúsculas y elimina espacios
+- **Almacenamiento:** Se envía a OpenFormStack con el resto del payload de respuestas
+
+### Formato Válido
+- **Total:** 13 caracteres
+- **Estructura:** 6 caracteres iniciales (nombre/razón social) + 6 dígitos (fecha YYMMDD) + 1 carácter verificador (0-9, A-Z)
+- **Caracteres especiales:** Soporta Ñ y & en personas morales
+- **Ejemplo:** ABC123456XYZ0
+
+### Comportamiento Condicional
+- **Cuando país es México:**
+  - Campo marcado como requerido (*)
+  - Validación de formato obligatoria
+  - Bloquea envío si RFC no es válido
+- **Cuando país es otro:**
+  - Campo opcional (sin *)
+  - No se aplica validación RFC
+  - Puede dejarse vacío
+
+---
+
 ## Task 13: Consumo de Energía para Año de Reporte Seleccionado
 
 ### Características Principales
