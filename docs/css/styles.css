@@ -653,27 +653,6 @@ header .logo-image {
   display: none;
 }
 
-/* Highlighting por semáforo */
-.form-field.highlight-green {
-  border-left-color: var(--color-green);
-  background-color: rgba(39, 174, 96, 0.05);
-}
-
-.form-field.highlight-yellow {
-  border-left-color: var(--color-yellow);
-  background-color: rgba(243, 156, 18, 0.05);
-}
-
-.form-field.highlight-red {
-  border-left-color: var(--color-red);
-  background-color: rgba(231, 76, 60, 0.05);
-}
-
-.form-field.highlight-gray {
-  border-left-color: var(--color-gray-medium);
-  background-color: rgba(200, 200, 200, 0.02);
-}
-
 .field-label {
   font-weight: 600;
   color: var(--color-dark);
@@ -682,18 +661,6 @@ header .logo-image {
   display: flex;
   align-items: flex-start;
   gap: var(--spacing-sm);
-}
-
-.benchmark-indicator {
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  flex-shrink: 0;
-}
-
-.benchmark-indicator:hover {
-  opacity: 1;
-  transform: scale(1.1);
 }
 
 .field-help {
@@ -886,53 +853,6 @@ select:disabled {
 }
 
 /* === BENCHMARK TOOLTIP === */
-.benchmark-tooltip {
-  position: absolute;
-  background: var(--color-dark);
-  color: var(--color-white);
-  padding: var(--spacing-md);
-  border-radius: var(--border-radius);
-  font-size: 12px;
-  max-width: 280px;
-  z-index: 1000;
-  box-shadow: var(--shadow-medium);
-  bottom: 100%;
-  left: 0;
-  margin-bottom: var(--spacing-sm);
-}
-
-.benchmark-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 10px;
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid var(--color-dark);
-}
-
-.benchmark-tooltip-title {
-  font-weight: bold;
-  color: var(--color-gold-primary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.benchmark-tooltip-meta {
-  margin: var(--spacing-sm) 0;
-  line-height: 1.4;
-}
-
-.benchmark-tooltip-source {
-  font-style: italic;
-  color: var(--color-gray-light);
-  margin-top: var(--spacing-sm);
-  padding-top: var(--spacing-sm);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 11px;
-}
-
 /* === FOOTER === */
 footer {
   background: var(--color-dark);
