@@ -1,5 +1,14 @@
 # Project rules: cuestionario-nis
 
+## Task planning workflow
+
+When working on a numbered task under `documentation/planning/`:
+
+1. **Start work:** Move the task file from `documentation/planning/ready/` to `documentation/planning/in-progress/` (use `git mv` when files are tracked).
+2. **Finish work:** Move the file to `documentation/planning/completed/`, set **Status** to Completed, update acceptance criteria and **Status history**.
+
+Full lifecycle and examples: `documentation/planning/README.md` (section "Workflow Rules", Key Rules: Ready to In Progress when work begins). The README also references optional external rules at `~/.claude/rules/task-management.md` if present on the machine.
+
 ## Documentation and project files
 
 - **No emoji or decorative symbols.** Do not use emoji or decorative Unicode (e.g. checkmarks, clocks, document icons, block signs, arrows, special bullets) in TODO.md, planning docs, READMEs, or any project documentation. Use plain ASCII only: e.g. "Done", "Pending", "Blocked", "Doc:", standard hyphen/dash, and normal punctuation. Exception: (R) for registered trademark when the symbol is not available.
