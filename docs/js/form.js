@@ -67,9 +67,13 @@ class NISFormRenderer {
     this.countries = countries;
     this.formFields = this._buildFormFields(questions);
     this.MULTI_YEAR_SECTIONS = ['ambiental', 'social', 'gobernanza'];
-    // Initialize with previous year by default; past years added per-field via per-year row controls
+
+    // Task 12: Initialize with exactly 2 years (previous + current), select previous by default
     const currentYear = new Date().getFullYear();
-    this.dataYears = [currentYear - 1];
+    this.dataYears = [currentYear - 1, currentYear]; // [previous, current]
+    this.selectedYear = currentYear - 1; // Default selection: previous year
+    this.yearLocked = false; // Lock after first non-company field is filled
+    this.isReadOnly = false; // Read-only state after successful submit
   }
 
   /**
@@ -120,6 +124,25 @@ class NISFormRenderer {
   }
 
   /**
+   * Task 12: Create a wrapped onChange callback that tracks non-company field changes
+   */
+  createChangeCallback(onChangeCallback = () => {}) {
+    return (e) => {
+      // Call original callback
+      onChangeCallback(e);
+
+      // Task 12: Check if a non-company field was just filled (triggers year lock)
+      const field = e.target;
+      const seccion = field.closest('[data-seccion]')?.getAttribute('data-seccion');
+      const hasValue = field.value && field.value.trim && field.value.trim().length > 0;
+
+      if (seccion && hasValue && this.isNonCompanySection(seccion) && !this.yearLocked) {
+        this.setYearLocked(true);
+      }
+    };
+  }
+
+  /**
    * Renderiza la estructura HTML del formulario en un contenedor
    * @param {string} containerId - ID del div donde renderizar
    * @param {function} onChangeCallback - Callback cuando cambia algún valor
@@ -130,6 +153,9 @@ class NISFormRenderer {
       console.error(`Contenedor con ID "${containerId}" no encontrado`);
       return;
     }
+
+    // Task 12: Wrap the onChange callback to track non-company field changes
+    const wrappedCallback = this.createChangeCallback(onChangeCallback);
 
     container.innerHTML = '';
 
@@ -179,6 +205,36 @@ class NISFormRenderer {
     `;
     container.appendChild(instructionsDiv);
 
+    // Task 12: Render year selector rail
+    const yearRailDiv = document.createElement('div');
+    yearRailDiv.className = 'year-rail year-rail-desktop';
+    yearRailDiv.id = 'year-rail';
+    yearRailDiv.innerHTML = `
+      <div class="year-selector-container">
+        <label for="year-selector" class="year-selector-label">Año</label>
+        <select id="year-selector" class="year-selector-control">
+          ${this.dataYears.map(year => `
+            <option value="${year}" ${year === this.selectedYear ? 'selected' : ''}>
+              ${year}
+            </option>
+          `).join('')}
+        </select>
+      </div>
+    `;
+    container.appendChild(yearRailDiv);
+
+    // Task 12: Set up year selector event listener
+    const yearSelector = document.getElementById('year-selector');
+    if (yearSelector) {
+      yearSelector.addEventListener('change', (e) => {
+        const newYear = parseInt(e.target.value);
+        if (!this.setSelectedYear(newYear)) {
+          // Revert selection if year change was blocked (locked)
+          e.target.value = this.selectedYear;
+        }
+      });
+    }
+
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
       const seccionData = this.benchmarks.secciones[seccion];
@@ -201,14 +257,14 @@ class NISFormRenderer {
         const yearBlocksContainer = document.createElement('div');
         yearBlocksContainer.className = 'year-blocks';
         this.dataYears.forEach(year => {
-          yearBlocksContainer.appendChild(this.renderYearBlock(seccion, year, onChangeCallback));
+          yearBlocksContainer.appendChild(this.renderYearBlock(seccion, year, wrappedCallback));
         });
         seccionDiv.appendChild(yearBlocksContainer);
       } else {
         const fieldsContainer = document.createElement('div');
         fieldsContainer.className = 'seccion-fields';
         fields.forEach(field => {
-          fieldsContainer.appendChild(this.renderField(field, seccion, onChangeCallback, null));
+          fieldsContainer.appendChild(this.renderField(field, seccion, wrappedCallback, null));
         });
         seccionDiv.appendChild(fieldsContainer);
       }
@@ -229,6 +285,14 @@ class NISFormRenderer {
 
       container.appendChild(seccionDiv);
     });
+
+    // Task 12: Add footer with copyright legend
+    const footerDiv = document.createElement('footer');
+    footerDiv.className = 'form-footer';
+    footerDiv.innerHTML = `
+      <p class="footer-copyright">Todos los derechos reservados. Prohibida la reproducción total o parcial de este sitio.</p>
+    `;
+    container.appendChild(footerDiv);
   }
 
   /**
@@ -1016,6 +1080,64 @@ class NISFormRenderer {
     }
 
     return groupDiv;
+  }
+
+  /**
+   * Task 12: Set the selected reporting year
+   * @param {number} year
+   * @returns {boolean} true if year was changed, false if locked or invalid
+   */
+  setSelectedYear(year) {
+    if (this.yearLocked) {
+      console.warn(`Year selection is locked. Clear form data to change year.`);
+      return false;
+    }
+    if (!this.dataYears.includes(year)) {
+      console.warn(`Year ${year} not available. Choose from: ${this.dataYears.join(', ')}`);
+      return false;
+    }
+    this.selectedYear = year;
+    return true;
+  }
+
+  /**
+   * Task 12: Check if a section is a non-company section (triggers year lock when filled)
+   */
+  isNonCompanySection(seccion) {
+    return this.MULTI_YEAR_SECTIONS.includes(seccion);
+  }
+
+  /**
+   * Task 12: Lock/unlock year selection
+   * @param {boolean} locked
+   */
+  setYearLocked(locked) {
+    this.yearLocked = locked;
+    const selector = document.getElementById('year-selector');
+    if (selector) {
+      selector.disabled = locked || this.isReadOnly;
+    }
+  }
+
+  /**
+   * Task 12: Set form to read-only state (after successful submit)
+   * @param {boolean} readOnly
+   */
+  setReadOnly(readOnly) {
+    this.isReadOnly = readOnly;
+    const form = document.querySelector('form');
+    if (form) {
+      form.classList.toggle('form-read-only', readOnly);
+    }
+    const selector = document.getElementById('year-selector');
+    if (selector) {
+      selector.disabled = readOnly || this.yearLocked;
+    }
+    // Disable all form fields
+    const fields = form?.querySelectorAll('input, select, textarea');
+    fields?.forEach(field => {
+      field.disabled = readOnly;
+    });
   }
 
   /**
