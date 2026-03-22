@@ -4,10 +4,13 @@
 
 When working on a numbered task under `documentation/planning/`:
 
+0. **Queue:** Keep task files in the correct folder: `ready/` (Ready), `pending/` (approved but not started / waiting on implementation), `in-progress/` (active), `blocked/` (dependencies), `completed/` (done). Do not leave Plan 06 tasks in `documentation/planning/` root unless intentionally untracked there.
 1. **Start work:** Move the task file from `documentation/planning/ready/` to `documentation/planning/in-progress/` (use `git mv` when files are tracked).
 2. **Finish work:** Move the file to `documentation/planning/completed/`, set **Status** to Completed, update acceptance criteria and **Status history**.
 
 Full lifecycle and examples: `documentation/planning/README.md` (section "Workflow Rules", Key Rules: Ready to In Progress when work begins). The README also references optional external rules at `~/.claude/rules/task-management.md` if present on the machine.
+
+3. **README with implementation:** When a task changes user-visible behavior, update the repository root **`README.md` in the same change set as the code** (same PR or commit series). See `documentation/planning/plans/06-plan-nis-openproject-ajustes-2026.md` section **Documentation (README)**.
 
 ## Documentation and project files
 

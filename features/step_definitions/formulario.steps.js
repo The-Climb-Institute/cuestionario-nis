@@ -1,6 +1,11 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
 
+/**
+ * OpenFormStack en producción: CORS suele bloquear la lectura del cuerpo; el éxito
+ * canónico en app es exito_cors (route.abort simula ese caso). El mock JSON 200 es secundario.
+ * Ver documentation/planning/decisions.md DEC-04.
+ */
 const MOCK_SUCCESS_BODY = JSON.stringify({ id: 'e2e-mock-id' });
 
 Given('que la aplicación está abierta', async function () {
