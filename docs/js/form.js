@@ -348,18 +348,6 @@ class NISFormRenderer {
     // Task 12 Phase 2: Initialize scroll effects
     this.initializeScrollEffects();
 
-    // Task 12 Phase 3: Add clear form button (near the top, in form controls area)
-    const formControlsDiv = document.createElement('div');
-    formControlsDiv.className = 'form-controls';
-    const clearBtn = document.createElement('button');
-    clearBtn.id = 'btn-clear-form';
-    clearBtn.type = 'button';
-    clearBtn.className = 'btn btn-secondary btn-clear';
-    clearBtn.textContent = 'Limpiar formulario';
-    clearBtn.addEventListener('click', () => this.clearFormData());
-    formControlsDiv.appendChild(clearBtn);
-    yearRailDiv.appendChild(formControlsDiv);
-
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
       const seccionData = this.benchmarks.secciones[seccion];
