@@ -5,21 +5,44 @@ Formulario interactivo para evaluar el cumplimiento de **Normas de Información 
 ## Task 12: Selector de Año de Reporte
 
 ### Características Principales
-- **Dos años disponibles:** Año actual y año anterior (selección por defecto: anterior)
-- **Riel vertical fijo** (escritorio) con **rotación de 90°** / **tira horizontal** (móvil)
-- **Efectos de scroll vinculados:** Año no seleccionado se desvanece; año seleccionado se mueve hacia arriba
-- **Bloqueo automático** después del primer campo no-empresa completado
-- **Botón "Limpiar formulario"** para desbloquear y resetear datos
-- **Estado post-envío:** Formulario en modo solo-lectura con estilo atenuado
+- **Dos años disponibles:** Año actual y año anterior (selección por defecto: año anterior)
+- **Diseño cilindro 3D:** Riel de año con perspectiva 3D que simula un cilindro rotatorio (como tambor de máquina tragamonedas o tronco redondeado)
+  - Año seleccionado: texto blanco de frente (visible frontal)
+  - Año no seleccionado: envuelto alrededor del borde superior del cilindro, opaco y visualmente subordinado
+  - Superficie oscura con gradiente y raya de brillo sutil para profundidad
+- **Efectos de scroll vinculados:**
+  - Año no seleccionado se desvanece (opacity fade) conforme el usuario desplaza la página
+  - Cilindro gira gradualmente como si rodara (rotateX) creando efecto de tambor rotatorio
+- **Bloqueo de cambio de año:**
+  - Se activa cuando el usuario completa el **primer campo no-empresa** (campos ambientales, sociales o de gobernanza)
+  - Completar solo campos de empresa NO activa el bloqueo
+  - Bloqueado: imposible cambiar año hasta confirmar limpiar
+- **Botón "Limpiar formulario"** debloquea el año y borra todos los datos (resetea estado de "formulario iniciado")
+- **Estado post-envío:** Formulario en modo solo-lectura con estilo atenuado (deshabilitado), no permite cambios ni edición
+
+### Layout y Centrado
+- **Formulario centrado en viewport:** Contenido principal se centra horizontalmente
+- **Riel fijo en lado izquierdo:** Ancho 60px, posición fija, sin desplazamiento
+- **Prevención de solapamiento:** `body { padding-left: 60px }` reserva espacio para riel fijo en escritorio
+- **Móvil:** `padding-left: 0` en pantallas <768px; riel se convierte en tira horizontal centrada encima del formulario
 
 ### Diseño Responsive
-- **Escritorio (≥768px):** Riel vertical 60px en lado izquierdo, rotado 90°, con scroll-linking
-- **Móvil (<768px):** Tira horizontal centrada, sin rotación, adaptada para pantalla pequeña
+- **Escritorio (≥768px):**
+  - Riel vertical fijo 60px en lado izquierdo, con rotación 90° (lectura abajo-a-arriba)
+  - Cilindro 3D con perspectiva (280px), altura 120px, ancho 44px
+  - Scroll-linking: unselected year rotates around top shoulder (rotateX: -65deg)
+  - Shimmer stripe en superficie para efecto de profundidad
+- **Móvil (<768px):**
+  - Tira horizontal 160px × 52px, centrada sobre formulario
+  - Cilindro horizontal con perspectiva (200px)
+  - Año seleccionado derecha (22px, gold), año no seleccionado izquierda (14px, gray) con rotateY: 60deg
+  - Selector nativo (`<select>`) minimizado (9-10px font, transparent background, sin borde)
 
 ### Pie de Página
 ```
 Todos los derechos reservados. Prohibida la reproducción total o parcial de este sitio.
 ```
+*(Se muestra en footer de todas las páginas incluidas index.html y privacy.html)*
 
 ---
 
