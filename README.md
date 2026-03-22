@@ -113,10 +113,20 @@ Todos los derechos reservados. Prohibida la reproducción total o parcial de est
 ### Llenar el Cuestionario
 1. **Navega por las 3 secciones:** Ambiental, Social, Gobernanza
 2. **Completa los indicadores:** Ingresa valores numéricos o selecciona Sí/No
-3. **Lee los benchmarks:** Haz clic en el símbolo 📊 para ver la meta OCDE y la cita de fuente
-4. **Observa los scores en tiempo real:** El panel derecho actualiza automáticamente
+3. **Haz clic en Enviar** cuando termines de rellenar el formulario
 
-### Interpretación de Resultados
+### Resultados y Scores
+
+**Important:** Scores (percentages, traffic lights, breakdown) are **hidden during form completion** and only appear **after successful submit**. This protects against cognitive bias during response entry.
+
+#### After Confirmed Submit (Production Flow)
+When the form is successfully submitted via **OpenFormStack** (production uses CORS, which prevents reading the response JSON), the application:
+1. Opens a **confirmation modal** showing the full score breakdown:
+   - **Total Score** (large %, color-coded traffic light)
+   - **Section breakdown** (Ambiental, Social, Gobernanza — each with % and color)
+2. Updates the **right panel** with aggregate score summary
+3. Shows **section footers** with section-level scores
+4. Sets the form to **read-only** (disabled appearance) — further edits blocked until "Limpiar" is used
 
 #### Semáforos
 - 🟢 **Verde (≥70%):** En cumplimiento — supera benchmarks internacionales
@@ -128,10 +138,9 @@ Todos los derechos reservados. Prohibida la reproducción total o parcial de est
 - El **Score Total** es el promedio ponderado: Ambiental 40% + Social 40% + Gobernanza 20%
 - El **Score de Sección** es el promedio de todos los indicadores en esa sección
 
-### Exportar y Compartir
-- **Descargar JSON:** Guarda los datos en formato JSON para análisis posterior
-- **Imprimir:** Abre el diálogo de impresión para una copia física o PDF
-- **Limpiar:** Reinicia el formulario para una nueva evaluación
+### Acciones Disponibles
+- **Enviar:** Envía el formulario a OpenFormStack y revela los scores tras confirmación
+- **Limpiar:** Reinicia el formulario para una nueva evaluación (también desbloquea el año seleccionado)
 
 ## Estructura de Campos
 
@@ -263,6 +272,35 @@ projects/cuestionario-nis/
 ├── input-assets/           # Enlace a ../../input-assets (DOCX del cuestionario)
 └── README.md               # Este archivo
 ```
+
+## Envío a OpenFormStack
+
+### Flujo de Confirmación (Producción)
+
+In production, the form is submitted to **OpenFormStack** via `POST`. The submission endpoint:
+- **URL:** `https://openformstack.com/f/cmm3yej4l00004nan9zcn7laj`
+- **Method:** POST (JSON payload)
+- **CORS:** OpenFormStack responds with a CORS-opaque response, meaning:
+  - The POST succeeds and data is stored on the server
+  - The browser **cannot read** `response.json()` due to CORS restrictions
+  - This is the **canonical production path** (`exito_cors`)
+
+### Score Reveal Timing
+
+Whether the response is readable (staging/mocks) or opaque (production CORS):
+1. User fills form (scores are **hidden**)
+2. User clicks "Enviar"
+3. POST to OpenFormStack succeeds
+4. Application detects success via:
+   - **Production (CORS)**: `response.json()` throws a `TypeError` (network read error) — app treats this as successful CORS block
+   - **Staging (JSON readable)**: `response.json()` succeeds with data — app reads the data
+5. Either way, **scores are revealed immediately** with the same UI (modal + sidebar + footers)
+
+### Why Scores Are Hidden During Entry
+
+Hiding scores prevents **cognitive bias** during questionnaire completion. Users cannot adjust their responses based on running score calculations, ensuring authentic ESG assessment independent of outcome awareness.
+
+---
 
 ## Desarrollo
 
