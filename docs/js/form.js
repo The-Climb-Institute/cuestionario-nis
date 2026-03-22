@@ -1482,21 +1482,21 @@ class NISFormRenderer {
       const ambientalSection = document.querySelector('[data-section="ambiental"]');
       const ambientalSectionTop = ambientalSection ? ambientalSection.getBoundingClientRect().top + scrollTop : docHeight * 0.5;
 
-      // Calculate fade: 90% faded (0.1 opacity) before empresa, fade to 50% (0.5) by ambiental, then stable
-      let fadeOpacity = 0.1; // Default: 90% faded (10% opacity)
+      // Calculate opacity: 90% before empresa, fade to 50% by ambiental, then stable
+      let fadeOpacity = 0.9; // Default: 90% opacity (very visible)
 
       if (scrollTop < empresaSectionTop) {
-        // Before enterprise profile questions: stay at 90% faded
-        fadeOpacity = 0.1;
+        // Before enterprise profile questions: stay at 90% opacity
+        fadeOpacity = 0.9;
       } else if (scrollTop < ambientalSectionTop) {
-        // Between empresa and ambiental: fade from 90% (0.1) to 50% (0.5)
+        // Between empresa and ambiental: fade from 90% to 50% opacity
         const fadeStart = empresaSectionTop;
         const fadeEnd = ambientalSectionTop;
         const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-        // Interpolate from 0.1 to 0.5 over this range
-        fadeOpacity = 0.1 + (fadeProgress * 0.4);
+        // Interpolate from 0.9 to 0.5 over this range
+        fadeOpacity = 0.9 - (fadeProgress * 0.4);
       } else {
-        // At/after ambiental section: stay at 50% faded (0.5 opacity)
+        // At/after ambiental section: stay at 50% opacity
         fadeOpacity = 0.5;
       }
 
@@ -1507,8 +1507,8 @@ class NISFormRenderer {
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
 
-    // Initial fade: tabA (current year) is unselected initially - 90% faded
-    tabA.style.opacity = 0.1;
+    // Initial opacity: tabA (current year) is unselected initially - 90% opacity
+    tabA.style.opacity = 0.9;
 
     // Add scroll listener for progressive fade
     window.addEventListener('scroll', handleScrollFade);

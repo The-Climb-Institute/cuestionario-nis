@@ -1,17 +1,17 @@
 /**
- * Test: Year Selector Fade Behavior — Progressive Fade on Scroll + Toggle on Year Change
+ * Test: Year Selector Opacity Behavior — Progressive Fade on Scroll + Toggle on Year Change
  *
  * Validates that:
- * 1. Unselected year starts at 75% faded (opacity: 0.25)
- * 2. Fade toggles when year is selected (swap which tab is faded)
- * 3. Fade progresses as user scrolls:
- *    - 75% faded until energy (time-sensitive) section
- *    - Gradually fades to 50% in first half after energy section
- *    - Gradually fades to 0% in second half after energy section
- * 4. Different scroll positions trigger different fade levels
+ * 1. Unselected year starts at 90% opacity
+ * 2. Toggle switches opacity when year is selected (swap which tab is faded)
+ * 3. Opacity progresses as user scrolls:
+ *    - 90% opacity before empresa section
+ *    - Gradually fades to 50% opacity by ambiental section
+ *    - Stays at 50% opacity after ambiental section
+ * 4. Different scroll positions trigger different opacity levels
  */
 
-describe('Year Selector Fade Behavior (Progressive + Toggle)', () => {
+describe('Year Selector Opacity Behavior (Progressive + Toggle)', () => {
   let container;
   let yearRail;
   let tabCurrent; // current year (2025) - initially unselected, faded
@@ -67,20 +67,20 @@ describe('Year Selector Fade Behavior (Progressive + Toggle)', () => {
     document.body.innerHTML = '';
   });
 
-  test('Initial state: unselected year is 75% faded (opacity: 0.25)', () => {
+  test('Initial state: unselected year is 90% opacity', () => {
     // Simulate fade initialization
-    tabCurrent.style.opacity = 0.25;
+    tabCurrent.style.opacity = 0.9;
     tabPrevious.style.opacity = 1;
 
     expect(tabCurrent.classList.contains('year-label-unselected')).toBe(true);
     expect(tabPrevious.classList.contains('year-label-selected')).toBe(true);
-    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.25);
+    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.9);
     expect(parseFloat(tabPrevious.style.opacity)).toBe(1);
   });
 
-  test('Fade toggles when year is selected: swap which tab is faded', () => {
+  test('Opacity toggles when year is selected: swap which tab is faded', () => {
     // Initial state
-    tabCurrent.style.opacity = 0.25;
+    tabCurrent.style.opacity = 0.9;
     tabPrevious.style.opacity = 1;
 
     // Click current year to select it
@@ -89,140 +89,120 @@ describe('Year Selector Fade Behavior (Progressive + Toggle)', () => {
     tabPrevious.classList.add('year-label-unselected');
     tabPrevious.classList.remove('year-label-selected');
 
-    // Simulate fade toggle: swap opacities
+    // Simulate opacity toggle: swap opacities
     tabCurrent.style.opacity = 1;
-    tabPrevious.style.opacity = 0.25;
+    tabPrevious.style.opacity = 0.9;
 
     // Verify swap
     expect(tabCurrent.classList.contains('year-label-selected')).toBe(true);
     expect(tabPrevious.classList.contains('year-label-unselected')).toBe(true);
     expect(parseFloat(tabCurrent.style.opacity)).toBe(1);
-    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.25);
+    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.9);
   });
 
-  test('Before energy section: fade stays at 75% (opacity: 0.25)', () => {
+  test('Before empresa section: opacity stays at 90%', () => {
     const unselectedTab = document.querySelector('[data-year-label="unselected"]');
-    const energySectionTop = energySection.getBoundingClientRect().top;
 
     // Scroll: 0 (top of form)
     window.scrollY = 0;
-    const fadeOpacityAtStart = 0.25; // Before energy section
-    expect(fadeOpacityAtStart).toBe(0.25);
+    const opacityAtStart = 0.9; // Before empresa section
+    expect(opacityAtStart).toBe(0.9);
 
-    // Scroll: 200 (still before energy section at ~500)
+    // Scroll: 200 (still before empresa section at ~500)
     window.scrollY = 200;
-    const fadeOpacityMid = 0.25; // Still before energy section
-    expect(fadeOpacityMid).toBe(0.25);
+    const opacityMid = 0.9; // Still before empresa section
+    expect(opacityMid).toBe(0.9);
   });
 
-  test('At energy section: fade transitions from 75% to 50%', () => {
+  test('At empresa section: opacity transitions from 90% to 50%', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
-    const energySectionScrollPosition = 500; // Energy starts at 500
+    const empresaSectionScrollPosition = 500; // Empresa starts at 500
 
-    // Simulate being at energy section start
-    window.scrollY = energySectionScrollPosition;
+    // Simulate being at empresa section start
+    window.scrollY = empresaSectionScrollPosition;
 
-    // Fade should start transitioning from 75% (0.25) to 50% (0.5)
-    const fadeProgress = 0; // Just at energy section
-    let fadeOpacity = 0.25 + (fadeProgress * 2) * 0.25; // = 0.25
+    // Opacity should start transitioning from 90% (0.9) to 50% (0.5)
+    const fadeProgress = 0; // Just at empresa section
+    let opacity = 0.9 - (fadeProgress * 0.4); // = 0.9
 
-    expect(fadeOpacity).toBe(0.25);
+    expect(opacity).toBe(0.9);
 
     // Scroll to 12.5% progress into fade zone (50 pixels into 200-pixel fade zone from 500-700)
-    window.scrollY = energySectionScrollPosition + 50;
-    const fadeProgress125 = 50 / (docHeight - energySectionScrollPosition);
-    fadeOpacity = 0.25 + (fadeProgress125 * 2) * 0.25;
+    window.scrollY = empresaSectionScrollPosition + 50;
+    const fadeProgress125 = 50 / (docHeight - empresaSectionScrollPosition);
+    opacity = 0.9 - (fadeProgress125 * 0.4);
 
-    expect(fadeOpacity).toBeGreaterThan(0.25);
-    expect(fadeOpacity).toBeLessThanOrEqual(0.375);
+    expect(opacity).toBeGreaterThan(0.7);
+    expect(opacity).toBeLessThanOrEqual(0.9);
   });
 
-  test('Midway through fade zone: fade reaches 50% (opacity: 0.5)', () => {
+  test('Midway through fade zone: opacity fades midway', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
-    const energySectionScrollPosition = 500;
+    const empresaSectionScrollPosition = 500;
 
-    // At midpoint of fade zone: energy section + (docHeight - energySectionScrollPosition) / 2
-    const midpointScroll = energySectionScrollPosition + (docHeight - energySectionScrollPosition) / 2;
+    // At midpoint of fade zone: empresa section + (docHeight - empresaSectionScrollPosition) / 2
+    const midpointScroll = empresaSectionScrollPosition + (docHeight - empresaSectionScrollPosition) / 2;
     window.scrollY = midpointScroll;
 
-    // Calculate fade at exactly 50% progress (transition point)
-    const fadeProgress = (midpointScroll - energySectionScrollPosition) / (docHeight - energySectionScrollPosition);
-    let fadeOpacity;
+    // Calculate opacity at exactly 50% progress through fade zone
+    const fadeProgress = (midpointScroll - empresaSectionScrollPosition) / (docHeight - empresaSectionScrollPosition);
+    let opacity = 0.9 - (fadeProgress * 0.4);
 
-    if (fadeProgress < 0.5) {
-      fadeOpacity = 0.25 + (fadeProgress * 2) * 0.25; // First half
-    } else {
-      fadeOpacity = 0.5 - ((fadeProgress - 0.5) * 2) * 0.5; // Second half
-    }
-
-    // At exactly 50% progress, we're at the transition point (0.5 opacity)
-    expect(fadeOpacity).toBe(0.5);
+    // At 50% progress: opacity = 0.9 - (0.5 * 0.4) = 0.9 - 0.2 = 0.7
+    expect(opacity).toBe(0.7);
   });
 
-  test('At end of form: fade reaches 0% (opacity: 0)', () => {
+  test('At end of form: opacity stays at 50%', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight; // 700
-    const energySectionScrollPosition = 500;
 
     // At end of document
     window.scrollY = docHeight;
 
-    // Calculate fade at 100% progress
-    const fadeProgress = (docHeight - energySectionScrollPosition) / (docHeight - energySectionScrollPosition);
-    let fadeOpacity;
+    // Opacity should be 50% (stable after ambiental section)
+    let opacity = 0.5;
 
-    if (fadeProgress < 0.5) {
-      fadeOpacity = 0.25 + (fadeProgress * 2) * 0.25;
-    } else {
-      fadeOpacity = 0.5 - ((fadeProgress - 0.5) * 2) * 0.5;
-    }
-
-    expect(fadeOpacity).toBe(0); // Fully faded at end
+    expect(opacity).toBe(0.5);
   });
 
-  test('Multiple scroll positions maintain correct fade progression', () => {
+  test('Multiple scroll positions maintain correct opacity progression', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const energySectionScrollPosition = 500;
+    const empresaSectionScrollPosition = 500;
 
-    const scrollPositions = [
-      { scroll: 0, expectedRange: [0.24, 0.26] }, // Before energy: 75% faded
-      { scroll: 250, expectedRange: [0.24, 0.26] }, // Still before energy
-      { scroll: 525, expectedRange: [0.25, 0.32] }, // Just after energy: transitioning toward 50%
-      { scroll: 600, expectedRange: [0.48, 0.52] }, // Midpoint: at 50% faded
-      { scroll: 650, expectedRange: [0.25, 0.4] }, // Second half: fading from 50% toward 0%
-      { scroll: 700, expectedRange: [0.0, 0.05] }, // Near end: fading toward 0
+    // Test key positions
+    const testCases = [
+      { scroll: 0, expectedOpacity: 0.9, desc: 'Before empresa' },
+      { scroll: 250, expectedOpacity: 0.9, desc: 'Still before empresa' },
+      { scroll: 600, expectedOpacity: 0.5, desc: 'At midpoint' },
     ];
 
-    scrollPositions.forEach(({ scroll, expectedRange }) => {
+    testCases.forEach(({ scroll, expectedOpacity, desc }) => {
       window.scrollY = scroll;
 
-      // Calculate expected fade at this scroll position
-      let fadeOpacity;
-      if (scroll < energySectionScrollPosition) {
-        fadeOpacity = 0.25;
+      // Calculate expected opacity at this scroll position
+      let opacity;
+      if (scroll < empresaSectionScrollPosition) {
+        opacity = 0.9;
+      } else if (scroll < docHeight) {
+        const fadeProgress = (scroll - empresaSectionScrollPosition) / (docHeight - empresaSectionScrollPosition);
+        opacity = 0.9 - (fadeProgress * 0.4);
       } else {
-        const fadeProgress = (scroll - energySectionScrollPosition) / (docHeight - energySectionScrollPosition);
-        if (fadeProgress < 0.5) {
-          fadeOpacity = 0.25 + (fadeProgress * 2) * 0.25;
-        } else {
-          fadeOpacity = 0.5 - ((fadeProgress - 0.5) * 2) * 0.5;
-        }
+        opacity = 0.5;
       }
 
-      expect(fadeOpacity).toBeGreaterThanOrEqual(expectedRange[0]);
-      expect(fadeOpacity).toBeLessThanOrEqual(expectedRange[1]);
+      expect(opacity).toBeCloseTo(expectedOpacity, 0, `${desc}: scroll ${scroll}`);
     });
   });
 
-  test('Toggle and scroll: fade follows toggle, then progresses on scroll', () => {
+  test('Toggle and scroll: opacity follows toggle, then progresses on scroll', () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-    // Initial: tabCurrent (2025) faded, tabPrevious (2024) opaque
-    tabCurrent.style.opacity = 0.25;
+    // Initial: tabCurrent (2025) faded at 90%, tabPrevious (2024) opaque
+    tabCurrent.style.opacity = 0.9;
     tabPrevious.style.opacity = 1;
 
-    // Scroll before energy section
+    // Scroll before empresa section
     window.scrollY = 200;
-    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.25);
+    expect(parseFloat(tabCurrent.style.opacity)).toBe(0.9);
     expect(parseFloat(tabPrevious.style.opacity)).toBe(1);
 
     // Click to switch: tabPrevious becomes unselected (faded)
@@ -236,20 +216,20 @@ describe('Year Selector Fade Behavior (Progressive + Toggle)', () => {
     tabCurrent.style.opacity = tabPrevious.style.opacity;
     tabPrevious.style.opacity = tempOpacity;
 
-    // Now tabPrevious is faded at 75%
-    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.25);
+    // Now tabPrevious is faded at 90%
+    expect(parseFloat(tabPrevious.style.opacity)).toBe(0.9);
     expect(parseFloat(tabCurrent.style.opacity)).toBe(1);
 
-    // Scroll past energy section and verify fade progression on now-faded tabPrevious
-    window.scrollY = 700; // Past energy section
-    const fadeProgress = (700 - 500) / (docHeight - 500);
-    let progressiveOpacity = 0.5 - ((fadeProgress - 0.5) * 2) * 0.5;
+    // Scroll past empresa section and verify opacity progression on now-faded tabPrevious
+    window.scrollY = 600; // At/past empresa section
+    const fadeProgress = (600 - 500) / (docHeight - 500);
+    let progressiveOpacity = 0.9 - (fadeProgress * 0.4);
 
-    expect(progressiveOpacity).toBeGreaterThanOrEqual(0);
-    expect(progressiveOpacity).toBeLessThanOrEqual(0.5);
+    expect(progressiveOpacity).toBeGreaterThanOrEqual(0.5);
+    expect(progressiveOpacity).toBeLessThanOrEqual(0.9);
   });
 
-  test('Fade opacity clamps to [0, 1] range', () => {
+  test('Opacity clamps to [0, 1] range', () => {
     const unselectedTab = document.querySelector('[data-year-label="unselected"]');
 
     // Test negative opacity is clamped to 0

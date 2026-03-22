@@ -662,8 +662,11 @@ header .logo-image {
   font-size: var(--font-size-lg);
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: var(--spacing-sm);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .field-help {
