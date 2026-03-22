@@ -1384,45 +1384,43 @@ class NISFormRenderer {
    * Both years visible side-by-side; click to switch between them
    */
   initializeScrollEffects() {
-    const unselectedYearEl = document.querySelector('[data-year-label="unselected"]');
-    const selectedYearEl = document.querySelector('[data-year-label="selected"]');
+    const tabA = document.querySelector('[data-year-label="unselected"]'); // current year
+    const tabB = document.querySelector('[data-year-label="selected"]');   // previous year (selected by default)
 
-    if (unselectedYearEl && selectedYearEl) {
-      // Get the years from the data
-      const currentYear = parseInt(unselectedYearEl.textContent);
-      const selectedYear = parseInt(selectedYearEl.textContent);
+    if (!tabA || !tabB) return;
 
-      // Make unselected year clickable to switch to it
-      unselectedYearEl.style.cursor = 'pointer';
-      unselectedYearEl.addEventListener('click', (e) => {
+    // Years are captured from dataYears (not from textContent, which never changes)
+    const yearA = this.dataYears[1]; // current year shown in tabA
+    const yearB = this.dataYears[0]; // previous year shown in tabB
+
+    const attachHandler = (clickedTab, otherTab, yearForClickedTab) => {
+      clickedTab.style.cursor = 'pointer';
+      clickedTab.addEventListener('click', (e) => {
         e.preventDefault();
+        // If already selected, do nothing
+        if (clickedTab.classList.contains('year-label-selected')) return;
+        // Check lock
         if (this.yearLocked) {
           alert('No puede cambiar el año mientras hay datos completados.');
           return;
         }
-        this.setSelectedYear(currentYear);
+        // Update form state and select control
+        this.setSelectedYear(yearForClickedTab);
         const selector = document.getElementById('year-selector');
         if (selector) {
-          selector.value = currentYear;
+          selector.value = yearForClickedTab;
         }
-        // Swap the labels
-        const tempText = unselectedYearEl.textContent;
-        unselectedYearEl.textContent = selectedYearEl.textContent;
-        selectedYearEl.textContent = tempText;
-        // Swap the classes
-        unselectedYearEl.classList.remove('year-label-unselected');
-        unselectedYearEl.classList.add('year-label-selected');
-        selectedYearEl.classList.remove('year-label-selected');
-        selectedYearEl.classList.add('year-label-unselected');
+        // Swap classes only — text never changes
+        clickedTab.classList.remove('year-label-unselected');
+        clickedTab.classList.add('year-label-selected');
+        otherTab.classList.remove('year-label-selected');
+        otherTab.classList.add('year-label-unselected');
       });
+    };
 
-      // Make selected year also clickable (no-op if already selected)
-      selectedYearEl.style.cursor = 'pointer';
-      selectedYearEl.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Do nothing; year is already selected
-      });
-    }
+    // Attach handlers to both tabs so either can be clicked
+    attachHandler(tabA, tabB, yearA);
+    attachHandler(tabB, tabA, yearB);
   }
 
   /**

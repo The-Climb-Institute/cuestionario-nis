@@ -1,15 +1,15 @@
 /**
  * Test: Year Selector Tabs — Click Behavior and Class Swapping
  *
- * Verifies that clicking year tabs swaps the selected/unselected classes
- * without changing the text content or position of the tabs.
+ * Verifies that clicking either year tab swaps the selected/unselected classes
+ * without changing the text content. Both tabs are clickable and work symmetrically.
  */
 
 describe('Year Selector Tabs — Click Behavior (Task 14)', () => {
-  let selectedTab;
-  let unselectedTab;
-  let prevYear;
-  let currentYear;
+  let tabA; // current year (2025) - initially unselected
+  let tabB; // previous year (2024) - initially selected
+  let year2025;
+  let year2024;
 
   beforeEach(() => {
     // Create a minimal DOM structure matching what form.js creates
@@ -28,166 +28,173 @@ describe('Year Selector Tabs — Click Behavior (Task 14)', () => {
       </div>
     `;
 
-    selectedTab = document.querySelector('[data-year-label="selected"]');
-    unselectedTab = document.querySelector('[data-year-label="unselected"]');
+    tabA = document.querySelector('[data-year-label="unselected"]');
+    tabB = document.querySelector('[data-year-label="selected"]');
 
-    // Extract year values
-    prevYear = parseInt(selectedTab.textContent);
-    currentYear = parseInt(unselectedTab.textContent);
+    year2025 = parseInt(tabA.textContent);
+    year2024 = parseInt(tabB.textContent);
 
-    // Simulate the click handler from form.js initializeScrollEffects()
-    // Make unselected tab clickable to swap classes
-    unselectedTab.style.cursor = 'pointer';
-    unselectedTab.addEventListener('click', (e) => {
-      e.preventDefault();
-      // Swap classes without swapping text
-      unselectedTab.classList.remove('year-label-unselected');
-      unselectedTab.classList.add('year-label-selected');
-      selectedTab.classList.remove('year-label-selected');
-      selectedTab.classList.add('year-label-unselected');
-    });
+    // Simulate the FIXED click handler from form.js: both tabs interactive
+    const attachHandler = (clickedTab, otherTab) => {
+      clickedTab.style.cursor = 'pointer';
+      clickedTab.addEventListener('click', (e) => {
+        e.preventDefault();
+        // If already selected, do nothing
+        if (clickedTab.classList.contains('year-label-selected')) return;
+        // Swap classes only — text never changes
+        clickedTab.classList.remove('year-label-unselected');
+        clickedTab.classList.add('year-label-selected');
+        otherTab.classList.remove('year-label-selected');
+        otherTab.classList.add('year-label-unselected');
+      });
+    };
 
-    // Make selected tab clickable (no-op)
-    selectedTab.style.cursor = 'pointer';
-    selectedTab.addEventListener('click', (e) => {
-      e.preventDefault();
-      // No action; year is already selected
-    });
+    attachHandler(tabA, tabB);
+    attachHandler(tabB, tabA);
   });
 
   afterEach(() => {
     document.body.innerHTML = '';
   });
 
-  test('Initial state: selected year has correct class, unselected has correct class', () => {
-    expect(selectedTab.classList.contains('year-label-selected')).toBe(true);
-    expect(selectedTab.classList.contains('year-label-unselected')).toBe(false);
-    expect(unselectedTab.classList.contains('year-label-unselected')).toBe(true);
-    expect(unselectedTab.classList.contains('year-label-selected')).toBe(false);
+  test('Initial state: tabA unselected, tabB selected', () => {
+    expect(tabA.classList.contains('year-label-unselected')).toBe(true);
+    expect(tabA.classList.contains('year-label-selected')).toBe(false);
+    expect(tabB.classList.contains('year-label-selected')).toBe(true);
+    expect(tabB.classList.contains('year-label-unselected')).toBe(false);
   });
 
-  test('Text content does not change on initial render', () => {
-    expect(selectedTab.textContent).toBe(String(prevYear));
-    expect(unselectedTab.textContent).toBe(String(currentYear));
+  test('Text never changes', () => {
+    expect(tabA.textContent).toBe(String(year2025));
+    expect(tabB.textContent).toBe(String(year2024));
   });
 
-  test('Clicking unselected tab swaps classes without changing text', () => {
-    // Click unselected tab
-    unselectedTab.click();
+  test('Clicking tabA (unselected) makes it selected', () => {
+    tabA.click();
 
-    // Text should not change
-    expect(selectedTab.textContent).toBe(String(prevYear));
-    expect(unselectedTab.textContent).toBe(String(currentYear));
+    // Text unchanged
+    expect(tabA.textContent).toBe(String(year2025));
+    expect(tabB.textContent).toBe(String(year2024));
 
-    // Classes should swap
-    expect(selectedTab.classList.contains('year-label-selected')).toBe(false);
-    expect(selectedTab.classList.contains('year-label-unselected')).toBe(true);
-    expect(unselectedTab.classList.contains('year-label-selected')).toBe(true);
-    expect(unselectedTab.classList.contains('year-label-unselected')).toBe(false);
+    // Classes swapped
+    expect(tabA.classList.contains('year-label-selected')).toBe(true);
+    expect(tabA.classList.contains('year-label-unselected')).toBe(false);
+    expect(tabB.classList.contains('year-label-unselected')).toBe(true);
+    expect(tabB.classList.contains('year-label-selected')).toBe(false);
   });
 
-  test('Multiple clicks alternate between tabs, text stays fixed (5 clicks)', () => {
-    const clicks = 5;
+  test('Clicking tabB (now unselected) makes it selected again', () => {
+    // Start with tabA selected
+    tabA.click();
+    expect(tabA.classList.contains('year-label-selected')).toBe(true);
 
-    for (let i = 0; i < clicks; i++) {
-      // Get current selected and unselected tabs
-      const currentSelected = document.querySelector('[data-year-label="selected"]');
-      const currentUnselected = document.querySelector('[data-year-label="unselected"]');
+    // Now click tabB (which is now unselected)
+    tabB.click();
 
-      // Click the unselected tab to switch
-      currentUnselected.click();
+    // Text unchanged
+    expect(tabA.textContent).toBe(String(year2025));
+    expect(tabB.textContent).toBe(String(year2024));
 
-      // Verify text never changes
-      expect(selectedTab.textContent).toBe(String(prevYear));
-      expect(unselectedTab.textContent).toBe(String(currentYear));
+    // Classes swapped back
+    expect(tabB.classList.contains('year-label-selected')).toBe(true);
+    expect(tabB.classList.contains('year-label-unselected')).toBe(false);
+    expect(tabA.classList.contains('year-label-unselected')).toBe(true);
+    expect(tabA.classList.contains('year-label-selected')).toBe(false);
+  });
 
-      // Verify exactly one tab is selected
-      const selectCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-selected')
+  test('Clicking selected tab does nothing', () => {
+    // tabB is initially selected
+    const beforeClass = tabB.className;
+
+    // Click it
+    tabB.click();
+
+    // State unchanged
+    expect(tabB.className).toBe(beforeClass);
+    expect(tabA.classList.contains('year-label-unselected')).toBe(true);
+  });
+
+  test('5 alternating clicks maintain invariants', () => {
+    const clicks = [tabA, tabB, tabA, tabB, tabA];
+
+    clicks.forEach((tab, i) => {
+      tab.click();
+
+      // Text invariant
+      expect(tabA.textContent).toBe(String(year2025));
+      expect(tabB.textContent).toBe(String(year2024));
+
+      // Class invariant
+      const selectedCount = [tabA, tabB].filter(
+        t => t.classList.contains('year-label-selected')
       ).length;
-      expect(selectCount).toBe(1);
-
-      const unselectCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-unselected')
-      ).length;
-      expect(unselectCount).toBe(1);
-    }
+      expect(selectedCount).toBe(1);
+    });
   });
 
-  test('Multiple clicks maintain text position invariant (10 clicks)', () => {
-    const clicks = 10;
+  test('10 alternating clicks maintain invariants', () => {
+    const clicks = [tabA, tabB, tabA, tabB, tabA, tabB, tabA, tabB, tabA, tabB];
 
-    for (let i = 0; i < clicks; i++) {
-      const currentUnselected = document.querySelector('[data-year-label="unselected"]');
-      currentUnselected.click();
+    clicks.forEach((tab) => {
+      tab.click();
 
-      // Text must never change across all clicks
-      expect(selectedTab.textContent).toBe(String(prevYear));
-      expect(unselectedTab.textContent).toBe(String(currentYear));
+      // Text never changes
+      expect(tabA.textContent).toBe(String(year2025));
+      expect(tabB.textContent).toBe(String(year2024));
 
-      // Class invariant: exactly one selected and one unselected
-      const selectCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-selected')
+      // Exactly one selected, one unselected
+      const selectedCount = [tabA, tabB].filter(
+        t => t.classList.contains('year-label-selected')
       ).length;
-      expect(selectCount).toBe(1);
-    }
-  });
-
-  test('Selected tab click does nothing (already selected)', () => {
-    const initialSelectedClass = selectedTab.classList.contains('year-label-selected');
-    const initialUnselectedClass = unselectedTab.classList.contains('year-label-unselected');
-
-    // Click the already-selected tab
-    selectedTab.click();
-
-    // State should not change
-    expect(selectedTab.classList.contains('year-label-selected')).toBe(initialSelectedClass);
-    expect(unselectedTab.classList.contains('year-label-unselected')).toBe(initialUnselectedClass);
-
-    // Text should not change
-    expect(selectedTab.textContent).toBe(String(prevYear));
-    expect(unselectedTab.textContent).toBe(String(currentYear));
-  });
-
-  test('Classes always sum to exactly one selected and one unselected (7 clicks)', () => {
-    const clicks = 7;
-
-    for (let i = 0; i < clicks; i++) {
-      const currentUnselected = document.querySelector('[data-year-label="unselected"]');
-      currentUnselected.click();
-
-      const selectedCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-selected')
+      const unselectedCount = [tabA, tabB].filter(
+        t => t.classList.contains('year-label-unselected')
       ).length;
-      const unselectedCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-unselected')
-      ).length;
-
       expect(selectedCount).toBe(1);
       expect(unselectedCount).toBe(1);
-    }
+    });
+
+    // After 10 alternating clicks (even), should return to initial state
+    expect(tabA.classList.contains('year-label-unselected')).toBe(true);
+    expect(tabB.classList.contains('year-label-selected')).toBe(true);
   });
 
-  test('Rapid clicks for 8 iterations maintain invariants', () => {
+  test('Rapid 8 clicks on alternating tabs work correctly', () => {
     const iterations = 8;
+    const tabs = [tabA, tabB];
 
     for (let i = 0; i < iterations; i++) {
-      const currentUnselected = document.querySelector('[data-year-label="unselected"]');
-      currentUnselected.click();
+      tabs[i % 2].click();
 
-      // Text invariant: must never change
-      expect(selectedTab.textContent).toBe(String(prevYear));
-      expect(unselectedTab.textContent).toBe(String(currentYear));
+      // Text unchanged
+      expect(tabA.textContent).toBe(String(year2025));
+      expect(tabB.textContent).toBe(String(year2024));
 
-      // Class invariant: exactly one selected, one unselected
-      const selectedCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-selected')
-      ).length;
-      const unselectedCount = [selectedTab, unselectedTab].filter(
-        tab => tab.classList.contains('year-label-unselected')
+      // Class invariant maintained
+      const selectedCount = [tabA, tabB].filter(
+        t => t.classList.contains('year-label-selected')
       ).length;
       expect(selectedCount).toBe(1);
-      expect(unselectedCount).toBe(1);
     }
+  });
+
+  test('Both tabs are clickable at any time', () => {
+    // Initial: tabA unselected, tabB selected
+    expect(tabA.classList.contains('year-label-unselected')).toBe(true);
+    expect(tabB.classList.contains('year-label-selected')).toBe(true);
+
+    // Click tabA
+    tabA.click();
+    expect(tabA.classList.contains('year-label-selected')).toBe(true);
+    expect(tabB.classList.contains('year-label-unselected')).toBe(true);
+
+    // Now click tabB (previously couldn't do this in old code)
+    tabB.click();
+    expect(tabB.classList.contains('year-label-selected')).toBe(true);
+    expect(tabA.classList.contains('year-label-unselected')).toBe(true);
+
+    // Click tabA again
+    tabA.click();
+    expect(tabA.classList.contains('year-label-selected')).toBe(true);
+    expect(tabB.classList.contains('year-label-unselected')).toBe(true);
   });
 });
