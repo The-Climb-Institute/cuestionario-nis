@@ -180,7 +180,7 @@
           "id": "aplica_agua",
           "label": "¿La empresa utiliza o descarga agua en sus operaciones?",
           "type": "boolean",
-          "helpText": "Si no aplica (p. ej. solo oficina sin uso operativo de agua), seleccione No; se omitirán las preguntas siguientes de agua.",
+          "helpText": "Si no aplica (p. ej. solo oficina sin uso operativo de agua), seleccione No.",
           "benchmarkId": null
         },
         {
