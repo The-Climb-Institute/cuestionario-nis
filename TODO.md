@@ -1,15 +1,17 @@
 # TODO - Project Status
 
-**Status**: 10 of 10 tasks complete | **Tests**: 69/69 passing | **Improvements**: All critical issues resolved
+**Status**: 10 of 10 tasks complete | **Tests**: 232/232 passing | **Improvements**: All critical issues resolved
 
 **See detailed descriptions**: [documentation/planning/](documentation/planning/)
 
-**Latest updates (March 5, 2026):**
-- Implemented form validation with conditional field support and "No sé" handling
-- Fixed accessibility contrast issues (WCAG AAA compliance)
-- Updated privacy policy with official legal document (Mexican LFPDPPP compliant)
-- Added mandatory privacy consent checkbox
-- Removed special characters from UI (ASCII-only output)
+**Latest updates (March 22, 2026):**
+- Fixed responsive form field overflow on smaller viewports (flex-wrap, word-break)
+- Implemented progressive opacity fade for unselected year selector (60% → 5% on scroll)
+- Year-aware bimestral energy widget: previous years show all 6 periods, current year shows only completed periods
+- Fixed year selector to properly update all form sections when year changes
+- Removed "se omitirá" clarification text from conditional questions
+- Added 163+ new comprehensive tests for year selection, electricity billing, and fade behavior (69 → 232 total)
+- All critical issues and improvements documented with full test coverage
 
 ---
 
