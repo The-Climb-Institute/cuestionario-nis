@@ -1477,22 +1477,9 @@ class NISFormRenderer {
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
 
-    // Task 12: Add scroll fade effect to unselected tab (starts fading at 75%)
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
-
-      // Fade unselected tab: stays opaque until 75%, then fades from 75-100%
-      const fadeStart = 0.75;
-      if (scrollProgress < fadeStart) {
-        tabA.style.opacity = 1;
-      } else {
-        tabA.style.opacity = Math.max(0, 1 - (scrollProgress - fadeStart) / (1 - fadeStart));
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
+    // Task 12: Set unselected tab to 75% faded (25% opacity) always
+    // tabA is always unselected initially (yearA is current year)
+    tabA.style.opacity = 0.25;
   }
 
   /**
