@@ -1200,13 +1200,16 @@ footer p {
 .year-rail-vertical {
   position: sticky;
   top: var(--spacing-md);
-  align-self: start;
-  height: fit-content;
+  align-self: stretch;
+  height: calc(100vh - 120px);
   width: 80px;
-  padding: 8px 0;
+  padding: 0;
   background-color: transparent;
   box-shadow: none;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .year-rail-vertical .year-selector-container {
@@ -1214,7 +1217,7 @@ footer p {
 }
 
 .year-label {
-  font-size: var(--font-size-xl);
+  font-size: 28px;
   font-weight: 600;
   color: var(--color-dark);
   transition: all 0.3s ease;
@@ -1228,7 +1231,7 @@ footer p {
 
 .year-label-unselected {
   opacity: 1;
-  font-size: var(--font-size-base);
+  font-size: 28px;
   color: var(--color-dark);
   background-color: #f0f0f0;
   border-color: #d0d0d0;
