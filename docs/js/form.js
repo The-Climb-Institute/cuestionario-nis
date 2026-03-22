@@ -375,6 +375,8 @@ class NISFormRenderer {
           if (selectedLabel) {
             selectedLabel.textContent = newYear;
           }
+          // Re-render year-specific sections for the new year
+          this.updateYearBlocks();
         }
       });
     }
@@ -1400,6 +1402,40 @@ class NISFormRenderer {
     }
     this.selectedYear = year;
     return true;
+  }
+
+  /**
+   * Task 12: Update year-specific form sections when selected year changes
+   * Re-renders all multi-year sections (ambiental, social, gobernanza) for the new year
+   */
+  updateYearBlocks() {
+    const onChangeCallback = (fieldName, value) => {
+      // Data change callback - update tracked fields
+      if (fieldName && !this.trackedFields.includes(fieldName)) {
+        this.trackedFields.push(fieldName);
+      }
+    };
+
+    const wrappedCallback = (fieldName, value) => {
+      onChangeCallback(fieldName, value);
+      if (!this.isReadOnly && !this.yearLocked && this.isNonCompanyField(fieldName)) {
+        this.yearLocked = true;
+      }
+    };
+
+    // Update each multi-year section
+    this.MULTI_YEAR_SECTIONS.forEach(seccion => {
+      const seccionDiv = document.querySelector(`.nis-seccion-${seccion}`);
+      if (seccionDiv) {
+        const yearBlocksContainer = seccionDiv.querySelector('.year-blocks');
+        if (yearBlocksContainer) {
+          // Clear existing blocks
+          yearBlocksContainer.innerHTML = '';
+          // Render for new year
+          yearBlocksContainer.appendChild(this.renderYearBlock(seccion, this.selectedYear, wrappedCallback));
+        }
+      }
+    });
   }
 
   /**
