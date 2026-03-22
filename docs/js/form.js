@@ -891,7 +891,7 @@ class NISFormRenderer {
 
     const yearHeader = document.createElement('div');
     yearHeader.className = 'year-block-header';
-    yearHeader.innerHTML = `<h3 class="year-block-title">Datos año ${year}</h3>`;
+    yearHeader.innerHTML = `<h3 class="year-block-title" style="display: none;">Datos año ${year}</h3>`;
     block.appendChild(yearHeader);
 
     const fieldsContainer = document.createElement('div');
