@@ -16,6 +16,22 @@ function getBimonthLabel(year, bimonthIndex) {
   return b ? `${b.label} ${year}` : '';
 }
 
+/**
+ * Calendar (year, bimonth) shown for a stored slot (year, periodIndex) with UI offset.
+ * Offset rotates labels via periodIndexToBimonth; the year in the label must follow
+ * real calendar time (e.g. first slot Ene-Feb 2026 with offset showing Nov-Dic is Nov-Dic 2025).
+ */
+function getBimestralDisplayCalendar(year, periodIndex, offset) {
+  const o = (offset != null && !isNaN(offset)) ? (((offset % 6) + 6) % 6) : 0;
+  const k = (6 - o) % 6;
+  const d = new Date(year, (periodIndex - 1) * 2, 1);
+  d.setMonth(d.getMonth() - k * 2);
+  return {
+    year: d.getFullYear(),
+    bimonth: monthToBimonth(d.getMonth() + 1)
+  };
+}
+
 /** Obtiene el bimestre (1-6) a partir del mes (1-12). */
 function monthToBimonth(month) {
   return Math.min(6, Math.ceil(month / 2));

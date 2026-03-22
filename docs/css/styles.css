@@ -1217,14 +1217,13 @@ footer p {
 
 .year-label {
   font-size: var(--font-size-xl);
-  font-weight: bold;
+  font-weight: 600;
   color: var(--color-dark);
   transition: all 0.3s ease;
   padding: var(--spacing-md);
   text-align: center;
   cursor: pointer;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  border: 2px solid #c0c0c0;
   border-radius: 4px;
   min-width: 60px;
 }
@@ -1233,18 +1232,20 @@ footer p {
   opacity: 1;
   font-size: var(--font-size-base);
   color: var(--color-dark);
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
+  border-color: #d0d0d0;
 }
 
 .year-label-unselected:hover {
-  background-color: #e8e8e8;
+  background-color: #e0e0e0;
+  border-color: #c0c0c0;
 }
 
 .year-label-selected {
   opacity: 1;
-  color: white;
-  background-color: var(--color-gold-primary);
-  border-color: var(--color-gold-primary);
+  color: var(--color-dark);
+  background-color: #b0b0b0;
+  border-color: #909090;
   font-weight: 700;
 }
 
@@ -1293,8 +1294,7 @@ footer p {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   display: block;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  border: 2px solid #c0c0c0;
   border-radius: 4px;
   min-width: 60px;
 }
@@ -1302,22 +1302,23 @@ footer p {
 .year-cylinder .year-label-selected {
   font-size: 18px;
   font-weight: 700;
-  color: white;
+  color: var(--color-dark);
   letter-spacing: 0.08em;
   transform: rotate(180deg);
   text-shadow: none;
-  background-color: var(--color-gold-primary);
-  border-color: var(--color-gold-primary);
+  background-color: #b0b0b0;
+  border-color: #909090;
 }
 
 .year-cylinder .year-label-unselected {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--color-dark);
   letter-spacing: 0.05em;
   transform: rotate(180deg);
   opacity: 1;
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
+  border-color: #d0d0d0;
 }
 
 /**
@@ -1363,8 +1364,7 @@ footer p {
     writing-mode: horizontal-tb;
     transform: none;
     padding: var(--spacing-md);
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
+    border: 2px solid #c0c0c0;
     border-radius: 4px;
     min-width: 60px;
   }
@@ -1375,21 +1375,24 @@ footer p {
     transform: none;
     text-shadow: none;
     letter-spacing: 0.08em;
-    color: white;
-    background-color: var(--color-gold-primary);
-    border-color: var(--color-gold-primary);
+    color: var(--color-dark);
+    background-color: #b0b0b0;
+    border-color: #909090;
   }
 
   .year-cylinder .year-label-unselected {
     font-size: 14px;
+    font-weight: 600;
     transform: none;
     letter-spacing: 0.05em;
     color: var(--color-dark);
-    background-color: #f9f9f9;
+    background-color: #f0f0f0;
+    border-color: #d0d0d0;
   }
 
   .year-cylinder .year-label-unselected:hover {
-    background-color: #e8e8e8;
+    background-color: #e0e0e0;
+    border-color: #c0c0c0;
   }
 
   .year-selector-label {
