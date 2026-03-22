@@ -651,8 +651,23 @@ class NISFormRenderer {
     };
 
     const getInitialState = () => {
-      const init = getInitialBimestralPeriod();
-      return { offset: DEFAULT_OFFSET, periods: [{ year: init.year, periodIndex: init.periodIndex, kWh: null }] };
+      const currentYear = new Date().getFullYear();
+      if (year < currentYear) {
+        // Previous year: pre-load all 6 bimestres
+        return {
+          offset: 0,
+          periods: [1, 2, 3, 4, 5, 6].map(periodIndex => ({ year, periodIndex, kWh: null }))
+        };
+      } else {
+        // Current year: load only completed bimestres (up to 2 months ago)
+        const init = getInitialBimestralPeriod();
+        const maxPeriod = (init.year === year) ? init.periodIndex : 6;
+        const periods = [];
+        for (let p = 1; p <= maxPeriod; p++) {
+          periods.push({ year, periodIndex: p, kWh: null });
+        }
+        return { offset: 0, periods };
+      }
     };
 
     const saveBimestralState = (state) => {
@@ -703,10 +718,16 @@ class NISFormRenderer {
       });
     };
 
-    // Helper: Calculate the maximum allowed offset based on today's date
-    // Prevents offsetting further back than 2 months (1 bimonth) from today
-    // e.g., if today is March, limit to Ene-Feb (offset 0)
+    // Helper: Calculate the maximum allowed offset based on year and current date
+    // For previous year: allow full offset range (0-5) to access all bimestres
+    // For current year: cap based on today's date to prevent future period offsetting
     const getMaxOffsetForToday = () => {
+      const currentYear = new Date().getFullYear();
+      if (year < currentYear) {
+        // Previous year: all offset positions valid (0-5)
+        return 5;
+      }
+      // Current year: cap at last completed bimonth - 1
       const today = new Date();
       const currentMonth = today.getMonth() + 1; // 1-12
 
@@ -719,9 +740,7 @@ class NISFormRenderer {
       else if (currentMonth <= 10) currentBimonth = 5;
       else currentBimonth = 6;
 
-      // Allow looking back only 1 bimonth (2 months)
-      // If currentBimonth is 2, max offset is 1 (shows bimonth 2)
-      // If currentBimonth is 1, max offset is 0 (shows bimonth 1)
+      // Allow looking back only 1 bimonth (2 months) from current date
       return Math.max(0, currentBimonth - 1);
     };
 
