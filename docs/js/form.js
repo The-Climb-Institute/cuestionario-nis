@@ -1474,33 +1474,34 @@ class NISFormRenderer {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-      // Find enterprise profile section (start of form questions)
-      const empresaSection = document.querySelector('[data-section="empresa"]');
-      const empresaSectionTop = empresaSection ? empresaSection.getBoundingClientRect().top + scrollTop : docHeight * 0.2;
+      // Find "Ingresos anuales" question (company_revenue) as fade pivot point
+      const revenueQuestionField = document.querySelector('[data-field-id="company_revenue"]');
+      const revenueQuestionTop = revenueQuestionField
+        ? revenueQuestionField.getBoundingClientRect().top + scrollTop
+        : docHeight * 0.15;
 
-      // Find first time-sensitive question (ambiental/environmental section)
+      // Find end of first section (ambiental section)
       const ambientalSection = document.querySelector('[data-section="ambiental"]');
-      const ambientalSectionTop = ambientalSection ? ambientalSection.getBoundingClientRect().top + scrollTop : docHeight * 0.5;
+      const ambientalSectionEnd = ambientalSection
+        ? ambientalSection.getBoundingClientRect().bottom + scrollTop
+        : docHeight * 0.7;
 
       // Calculate opacity progression:
-      // 90% before empresa → 50% at ambiental start → 0% at form end
+      // 90% before "Ingresos anuales" → 50% at "Ingresos anuales" → 0% at end of ambiental section
       let fadeOpacity = 0.9; // Default: 90% opacity
 
-      if (scrollTop < empresaSectionTop) {
-        // Before enterprise profile questions: stay at 90% opacity
+      if (scrollTop < revenueQuestionTop) {
+        // Before "Ingresos anuales": stay at 90% opacity
         fadeOpacity = 0.9;
-      } else if (scrollTop < ambientalSectionTop) {
-        // Between empresa and ambiental: fade from 90% to 50%
-        const fadeStart = empresaSectionTop;
-        const fadeEnd = ambientalSectionTop;
+      } else if (scrollTop < ambientalSectionEnd) {
+        // From "Ingresos anuales" to end of ambiental: fade from 90% to 0%
+        const fadeStart = revenueQuestionTop;
+        const fadeEnd = ambientalSectionEnd;
         const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-        fadeOpacity = 0.9 - (fadeProgress * 0.4); // 0.9 to 0.5
+        fadeOpacity = Math.max(0, 0.9 - (fadeProgress * 0.9)); // 0.9 to 0.0
       } else {
-        // After ambiental section: fade from 50% to 0% by end of document
-        const fadeStart = ambientalSectionTop;
-        const fadeEnd = docHeight;
-        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-        fadeOpacity = Math.max(0, 0.5 - (fadeProgress * 0.5)); // 0.5 to 0.0
+        // After ambiental section: stay at 0% opacity
+        fadeOpacity = 0;
       }
 
       unselectedTab.style.opacity = Math.max(0, fadeOpacity);
