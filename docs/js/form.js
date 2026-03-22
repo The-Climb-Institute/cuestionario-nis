@@ -648,7 +648,7 @@ class NISFormRenderer {
     const updateOffsetLabel = (offset) => {
       const bimonth = periodIndexToBimonth(1, offset);
       const b = BIMESES.find(x => x.index === bimonth);
-      offsetLabel.textContent = b ? `Primer bimestre: ${b.label}` : '';
+      offsetLabel.textContent = b ? `Último bimestre: ${b.label}` : '';
     };
 
     const renderBimestralRows = (state) => {
@@ -688,18 +688,47 @@ class NISFormRenderer {
       });
     };
 
+    // Helper: Calculate the maximum allowed offset based on today's date
+    // Prevents offsetting further back than 2 months (1 bimonth) from today
+    // e.g., if today is March, limit to Ene-Feb (offset 0)
+    const getMaxOffsetForToday = () => {
+      const today = new Date();
+      const currentMonth = today.getMonth() + 1; // 1-12
+
+      // Find current bimonth: 1=Ene-Feb, 2=Mar-Apr, 3=May-Jun, 4=Jul-Ago, 5=Sep-Oct, 6=Nov-Dic
+      let currentBimonth = 1;
+      if (currentMonth <= 2) currentBimonth = 1;
+      else if (currentMonth <= 4) currentBimonth = 2;
+      else if (currentMonth <= 6) currentBimonth = 3;
+      else if (currentMonth <= 8) currentBimonth = 4;
+      else if (currentMonth <= 10) currentBimonth = 5;
+      else currentBimonth = 6;
+
+      // Allow looking back only 1 bimonth (2 months)
+      // If currentBimonth is 2, max offset is 1 (shows bimonth 2)
+      // If currentBimonth is 1, max offset is 0 (shows bimonth 1)
+      return Math.max(0, currentBimonth - 1);
+    };
+
     offsetPrevBtn.addEventListener('click', () => {
       const s = loadBimestralState() || getInitialState();
-      s.offset = (s.offset - 1 + 6) % 6;
-      saveBimestralState(s);
-      renderBimestralRows(s);
+      // Only allow going backwards if current offset is not already at minimum (0)
+      if (s.offset > 0) {
+        s.offset = s.offset - 1;
+        saveBimestralState(s);
+        renderBimestralRows(s);
+      }
     });
 
     offsetNextBtn.addEventListener('click', () => {
       const s = loadBimestralState() || getInitialState();
-      s.offset = (s.offset + 1) % 6;
-      saveBimestralState(s);
-      renderBimestralRows(s);
+      const maxOffset = getMaxOffsetForToday();
+      // Only allow going forward if within allowed range
+      if (s.offset < maxOffset) {
+        s.offset = s.offset + 1;
+        saveBimestralState(s);
+        renderBimestralRows(s);
+      }
     });
 
     addPeriodBtn.addEventListener('click', () => {
