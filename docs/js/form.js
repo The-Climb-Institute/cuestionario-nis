@@ -274,7 +274,7 @@ class NISFormRenderer {
 
     // Task 12: Render year selector rail with scroll effect elements
     const yearRailDiv = document.createElement('div');
-    yearRailDiv.className = 'year-rail year-rail-desktop';
+    yearRailDiv.className = 'year-rail year-rail-vertical';
     yearRailDiv.id = 'year-rail';
 
     // Create unselected year label (for scroll fade effect)

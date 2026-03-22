@@ -1292,25 +1292,6 @@ footer p {
   opacity: 0.6;
 }
 
-/* Desktop: Vertical rail (future enhancement) */
-.year-rail-vertical {
-  position: fixed;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%) rotate(180deg);
-  writing-mode: vertical-rl;
-  width: auto;
-  padding: var(--spacing-lg);
-}
-
-/* Mobile: Horizontal rail */
-.year-rail-horizontal {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
 /**
  * Task 12 Phase 2: Year Rail - Vertical (Desktop) Layout
  */
@@ -1333,7 +1314,7 @@ footer p {
   align-items: center;
   gap: var(--spacing-md);
   writing-mode: vertical-rl;
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }
 
 .year-label {
@@ -1385,8 +1366,27 @@ footer p {
     transform: none;
   }
 
+  /**
+   * Task 12: Mobile wheel-like presentation
+   * - Unselected year: smaller, gray, left (visually subordinate)
+   * - Selected year: larger, gold, centered (visually prominent)
+   */
   .year-label {
-    display: none; /* Hide scroll-effect labels on mobile */
+    display: inline-block;
+    padding: 0 var(--spacing-md);
+  }
+
+  .year-label-unselected {
+    font-size: 14px;
+    color: var(--color-gray-dark);
+    order: 1; /* Position to the left */
+  }
+
+  .year-label-selected {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-gold-primary);
+    order: 2; /* Position in the center/after */
   }
 
   .year-selector-label,
