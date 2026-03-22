@@ -1192,25 +1192,7 @@ footer p {
 }
 
 .year-selector-control {
-  padding: var(--spacing-sm);
-  border: 1px solid var(--color-gray-medium);
-  border-radius: var(--border-radius);
-  font-size: var(--font-size-base);
-  font-family: var(--font-primary);
-  cursor: pointer;
-  transition: border-color 0.2s, background-color 0.2s;
-}
-
-.year-selector-control:hover:not(:disabled) {
-  border-color: var(--color-gray-dark);
-  background-color: var(--color-gray-light);
-}
-
-.year-selector-control:disabled {
-  background-color: #f0f0f0;
-  color: var(--color-gray-dark);
-  cursor: not-allowed;
-  opacity: 0.6;
+  display: none;
 }
 
 /**
@@ -1221,7 +1203,7 @@ footer p {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 60px;
+  width: 80px;
   height: auto;
   padding: 8px 0;
   background-color: transparent;
@@ -1230,24 +1212,21 @@ footer p {
 }
 
 .year-rail-vertical .year-selector-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-md);
-  writing-mode: vertical-rl;
-  transform: rotate(90deg);
+  display: none;
 }
 
 .year-label {
   font-size: var(--font-size-xl);
   font-weight: bold;
   color: var(--color-dark);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
   padding: var(--spacing-sm);
+  text-align: center;
+  cursor: pointer;
 }
 
 .year-label-unselected {
-  opacity: 1;
+  opacity: 0.6;
   font-size: var(--font-size-base);
   color: var(--color-gray-dark);
 }
@@ -1255,94 +1234,73 @@ footer p {
 .year-label-selected {
   opacity: 1;
   color: var(--color-gold-primary);
+  border-bottom: 3px solid var(--color-gold-primary);
 }
 
 /**
- * Task 12 Phase 2: Year Cylinder - 3D Drum Visual
+ * Task 12 Phase 2: Year Cylinder - Tab Layout (visible both years)
  */
 
 .year-cylinder {
-  perspective: 280px;
-  perspective-origin: center center;
-  width: 44px;
-  height: 120px;
+  perspective: none;
+  width: 80px;
+  height: auto;
   margin: 0 auto;
-  background: linear-gradient(
-    to right,
-    #1a1a1a 0%,
-    #2e2e2e 15%,
-    #3a3a3a 30%,
-    #2a2a2a 50%,
-    #3a3a3a 70%,
-    #2e2e2e 85%,
-    #1a1a1a 100%
-  );
-  border-radius: 50% / 8px;
-  box-shadow:
-    -4px 0 8px rgba(0, 0, 0, 0.6),
-     4px 0 8px rgba(0, 0, 0, 0.6),
-     0 2px 12px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
 .year-cylinder::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 35%;
-  width: 12%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0.06) 50%,
-    transparent 100%
-  );
-  pointer-events: none;
-  z-index: 1;
+  content: none;
 }
 
 .year-cylinder-stage {
-  transform-style: preserve-3d;
+  transform-style: flat;
   width: 100%;
-  height: 100%;
+  height: auto;
   position: relative;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .year-cylinder .year-label {
-  position: absolute;
+  position: static;
   width: 100%;
   text-align: center;
-  line-height: 1;
-  padding: 0;
-  backface-visibility: hidden;
+  line-height: 1.2;
+  padding: var(--spacing-sm);
+  backface-visibility: visible;
   writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: block;
 }
 
 .year-cylinder .year-label-selected {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-gold-primary);
   letter-spacing: 0.08em;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%) translateZ(22px) rotate(180deg);
-  text-shadow:
-    0 1px 3px rgba(255, 255, 255, 0.3),
-    0 -1px 1px rgba(0, 0, 0, 0.8);
+  transform: rotate(180deg);
+  text-shadow: none;
+  border-bottom: 3px solid var(--color-gold-primary);
 }
 
 .year-cylinder .year-label-unselected {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
-  color: rgba(180, 180, 180, 0.6);
+  color: var(--color-gray-dark);
   letter-spacing: 0.05em;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%) translateZ(22px) rotateX(-65deg) rotate(180deg);
-  opacity: 0.65;
+  transform: rotate(180deg);
+  opacity: 0.6;
 }
 
 /**
@@ -1371,77 +1329,41 @@ footer p {
   }
 
   .year-cylinder {
-    width: 160px;
-    height: 52px;
-    border-radius: 8px / 50%;
-    background: linear-gradient(
-      to bottom,
-      #1a1a1a 0%,
-      #2e2e2e 15%,
-      #3a3a3a 35%,
-      #2a2a2a 50%,
-      #3a3a3a 65%,
-      #2e2e2e 85%,
-      #1a1a1a 100%
-    );
-    box-shadow:
-      0 -4px 8px rgba(0, 0, 0, 0.6),
-      0  4px 8px rgba(0, 0, 0, 0.6),
-      4px 0 12px rgba(0, 0, 0, 0.4);
-    perspective: 200px;
-    perspective-origin: center center;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    perspective: none;
+    perspective-origin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
   }
 
   .year-cylinder .year-label {
     writing-mode: horizontal-tb;
+    transform: none;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 
   .year-cylinder .year-label-selected {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
-    left: 60%;
-    transform: translateX(-50%) translateY(-50%) translateZ(26px) rotate(0deg);
-    text-shadow:
-      0 1px 3px rgba(255, 255, 255, 0.3),
-      0 -1px 1px rgba(0, 0, 0, 0.8);
-    letter-spacing: 0.1em;
+    transform: none;
+    text-shadow: none;
+    letter-spacing: 0.08em;
   }
 
   .year-cylinder .year-label-unselected {
     font-size: 14px;
-    left: 22%;
-    transform: translateX(-50%) translateY(-50%) translateZ(26px) rotateY(60deg);
-    opacity: 0.6;
-    letter-spacing: 0.05em;
-  }
-
-  .year-rail-vertical .year-selector-container {
-    writing-mode: horizontal-tb;
     transform: none;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: var(--spacing-sm);
-  }
-
-  .year-selector-label,
-  .year-selector-control {
-    font-size: var(--font-size-base);
-    writing-mode: horizontal-tb;
-  }
-
-  .year-selector-control {
-    border: none;
-    background: transparent;
-    font-size: 10px;
-    color: var(--color-gray-dark);
-    cursor: pointer;
-    padding: 2px;
+    letter-spacing: 0.05em;
   }
 
   .year-selector-label {
-    font-size: 9px;
-    color: var(--color-gray-dark);
-    letter-spacing: 0.05em;
+    display: none;
   }
 }
 

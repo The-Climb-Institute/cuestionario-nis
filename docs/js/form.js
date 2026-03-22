@@ -1373,39 +1373,49 @@ class NISFormRenderer {
   }
 
   /**
-   * Task 12 Phase 2: Initialize scroll-linked effects for year rail
-   * Unselected year fades (opacity 1→0), selected year moves up with scroll
+   * Task 12 Phase 2: Initialize year selector as clickable tabs (no scroll effect)
+   * Both years visible side-by-side; click to switch between them
    */
   initializeScrollEffects() {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
-      const scrollProgressClamped = Math.min(1, Math.max(0, scrollProgress));
+    const unselectedYearEl = document.querySelector('[data-year-label="unselected"]');
+    const selectedYearEl = document.querySelector('[data-year-label="selected"]');
 
-      // Update unselected year opacity (fade out as scroll increases)
-      const unselectedYearEl = document.querySelector('[data-year-label="unselected"]');
-      if (unselectedYearEl) {
-        unselectedYearEl.style.opacity = Math.max(0, 1 - scrollProgressClamped);
-      }
+    if (unselectedYearEl && selectedYearEl) {
+      // Get the years from the data
+      const currentYear = parseInt(unselectedYearEl.textContent);
+      const selectedYear = parseInt(selectedYearEl.textContent);
 
-      // Task 12 Phase 3: Rotate cylinder stage for drum-turning effect
-      const cylinderStage = document.querySelector('.year-cylinder-stage');
-      if (cylinderStage) {
-        const maxRotation = 30;
-        const rotation = scrollProgressClamped * maxRotation;
-        cylinderStage.style.transform = `rotateX(${rotation}deg)`;
-      }
-    };
+      // Make unselected year clickable to switch to it
+      unselectedYearEl.style.cursor = 'pointer';
+      unselectedYearEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (this.yearLocked) {
+          alert('No puede cambiar el año mientras hay datos completados.');
+          return;
+        }
+        this.setSelectedYear(currentYear);
+        const selector = document.getElementById('year-selector');
+        if (selector) {
+          selector.value = currentYear;
+        }
+        // Swap the labels
+        const tempText = unselectedYearEl.textContent;
+        unselectedYearEl.textContent = selectedYearEl.textContent;
+        selectedYearEl.textContent = tempText;
+        // Swap the classes
+        unselectedYearEl.classList.remove('year-label-unselected');
+        unselectedYearEl.classList.add('year-label-selected');
+        selectedYearEl.classList.remove('year-label-selected');
+        selectedYearEl.classList.add('year-label-unselected');
+      });
 
-    // Remove previous listener if exists
-    if (this.scrollListenerId) {
-      window.removeEventListener('scroll', this.scrollListenerId);
+      // Make selected year also clickable (no-op if already selected)
+      selectedYearEl.style.cursor = 'pointer';
+      selectedYearEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Do nothing; year is already selected
+      });
     }
-
-    // Add scroll listener
-    window.addEventListener('scroll', handleScroll);
-    this.scrollListenerId = handleScroll;
   }
 
   /**
