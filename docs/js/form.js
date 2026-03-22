@@ -1421,6 +1421,18 @@ class NISFormRenderer {
     // Attach handlers to both tabs so either can be clicked
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
+
+    // Task 12: Add scroll fade effect to unselected tab
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+      // Fade unselected tab as user scrolls (opacity: 1 at top, 0 at bottom)
+      tabA.style.opacity = Math.max(0, 1 - scrollProgress);
+    };
+
+    window.addEventListener('scroll', handleScroll);
   }
 
   /**

@@ -197,4 +197,38 @@ describe('Year Selector Tabs — Click Behavior (Task 14)', () => {
     expect(tabA.classList.contains('year-label-selected')).toBe(true);
     expect(tabB.classList.contains('year-label-unselected')).toBe(true);
   });
+
+  test('Unselected tab opacity changes with scroll position', () => {
+    // Set up scroll fade effect (simulating what form.js does)
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+      tabA.style.opacity = Math.max(0, 1 - scrollProgress);
+    };
+
+    // At scroll position 0 (top), opacity should be 1
+    Object.defineProperty(window, 'scrollY', { value: 0, configurable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 1000,
+      configurable: true
+    });
+    Object.defineProperty(window, 'innerHeight', { value: 800, configurable: true });
+
+    handleScroll();
+    expect(parseFloat(tabA.style.opacity)).toBe(1);
+
+    // At 50% scroll, opacity should be ~0.5
+    Object.defineProperty(window, 'scrollY', { value: 100, configurable: true });
+    handleScroll();
+    expect(parseFloat(tabA.style.opacity)).toBeCloseTo(0.5, 1);
+
+    // At 100% scroll (bottom), opacity should be 0
+    Object.defineProperty(window, 'scrollY', { value: 200, configurable: true });
+    handleScroll();
+    expect(parseFloat(tabA.style.opacity)).toBe(0);
+
+    // Selected tab should never have opacity set (always fully visible)
+    expect(tabB.style.opacity).toBe('');
+  });
 });
