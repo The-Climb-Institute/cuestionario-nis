@@ -64,8 +64,8 @@ function isFuturePeriodSlot(year, periodIndex, offset) {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentBimonth = monthToBimonth(now.getMonth() + 1);
-  const bimonth = periodIndexToBimonth(periodIndex, offset);
-  return year > currentYear || (year === currentYear && bimonth > currentBimonth);
+  const { year: dispYear, bimonth } = getBimestralDisplayCalendar(year, periodIndex, offset);
+  return dispYear > currentYear || (dispYear === currentYear && bimonth > currentBimonth);
 }
 
 /** Ordena periodos por año y periodIndex (ascendente). */
@@ -341,7 +341,10 @@ class NISFormRenderer {
     selectorContainer.appendChild(selector);
 
     yearRailDiv.appendChild(selectorContainer);
-    container.appendChild(yearRailDiv);
+
+    // Task 12: Insert year rail as first child of grid container (left column)
+    const gridContainer = container.parentElement;
+    gridContainer.insertBefore(yearRailDiv, gridContainer.firstChild);
 
     // Task 12: Set up year selector event listener
     const yearSelector = document.getElementById('year-selector');
@@ -655,8 +658,8 @@ class NISFormRenderer {
       updateOffsetLabel(offset);
       bimestralList.innerHTML = '';
       sorted.forEach((p, i) => {
-        const bimonth = periodIndexToBimonth(p.periodIndex, offset);
-        const periodLabel = getBimonthLabel(p.year, bimonth);
+        const { year: labelYear, bimonth } = getBimestralDisplayCalendar(p.year, p.periodIndex, offset);
+        const periodLabel = getBimonthLabel(labelYear, bimonth);
         const slotKey = `${p.year}-${p.periodIndex}`;
         const row = document.createElement('div');
         row.className = 'bimestral-row';
@@ -1823,4 +1826,6 @@ class NISFormRenderer {
 // Exportar para uso en HTML
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = NISFormRenderer;
+  module.exports.getBimestralDisplayCalendar = getBimestralDisplayCalendar;
+  module.exports.periodIndexToBimonth = periodIndexToBimonth;
 }

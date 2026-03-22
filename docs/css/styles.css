@@ -89,7 +89,7 @@ header .logo-image {
   margin: 0 auto;
   padding: var(--spacing-lg);
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: 80px 1fr 320px;
   gap: var(--spacing-lg);
 }
 
@@ -99,7 +99,6 @@ header .logo-image {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-light);
   padding: var(--spacing-lg);
-  position: relative;
 }
 
 .nis-seccion {
@@ -1199,15 +1198,14 @@ footer p {
  * Task 12 Phase 2: Year Rail - Vertical (Desktop) Layout
  */
 .year-rail-vertical {
-  position: absolute;
-  left: 0;
-  top: var(--spacing-lg);
+  position: sticky;
+  top: var(--spacing-md);
+  align-self: start;
+  height: fit-content;
   width: 80px;
-  height: auto;
   padding: 8px 0;
   background-color: transparent;
   box-shadow: none;
-  z-index: 10;
   margin: 0;
 }
 
@@ -1331,12 +1329,9 @@ footer p {
 
   .year-rail-vertical {
     position: static;
-    left: auto;
-    top: auto;
-    transform: none;
     width: auto;
-    padding: 0;
-    margin: var(--spacing-md) 0;
+    padding: var(--spacing-sm) 0;
+    margin: 0;
     background: transparent;
     box-shadow: none;
     display: flex;
@@ -1344,6 +1339,13 @@ footer p {
     align-items: center;
     flex-direction: column;
     gap: var(--spacing-sm);
+    top: auto;
+    align-self: auto;
+    height: auto;
+  }
+
+  .container {
+    grid-template-columns: 1fr 320px;
   }
 
   .year-cylinder {
