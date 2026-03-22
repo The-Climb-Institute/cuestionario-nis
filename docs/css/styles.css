@@ -89,7 +89,7 @@ header .logo-image {
   margin: 0 auto;
   padding: var(--spacing-lg);
   display: grid;
-  grid-template-columns: 80px 1fr 320px;
+  grid-template-columns: 70px 1fr 280px;
   gap: var(--spacing-lg);
 }
 
