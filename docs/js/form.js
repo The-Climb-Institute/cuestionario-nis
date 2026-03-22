@@ -74,6 +74,7 @@ class NISFormRenderer {
     this.selectedYear = currentYear - 1; // Default selection: previous year
     this.yearLocked = false; // Lock after first non-company field is filled
     this.isReadOnly = false; // Read-only state after successful submit
+    this.scrollListenerId = null; // Track scroll listener for cleanup
   }
 
   /**
@@ -128,6 +129,11 @@ class NISFormRenderer {
    */
   createChangeCallback(onChangeCallback = () => {}) {
     return (e) => {
+      // Only process events from form fields, not buttons or other elements
+      if (!e || !e.target || e.target.type === 'button') {
+        return;
+      }
+
       // Call original callback
       onChangeCallback(e);
 
@@ -205,22 +211,49 @@ class NISFormRenderer {
     `;
     container.appendChild(instructionsDiv);
 
-    // Task 12: Render year selector rail
+    // Task 12: Render year selector rail with scroll effect elements
     const yearRailDiv = document.createElement('div');
     yearRailDiv.className = 'year-rail year-rail-desktop';
     yearRailDiv.id = 'year-rail';
-    yearRailDiv.innerHTML = `
-      <div class="year-selector-container">
-        <label for="year-selector" class="year-selector-label">Año</label>
-        <select id="year-selector" class="year-selector-control">
-          ${this.dataYears.map(year => `
-            <option value="${year}" ${year === this.selectedYear ? 'selected' : ''}>
-              ${year}
-            </option>
-          `).join('')}
-        </select>
-      </div>
-    `;
+
+    // Create unselected year label (for scroll fade effect)
+    const unselectedDiv = document.createElement('div');
+    unselectedDiv.className = 'year-label year-label-unselected';
+    unselectedDiv.setAttribute('data-year-label', 'unselected');
+    unselectedDiv.textContent = String(this.dataYears[1]); // Current year
+
+    // Create selected year label (for scroll position effect)
+    const selectedDiv = document.createElement('div');
+    selectedDiv.className = 'year-label year-label-selected';
+    selectedDiv.setAttribute('data-year-label', 'selected');
+    selectedDiv.textContent = String(this.selectedYear);
+
+    // Create selector container
+    const selectorContainer = document.createElement('div');
+    selectorContainer.className = 'year-selector-container';
+
+    const label = document.createElement('label');
+    label.htmlFor = 'year-selector';
+    label.className = 'year-selector-label';
+    label.textContent = 'Año';
+
+    const selector = document.createElement('select');
+    selector.id = 'year-selector';
+    selector.className = 'year-selector-control';
+    this.dataYears.forEach(year => {
+      const option = document.createElement('option');
+      option.value = year;
+      option.selected = year === this.selectedYear;
+      option.textContent = year;
+      selector.appendChild(option);
+    });
+
+    selectorContainer.appendChild(label);
+    selectorContainer.appendChild(selector);
+
+    yearRailDiv.appendChild(unselectedDiv);
+    yearRailDiv.appendChild(selectedDiv);
+    yearRailDiv.appendChild(selectorContainer);
     container.appendChild(yearRailDiv);
 
     // Task 12: Set up year selector event listener
@@ -231,9 +264,30 @@ class NISFormRenderer {
         if (!this.setSelectedYear(newYear)) {
           // Revert selection if year change was blocked (locked)
           e.target.value = this.selectedYear;
+        } else {
+          // Update selected year label for scroll effects
+          const selectedLabel = document.querySelector('[data-year-label="selected"]');
+          if (selectedLabel) {
+            selectedLabel.textContent = newYear;
+          }
         }
       });
     }
+
+    // Task 12 Phase 2: Initialize scroll effects
+    this.initializeScrollEffects();
+
+    // Task 12 Phase 3: Add clear form button (near the top, in form controls area)
+    const formControlsDiv = document.createElement('div');
+    formControlsDiv.className = 'form-controls';
+    const clearBtn = document.createElement('button');
+    clearBtn.id = 'btn-clear-form';
+    clearBtn.type = 'button';
+    clearBtn.className = 'btn btn-secondary btn-clear';
+    clearBtn.textContent = 'Limpiar formulario';
+    clearBtn.addEventListener('click', () => this.clearFormData());
+    formControlsDiv.appendChild(clearBtn);
+    yearRailDiv.appendChild(formControlsDiv);
 
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
@@ -1138,6 +1192,84 @@ class NISFormRenderer {
     fields?.forEach(field => {
       field.disabled = readOnly;
     });
+  }
+
+  /**
+   * Task 12 Phase 2: Initialize scroll-linked effects for year rail
+   * Unselected year fades (opacity 1→0), selected year moves up with scroll
+   */
+  initializeScrollEffects() {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+      const scrollProgressClamped = Math.min(1, Math.max(0, scrollProgress));
+
+      // Update unselected year opacity (fade out as scroll increases)
+      const unselectedYearEl = document.querySelector('[data-year-label="unselected"]');
+      if (unselectedYearEl) {
+        unselectedYearEl.style.opacity = Math.max(0, 1 - scrollProgressClamped);
+      }
+
+      // Update selected year position (move up as scroll increases)
+      const selectedYearEl = document.querySelector('[data-year-label="selected"]');
+      if (selectedYearEl) {
+        const initialPosition = 100; // Starting position in pixels
+        const newPosition = Math.max(0, initialPosition - (scrollProgressClamped * initialPosition));
+        selectedYearEl.style.transform = `translateY(-${newPosition}px)`;
+      }
+    };
+
+    // Remove previous listener if exists
+    if (this.scrollListenerId) {
+      window.removeEventListener('scroll', this.scrollListenerId);
+    }
+
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll);
+    this.scrollListenerId = handleScroll;
+  }
+
+  /**
+   * Task 12 Phase 3: Clear form data and unlock year
+   */
+  clearFormData() {
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      '¿Está seguro que desea limpiar todos los datos del formulario?\n\nEsta acción no se puede deshacer.'
+    );
+
+    if (!confirmed) return;
+
+    // Clear all form fields
+    const form = document.querySelector('form');
+    if (form) {
+      // Clear text inputs
+      form.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+        input.value = '';
+      });
+
+      // Clear selects
+      form.querySelectorAll('select').forEach(select => {
+        select.value = '';
+      });
+
+      // Clear checkboxes and radios
+      form.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+        input.checked = false;
+      });
+
+      // Clear textareas
+      form.querySelectorAll('textarea').forEach(textarea => {
+        textarea.value = '';
+      });
+    }
+
+    // Unlock year selection
+    this.setYearLocked(false);
+
+    // Show success message
+    alert('Formulario limpiado. Ahora puede cambiar el año de reporte.');
   }
 
   /**

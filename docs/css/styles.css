@@ -1312,6 +1312,148 @@ footer p {
 }
 
 /**
+ * Task 12 Phase 2: Year Rail - Vertical (Desktop) Layout
+ */
+.year-rail-vertical {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: auto;
+  padding: var(--spacing-lg);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-medium);
+  z-index: 100;
+}
+
+.year-rail-vertical .year-selector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.year-label {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--color-dark);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  padding: var(--spacing-sm);
+}
+
+.year-label-unselected {
+  opacity: 1;
+  font-size: var(--font-size-base);
+  color: var(--color-gray-dark);
+}
+
+.year-label-selected {
+  opacity: 1;
+  color: var(--color-gold-primary);
+}
+
+/**
+ * Task 12 Phase 2: Year Rail - Horizontal (Mobile) Fallback
+ */
+@media (max-width: 767px) {
+  .year-rail {
+    position: static !important;
+    width: auto !important;
+    padding: var(--spacing-md) !important;
+    margin: var(--spacing-md) 0 !important;
+  }
+
+  .year-rail-vertical {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 100%;
+    height: auto;
+    box-shadow: var(--shadow-light);
+  }
+
+  .year-rail-vertical .year-selector-container {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-lg);
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .year-label {
+    display: none; /* Hide scroll-effect labels on mobile */
+  }
+
+  .year-selector-label,
+  .year-selector-control {
+    font-size: var(--font-size-base);
+  }
+}
+
+/**
+ * Task 12 Phase 3: Clear Form Button
+ */
+.form-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.btn-clear {
+  background-color: var(--color-gray-medium);
+  color: var(--color-dark);
+  border: 1px solid var(--color-gray-dark);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-family: var(--font-primary);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-clear:hover:not(:disabled) {
+  background-color: var(--color-gray-dark);
+  color: var(--color-white);
+}
+
+.btn-clear:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-clear-secondary {
+  background-color: transparent;
+  color: var(--color-gray-dark);
+  border: 1px solid var(--color-gray-medium);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-clear-secondary:hover {
+  background-color: var(--color-gray-light);
+  border-color: var(--color-gray-dark);
+}
+
+/**
+ * Task 12 Phase 3: Right Panel Clear Button
+ */
+.results-panel .btn-clear-secondary {
+  width: 100%;
+  text-align: center;
+  margin-top: var(--spacing-md);
+  border-top: 1px solid var(--color-gray-medium);
+  padding-top: var(--spacing-md);
+}
+
+/**
  * Task 12: Form Footer
  */
 .form-footer {
@@ -1329,15 +1471,26 @@ footer p {
 }
 
 /**
- * Task 12: Read-only form state
+ * Task 12 Phase 3: Read-only form state (enhanced)
  */
 .form-read-only {
   opacity: 0.8;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 .form-read-only input,
 .form-read-only select,
-.form-read-only textarea {
+.form-read-only textarea,
+.form-read-only .btn:not(.btn-close) {
   background-color: #f0f0f0;
+  color: var(--color-gray-dark);
   cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.form-read-only input:disabled,
+.form-read-only select:disabled,
+.form-read-only textarea:disabled {
+  border-color: var(--color-gray-medium);
 }
