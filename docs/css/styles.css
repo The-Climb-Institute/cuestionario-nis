@@ -41,7 +41,6 @@
 body {
   margin: 0;
   padding: 0;
-  padding-left: 60px;
   font-family: var(--font-primary);
   font-size: var(--font-size-base);
   line-height: 1.6;
@@ -100,6 +99,7 @@ header .logo-image {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-light);
   padding: var(--spacing-lg);
+  position: relative;
 }
 
 .nis-seccion {
@@ -1199,16 +1199,16 @@ footer p {
  * Task 12 Phase 2: Year Rail - Vertical (Desktop) Layout
  */
 .year-rail-vertical {
-  position: fixed;
+  position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: var(--spacing-lg);
   width: 80px;
   height: auto;
   padding: 8px 0;
   background-color: transparent;
   box-shadow: none;
-  z-index: 100;
+  z-index: 10;
+  margin: 0;
 }
 
 .year-rail-vertical .year-selector-container {
