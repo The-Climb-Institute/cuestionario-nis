@@ -61,6 +61,67 @@ function sortBimestralBySlot(periods) {
   });
 }
 
+/**
+ * Task 13: Validates bimestral periods for contiguity (no gaps).
+ * - For past years: must be contiguous from first to last bimestre
+ * - For current year: allowed to have missing last bimestres (5, 6 may be missing)
+ * Returns { valid: boolean, error?: string }
+ */
+function validateBimestralContiguity(periods) {
+  if (!periods || periods.length === 0) {
+    return { valid: true }; // Empty is valid
+  }
+
+  // Group periods by year
+  const byYear = {};
+  periods.forEach(p => {
+    if (!byYear[p.year]) byYear[p.year] = [];
+    byYear[p.year].push(p.periodIndex);
+  });
+
+  const currentYear = new Date().getFullYear();
+
+  // Check each year
+  for (const [yearStr, indices] of Object.entries(byYear)) {
+    const year = parseInt(yearStr, 10);
+    const sorted = [...new Set(indices)].sort((a, b) => b - a); // Descending order
+
+    // For each pair of consecutive periods, check for gaps
+    for (let i = 0; i < sorted.length - 1; i++) {
+      const curr = sorted[i];
+      const next = sorted[i + 1];
+
+      if (curr - next !== 1) {
+        // Gap found
+        return {
+          valid: false,
+          error: `Bimestres no contiguos en año ${year}: falta bimestre ${next + 1}`
+        };
+      }
+    }
+
+    // For past years, must have bimestre 6 (Nov-Dec)
+    if (year < currentYear && !sorted.includes(6)) {
+      return {
+        valid: false,
+        error: `Año ${year} (pasado) debe incluir bimestre 6 (Nov-Dic)`
+      };
+    }
+
+    // For current year, allow missing last bimestres (5, 6)
+    // Already validated contiguity above
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Task 13: Calculates the sum of bimestral kWh values.
+ */
+function calculateBimestralSum(periods) {
+  return periods.reduce((sum, p) => sum + (p.kWh || 0), 0);
+}
+
 class NISFormRenderer {
   constructor(benchmarks, questions, countries = []) {
     this.benchmarks = benchmarks;
@@ -310,9 +371,8 @@ class NISFormRenderer {
       if (isMultiYear) {
         const yearBlocksContainer = document.createElement('div');
         yearBlocksContainer.className = 'year-blocks';
-        this.dataYears.forEach(year => {
-          yearBlocksContainer.appendChild(this.renderYearBlock(seccion, year, wrappedCallback));
-        });
+        // Task 13: Only render year block for the selected year (single-year mode)
+        yearBlocksContainer.appendChild(this.renderYearBlock(seccion, this.selectedYear, wrappedCallback));
         seccionDiv.appendChild(yearBlocksContainer);
       } else {
         const fieldsContainer = document.createElement('div');
@@ -397,10 +457,13 @@ class NISFormRenderer {
     const pastYearContainer = document.createElement('div');
     pastYearContainer.className = 'past-year-rows';
     pastYearContainer.setAttribute('data-field-id', 'energia_kwh');
+    // Task 13: Hide multi-year UI (only single selected year in UI)
+    pastYearContainer.style.display = 'none';
     const addPastYearBtn = document.createElement('button');
     addPastYearBtn.type = 'button';
     addPastYearBtn.className = 'btn-add-past-year';
     addPastYearBtn.textContent = '+ Agregar año anterior';
+    addPastYearBtn.style.display = 'none'; // Task 13: Hide in single-year mode
     let pastYearCount = 0;
     const handleAddPastYearEnergy = () => {
       const currentYear = new Date().getFullYear();
@@ -635,6 +698,12 @@ class NISFormRenderer {
         return;
       }
       s.periods = [{ year: prev.year, periodIndex: prev.periodIndex, kWh: null }, ...s.periods];
+      // Task 13: Validate bimestral contiguity
+      const validation = validateBimestralContiguity(s.periods);
+      if (!validation.valid) {
+        alert(`Validación: ${validation.error}`);
+        return; // Don't add period if validation fails
+      }
       saveBimestralState(s);
       renderBimestralRows(s);
     });

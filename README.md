@@ -23,6 +23,28 @@ Todos los derechos reservados. Prohibida la reproducción total o parcial de est
 
 ---
 
+## Task 13: Consumo de Energía para Año de Reporte Seleccionado
+
+### Características Principales
+- **Modo único de año:** Los campos de energía se aplican **solo al año seleccionado** mediante el selector de Task 12
+- **Dos modos de entrada:**
+  - **Total anual:** Ingresa el consumo anual completo en kWh
+  - **Por recibo bimestral:** Ingresa 6 periodos bimestales que suman al total anual
+- **Ocultación de UI multi-año:** El botón "Agregar año anterior" no aparece en el formulario (datos limitados a año seleccionado por sesión)
+- **Validación de bimestres contiguos:** Los periodos bimestales no pueden tener gaps (brechas) entre ellos
+- **Flexibilidad en año actual:** El último bimestre (Nov-Dic) puede faltar para el año en curso si aún no está disponible
+
+### Comportamiento de Validación
+- **Años pasados:** Todos los bimestres deben ser contiguos y completar hasta bimestre 6 (Nov-Dic)
+- **Año actual:** Permite bimestres incompletos al final (falta bimestre 5 o 6 es válido)
+- **Suma de bimestres:** Se valida que la suma de bimestres coincida con el total anual reportado
+
+### Integración con Score
+- La energía renovable (% de energía renovable) se calcula a partir del consumo total seleccionado (anual o suma de bimestres)
+- El score se normaliza según benchmarks OCDE (meta: ≥30% de energía renovable)
+
+---
+
 ## ¿Qué es el NIS?
 
 **NIS = Normas de Información de Sostenibilidad** — estándar de evaluación de desempeño ambiental, social y de gobernanza (ESG) de una empresa. Comprende:
