@@ -1459,6 +1459,8 @@ class NISFormRenderer {
         clickedTab.classList.add('year-label-selected');
         otherTab.classList.remove('year-label-selected');
         otherTab.classList.add('year-label-unselected');
+        // Reset selected tab to full opacity, then apply fade to newly unselected
+        clickedTab.style.opacity = 1;
         // Toggle fade: newly unselected tab gets faded based on current scroll
         handleScrollFade();
       });
@@ -1466,7 +1468,7 @@ class NISFormRenderer {
 
     // Helper: Calculate and apply fade based on scroll position
     const handleScrollFade = () => {
-      const unselectedTab = document.querySelector('[data-year-label="unselected"]');
+      const unselectedTab = document.querySelector('.year-label-unselected');
       if (!unselectedTab) return;
 
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
