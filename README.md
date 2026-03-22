@@ -2,6 +2,27 @@
 
 Formulario interactivo para evaluar el cumplimiento de **Normas de Información de Sostenibilidad (NIS)** en empresas, comparando contra benchmarks OCDE y organismos internacionales.
 
+## Task 12: Selector de Año de Reporte
+
+### Características Principales
+- **Dos años disponibles:** Año actual y año anterior (selección por defecto: anterior)
+- **Riel vertical fijo** (escritorio) con **rotación de 90°** / **tira horizontal** (móvil)
+- **Efectos de scroll vinculados:** Año no seleccionado se desvanece; año seleccionado se mueve hacia arriba
+- **Bloqueo automático** después del primer campo no-empresa completado
+- **Botón "Limpiar formulario"** para desbloquear y resetear datos
+- **Estado post-envío:** Formulario en modo solo-lectura con estilo atenuado
+
+### Diseño Responsive
+- **Escritorio (≥768px):** Riel vertical 60px en lado izquierdo, rotado 90°, con scroll-linking
+- **Móvil (<768px):** Tira horizontal centrada, sin rotación, adaptada para pantalla pequeña
+
+### Pie de Página
+```
+Todos los derechos reservados. Prohibida la reproducción total o parcial de este sitio.
+```
+
+---
+
 ## ¿Qué es el NIS?
 
 **NIS = Normas de Información de Sostenibilidad** — estándar de evaluación de desempeño ambiental, social y de gobernanza (ESG) de una empresa. Comprende:
