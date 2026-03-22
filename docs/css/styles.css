@@ -218,12 +218,16 @@ header .logo-image {
 }
 
 .seccion-score {
-  display: flex;
+  display: none;
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
   background: var(--color-gray-light);
   border-radius: var(--border-radius);
+}
+
+.seccion-score.revealed {
+  display: flex;
 }
 
 .score-label {
@@ -667,6 +671,17 @@ header .logo-image {
   font-style: italic;
   font-size: 12px;
   margin: 0;
+}
+
+.field-help .field-help-link {
+  color: #1976d2;
+  font-style: normal;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.field-help .field-help-link:hover {
+  text-decoration: underline;
 }
 
 .field-input {

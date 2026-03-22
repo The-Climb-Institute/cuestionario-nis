@@ -93,6 +93,12 @@ function updateSectionScores(scores) {
 
     const score = scores[seccion];
 
+    // Make section score visible
+    const scoreContainer = document.querySelector(`[data-score-${seccion}]`)?.parentElement;
+    if (scoreContainer) {
+      scoreContainer.classList.add('revealed');
+    }
+
     // Score value - mostrar "-" si no hay datos, "N%" si hay datos
     const scoreElement = document.querySelector(`[data-score-${seccion}]`);
     const percentElement = document.querySelector(`[data-percent-${seccion}]`);
@@ -174,6 +180,8 @@ function updateResumenPanel(scores) {
  */
 function revealScoresAfterSubmit() {
   scoresRevealed = true;
+  const totalScoreEl = document.querySelector('.total-score');
+  if (totalScoreEl) totalScoreEl.removeAttribute('hidden');
   updateScores();      // Ahora sin protección — pinta sidebar + footers
   showScoreModal();    // Modal con desglose completo
 }

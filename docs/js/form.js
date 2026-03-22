@@ -1474,32 +1474,30 @@ class NISFormRenderer {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-      // Find first time-sensitive question (energy section)
-      const energySection = document.querySelector('[data-section="energia"]');
-      const energySectionTop = energySection ? energySection.getBoundingClientRect().top + scrollTop : docHeight * 0.5;
+      // Find enterprise profile section (start of form questions)
+      const empresaSection = document.querySelector('[data-section="empresa"]');
+      const empresaSectionTop = empresaSection ? empresaSection.getBoundingClientRect().top + scrollTop : docHeight * 0.2;
 
-      // Calculate scroll progress from form start to end
-      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+      // Find first time-sensitive question (ambiental/environmental section)
+      const ambientalSection = document.querySelector('[data-section="ambiental"]');
+      const ambientalSectionTop = ambientalSection ? ambientalSection.getBoundingClientRect().top + scrollTop : docHeight * 0.5;
 
-      // Calculate fade: 75% (0.25 opacity) until energy section, then fade to 50% then 0%
-      let fadeOpacity = 0.25; // Default: 75% faded (25% opacity)
+      // Calculate fade: 90% faded (0.1 opacity) before empresa, fade to 50% (0.5) by ambiental, then stable
+      let fadeOpacity = 0.1; // Default: 90% faded (10% opacity)
 
-      if (scrollTop < energySectionTop) {
-        // Before time-sensitive section: stay at 75% faded
-        fadeOpacity = 0.25;
-      } else {
-        // After time-sensitive section: fade from 75% to 0%
-        const fadeStart = energySectionTop;
-        const fadeEnd = docHeight;
+      if (scrollTop < empresaSectionTop) {
+        // Before enterprise profile questions: stay at 90% faded
+        fadeOpacity = 0.1;
+      } else if (scrollTop < ambientalSectionTop) {
+        // Between empresa and ambiental: fade from 90% (0.1) to 50% (0.5)
+        const fadeStart = empresaSectionTop;
+        const fadeEnd = ambientalSectionTop;
         const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
-
-        if (fadeProgress < 0.5) {
-          // First half (energy to mid): fade from 75% (0.25) to 50% (0.5)
-          fadeOpacity = 0.25 + (fadeProgress * 2) * 0.25;
-        } else {
-          // Second half (mid to end): fade from 50% (0.5) to 0%
-          fadeOpacity = 0.5 - ((fadeProgress - 0.5) * 2) * 0.5;
-        }
+        // Interpolate from 0.1 to 0.5 over this range
+        fadeOpacity = 0.1 + (fadeProgress * 0.4);
+      } else {
+        // At/after ambiental section: stay at 50% faded (0.5 opacity)
+        fadeOpacity = 0.5;
       }
 
       unselectedTab.style.opacity = Math.max(0, fadeOpacity);
@@ -1509,8 +1507,8 @@ class NISFormRenderer {
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
 
-    // Initial fade: tabA (current year) is unselected initially
-    tabA.style.opacity = 0.25;
+    // Initial fade: tabA (current year) is unselected initially - 90% faded
+    tabA.style.opacity = 0.1;
 
     // Add scroll listener for progressive fade
     window.addEventListener('scroll', handleScrollFade);
