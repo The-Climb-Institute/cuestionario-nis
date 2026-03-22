@@ -108,7 +108,7 @@
           "id": "aplica_emisiones_energia",
           "label": "¿La empresa reporta emisiones de GEI (alcance 1 o 2) o tiene consumo de energía relevante para reportar?",
           "type": "boolean",
-          "helpText": "Si no aplica (p. ej. no hay combustión propia ni datos de electricidad), seleccione No; se omitirán las preguntas siguientes de emisiones y energía.",
+          "helpText": "Si no aplica (p. ej. no hay combustión propia ni datos de electricidad), seleccione No.",
           "docCode": "E1.1a",
           "ibsoId": "A.1",
           "benchmarkId": null
@@ -235,7 +235,7 @@
           "id": "aplica_sustancias_ozono",
           "label": "¿La empresa utiliza sustancias que agotan la capa de ozono (Protocolo de Montreal)?",
           "type": "boolean",
-          "helpText": "Refrigerantes, disolventes u otras sustancias controladas. Si no utiliza ninguna, seleccione No; se omitirá la pregunta de volumen.",
+          "helpText": "Refrigerantes, disolventes u otras sustancias controladas. Si no utiliza ninguna, seleccione No.",
           "benchmarkId": null
         },
         {
@@ -254,7 +254,7 @@
           "id": "aplica_residuos",
           "label": "¿La empresa genera residuos (sólidos o peligrosos) en sus operaciones?",
           "type": "boolean",
-          "helpText": "Si no genera residuos significativos para reportar, seleccione No; se omitirán las preguntas siguientes de residuos.",
+          "helpText": "Si no genera residuos significativos para reportar, seleccione No.",
           "benchmarkId": null
         },
         {
