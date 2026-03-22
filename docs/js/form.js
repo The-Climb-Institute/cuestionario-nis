@@ -458,7 +458,7 @@ class NISFormRenderer {
     if (field.helpText) {
       const help = document.createElement('small');
       help.className = 'field-help';
-      help.textContent = field.helpText;
+      appendHelpTextWithAutoLinks(help, field.helpText);
       container.appendChild(help);
     }
 
@@ -820,7 +820,7 @@ class NISFormRenderer {
     if (field.helpText) {
       const help = document.createElement('small');
       help.className = 'field-help';
-      help.textContent = field.helpText;
+      appendHelpTextWithAutoLinks(help, field.helpText);
       container.appendChild(help);
     }
 
@@ -967,7 +967,7 @@ class NISFormRenderer {
     if (field.helpText) {
       const helpText = document.createElement('small');
       helpText.className = 'field-help';
-      helpText.textContent = field.helpText;
+      appendHelpTextWithAutoLinks(helpText, field.helpText);
       fieldDiv.appendChild(helpText);
     }
 
@@ -1454,21 +1454,64 @@ class NISFormRenderer {
         if (selector) {
           selector.value = yearForClickedTab;
         }
-        // Swap classes only — text never changes
+        // Swap classes and update fade
         clickedTab.classList.remove('year-label-unselected');
         clickedTab.classList.add('year-label-selected');
         otherTab.classList.remove('year-label-selected');
         otherTab.classList.add('year-label-unselected');
+        // Toggle fade: newly unselected tab gets faded based on current scroll
+        handleScrollFade();
       });
+    };
+
+    // Helper: Calculate and apply fade based on scroll position
+    const handleScrollFade = () => {
+      const unselectedTab = document.querySelector('[data-year-label="unselected"]');
+      if (!unselectedTab) return;
+
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+      // Find first time-sensitive question (energy section)
+      const energySection = document.querySelector('[data-section="energia"]');
+      const energySectionTop = energySection ? energySection.getBoundingClientRect().top + scrollTop : docHeight * 0.5;
+
+      // Calculate scroll progress from form start to end
+      const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+      // Calculate fade: 75% (0.25 opacity) until energy section, then fade to 50% then 0%
+      let fadeOpacity = 0.25; // Default: 75% faded (25% opacity)
+
+      if (scrollTop < energySectionTop) {
+        // Before time-sensitive section: stay at 75% faded
+        fadeOpacity = 0.25;
+      } else {
+        // After time-sensitive section: fade from 75% to 0%
+        const fadeStart = energySectionTop;
+        const fadeEnd = docHeight;
+        const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+
+        if (fadeProgress < 0.5) {
+          // First half (energy to mid): fade from 75% (0.25) to 50% (0.5)
+          fadeOpacity = 0.25 + (fadeProgress * 2) * 0.25;
+        } else {
+          // Second half (mid to end): fade from 50% (0.5) to 0%
+          fadeOpacity = 0.5 - ((fadeProgress - 0.5) * 2) * 0.5;
+        }
+      }
+
+      unselectedTab.style.opacity = Math.max(0, fadeOpacity);
     };
 
     // Attach handlers to both tabs so either can be clicked
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
 
-    // Task 12: Set unselected tab to 75% faded (25% opacity) always
-    // tabA is always unselected initially (yearA is current year)
+    // Initial fade: tabA (current year) is unselected initially
     tabA.style.opacity = 0.25;
+
+    // Add scroll listener for progressive fade
+    window.addEventListener('scroll', handleScrollFade);
   }
 
   /**
