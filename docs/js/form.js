@@ -138,6 +138,32 @@ function calculateBimestralSum(periods) {
   return periods.reduce((sum, p) => sum + (p.kWh || 0), 0);
 }
 
+/** Turn https://... segments in help copy into real links (rest stays plain text). */
+function appendHelpTextWithAutoLinks(container, text) {
+  if (!text) return;
+  const raw = String(text);
+  const re = /https:\/\/[^\s<>"']+/gi;
+  let lastIndex = 0;
+  let m;
+  while ((m = re.exec(raw)) !== null) {
+    if (m.index > lastIndex) {
+      container.appendChild(document.createTextNode(raw.slice(lastIndex, m.index)));
+    }
+    const url = m[0];
+    const a = document.createElement('a');
+    a.href = url;
+    a.textContent = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.className = 'field-help-link';
+    container.appendChild(a);
+    lastIndex = m.index + url.length;
+  }
+  if (lastIndex < raw.length) {
+    container.appendChild(document.createTextNode(raw.slice(lastIndex)));
+  }
+}
+
 class NISFormRenderer {
   constructor(benchmarks, questions, countries = []) {
     this.benchmarks = benchmarks;
@@ -1451,14 +1477,19 @@ class NISFormRenderer {
     attachHandler(tabA, tabB, yearA);
     attachHandler(tabB, tabA, yearB);
 
-    // Task 12: Add scroll fade effect to unselected tab
+    // Task 12: Add scroll fade effect to unselected tab (starts fading at 75%)
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollProgress = docHeight > 0 ? scrollTop / docHeight : 0;
 
-      // Fade unselected tab as user scrolls (opacity: 1 at top, 0 at bottom)
-      tabA.style.opacity = Math.max(0, 1 - scrollProgress);
+      // Fade unselected tab: stays opaque until 75%, then fades from 75-100%
+      const fadeStart = 0.75;
+      if (scrollProgress < fadeStart) {
+        tabA.style.opacity = 1;
+      } else {
+        tabA.style.opacity = Math.max(0, 1 - (scrollProgress - fadeStart) / (1 - fadeStart));
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
