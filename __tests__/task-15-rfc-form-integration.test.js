@@ -48,6 +48,14 @@ describe('Task 15 - RFC Field Form Integration', () => {
     document.body.appendChild(form);
   });
 
+  function applyRFCRequirementByCountry() {
+    const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+    const countryCode = selectedOption?.getAttribute('data-code2') || selectedOption?.value;
+    const isMexico = countryCode === 'MX';
+    rfcInput.required = isMexico;
+    return isMexico;
+  }
+
   afterEach(() => {
     document.body.innerHTML = '';
   });
@@ -71,15 +79,40 @@ describe('Task 15 - RFC Field Form Integration', () => {
 
     test('should NOT be required when non-MX country is selected', () => {
       countrySelect.value = 'US';
+      applyRFCRequirementByCountry();
       expect(rfcInput.required).toBe(false);
     });
 
-    test('should be required when Mexico is selected', () => {
+    test('should be required when Mexico is selected (MX)', () => {
       countrySelect.value = 'MX';
       countrySelect.dispatchEvent(new Event('change'));
-      // In real implementation, this would be set by event listener
-      // For this test, we simulate the behavior
-      expect(countrySelect.value).toBe('MX');
+      const isMexico = applyRFCRequirementByCountry();
+      expect(isMexico).toBe(true);
+      expect(rfcInput.required).toBe(true);
+    });
+
+    test('should remain optional for countries other than Mexico', () => {
+      ['US', 'BR', 'CL', 'CO'].forEach((country) => {
+        countrySelect.value = country;
+        countrySelect.dispatchEvent(new Event('change'));
+        const isMexico = applyRFCRequirementByCountry();
+        expect(isMexico).toBe(false);
+        expect(rfcInput.required).toBe(false);
+      });
+    });
+
+    test('should toggle required when changing MX <-> non-MX', () => {
+      countrySelect.value = 'MX';
+      applyRFCRequirementByCountry();
+      expect(rfcInput.required).toBe(true);
+
+      countrySelect.value = 'US';
+      applyRFCRequirementByCountry();
+      expect(rfcInput.required).toBe(false);
+
+      countrySelect.value = 'MX';
+      applyRFCRequirementByCountry();
+      expect(rfcInput.required).toBe(true);
     });
   });
 

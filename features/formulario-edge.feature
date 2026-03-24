@@ -131,6 +131,16 @@ Característica: Comportamiento del formulario NIS en escenarios límite
     Entonces se muestra el modal de envío exitoso o el modal de validación
     Y la aplicación no ha crasheado
 
+  Escenario: RFC es requerido cuando el país es México
+    Dado que la aplicación está abierta
+    Cuando el usuario selecciona el país "México"
+    Entonces el campo RFC está marcado como requerido
+
+  Escenario: RFC es opcional cuando el país no es México
+    Dado que la aplicación está abierta
+    Cuando el usuario selecciona el país "Afghanistan"
+    Entonces el campo RFC no está marcado como requerido
+
   # --- Porcentajes en rango ---
   Escenario: Porcentaje 0 y 100 en campos con min/max
     Dado que la aplicación está abierta

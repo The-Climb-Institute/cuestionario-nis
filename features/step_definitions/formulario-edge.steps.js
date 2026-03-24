@@ -15,6 +15,10 @@ function getCompanyNumericFieldWrapper(page, nombreCampo) {
     .first();
 }
 
+function getRFCInput(page) {
+  return page.locator('[name="company_rfc"]');
+}
+
 // --- Enviar vacío ---
 When('el usuario hace clic en Enviar sin rellenar ningún campo', async function () {
   await this.page.getByRole('button', { name: /enviar/i }).click();
@@ -236,6 +240,10 @@ When('el usuario selecciona un país que tiene regiones si está disponible', as
   await this.page.getByRole('combobox', { name: /país/i }).selectOption('México');
 });
 
+When('el usuario selecciona el país {string}', async function (pais) {
+  await this.page.getByRole('combobox', { name: /país/i }).selectOption({ label: pais });
+});
+
 When('el usuario selecciona una región si el campo está visible', async function () {
   const region = this.page.getByRole('combobox', { name: /región|estado/i });
   if (await region.isVisible()) {
@@ -243,6 +251,17 @@ When('el usuario selecciona una región si el campo está visible', async functi
     const firstValue = await region.locator('option').nth(1).getAttribute('value').catch(() => null);
     if (firstValue) await region.selectOption(firstValue);
   }
+});
+
+Then('el campo RFC está marcado como requerido', async function () {
+  const rfcInput = getRFCInput(this.page);
+  const isRequired = await rfcInput.evaluate((el) => el.required);
+  expect(isRequired).toBe(true);
+});
+
+Then('el campo RFC no está marcado como requerido', async function () {
+  const isRequired = await getRFCInput(this.page).evaluate((el) => el.required);
+  expect(isRequired).toBe(false);
 });
 
 // --- Porcentajes ---
