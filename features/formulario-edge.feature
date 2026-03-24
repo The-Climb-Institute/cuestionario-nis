@@ -42,7 +42,7 @@ Característica: Comportamiento del formulario NIS en escenarios límite
     Entonces se muestra el modal de envío exitoso
     Y la aplicación no ha crasheado
 
-  Escenario: Valor numérico cero en campo con "No sé"
+  Escenario: Valor numérico cero en número de empleados e ingresos anuales
     Dado que la aplicación está abierta
     Y el backend está configurado para aceptar el envío
     Cuando el usuario rellena los datos mínimos de empresa
@@ -51,6 +51,15 @@ Característica: Comportamiento del formulario NIS en escenarios límite
     Y el usuario hace clic en Enviar
     Entonces se muestra el modal de envío exitoso o el modal de validación
     Y la aplicación no ha crasheado
+
+  Escenario: Mutua exclusión entre valor numérico y No sé en número de empleados
+    Dado que la aplicación está abierta
+    Cuando el usuario escribe "42" en "Número de empleados"
+    Y el usuario marca "No sé" en "Número de empleados" sin escribir número
+    Entonces el campo numérico "Número de empleados" está vacío y deshabilitado
+    Y "No sé" está marcado para el campo "Número de empleados"
+    Cuando el usuario desmarca "No sé" en "Número de empleados"
+    Entonces el campo numérico "Número de empleados" está habilitado
 
   # --- Camino máximo: todas las condicionales Sí ---
   Escenario: Usuario responde Sí a todas las aplicabilidades y rellena campos visibles

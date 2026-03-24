@@ -3,6 +3,18 @@ const { expect } = require('@playwright/test');
 
 // Steps compartidos (Given, When básicos) están en formulario.steps.js
 
+function escapeForRegExp(s) {
+  return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/** Contenedor del campo numérico de empresa (empleados o ingresos) por texto del label. */
+function getCompanyNumericFieldWrapper(page, nombreCampo) {
+  return page
+    .locator('[data-field-id="company_employees"], [data-field-id="company_revenue"]')
+    .filter({ hasText: new RegExp(escapeForRegExp(nombreCampo), 'i') })
+    .first();
+}
+
 // --- Enviar vacío ---
 When('el usuario hace clic en Enviar sin rellenar ningún campo', async function () {
   await this.page.getByRole('button', { name: /enviar/i }).click();
@@ -69,14 +81,38 @@ When('el usuario cambia a {string} en {string}', async function (valor, textoPre
 
 // --- No sé y valores numéricos ---
 When('el usuario marca {string} en {string} sin escribir número', async function (opcion, nombreCampo) {
-  const byLabel = this.page.locator('[data-field-id="company_employees"], [data-field-id="company_revenue"]').filter({ hasText: new RegExp(nombreCampo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }).first();
-  const check = byLabel.getByRole('checkbox', { name: new RegExp(opcion.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') });
+  const wrapper = getCompanyNumericFieldWrapper(this.page, nombreCampo);
+  const check = wrapper.getByRole('checkbox', { name: new RegExp(escapeForRegExp(opcion), 'i') });
   await check.check();
 });
 
+When('el usuario desmarca {string} en {string}', async function (opcion, nombreCampo) {
+  const wrapper = getCompanyNumericFieldWrapper(this.page, nombreCampo);
+  const check = wrapper.getByRole('checkbox', { name: new RegExp(escapeForRegExp(opcion), 'i') });
+  await check.uncheck();
+});
+
 When('el usuario escribe {string} en {string}', async function (valor, nombreCampo) {
-  const input = this.page.getByRole('spinbutton', { name: new RegExp(nombreCampo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') });
+  const input = this.page.getByRole('spinbutton', { name: new RegExp(escapeForRegExp(nombreCampo), 'i') });
   await input.first().fill(valor);
+});
+
+Then('el campo numérico {string} está vacío y deshabilitado', async function (nombreCampo) {
+  const wrapper = getCompanyNumericFieldWrapper(this.page, nombreCampo);
+  const input = wrapper.getByRole('spinbutton');
+  await expect(input).toBeDisabled();
+  await expect(input).toHaveValue('');
+});
+
+Then('{string} está marcado para el campo {string}', async function (opcion, nombreCampo) {
+  const wrapper = getCompanyNumericFieldWrapper(this.page, nombreCampo);
+  const check = wrapper.getByRole('checkbox', { name: new RegExp(escapeForRegExp(opcion), 'i') });
+  await expect(check).toBeChecked();
+});
+
+Then('el campo numérico {string} está habilitado', async function (nombreCampo) {
+  const wrapper = getCompanyNumericFieldWrapper(this.page, nombreCampo);
+  await expect(wrapper.getByRole('spinbutton')).toBeEnabled();
 });
 
 Then('se muestra el modal de envío exitoso o el modal de validación', async function () {
