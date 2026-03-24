@@ -232,21 +232,43 @@ class NISFormRenderer {
    */
   createChangeCallback(onChangeCallback = () => {}) {
     return (e) => {
-      // Only process events from form fields, not buttons or other elements
-      if (!e || !e.target || e.target.type === 'button') {
-        return;
-      }
-
       // Call original callback
       onChangeCallback(e);
+
+      if (this.yearLocked) return;
+
+      const lockIfStartedFilling = () => {
+        this.setYearLocked(true);
+      };
+
+      // If no concrete event target is available (many field renderers call callback without args),
+      // fall back to scanning non-company sections for any user-entered value.
+      if (!e || !e.target || e.target.type === 'button') {
+        const startedFilling = this.MULTI_YEAR_SECTIONS.some((sectionKey) => {
+          const section = document.querySelector(`[data-seccion="${sectionKey}"]`);
+          if (!section) return false;
+          const fields = section.querySelectorAll('input, select, textarea');
+          return Array.from(fields).some((field) => {
+            if (field.type === 'hidden' || field.disabled) return false;
+            if (field.type === 'radio' || field.type === 'checkbox') return field.checked;
+            return typeof field.value === 'string' ? field.value.trim().length > 0 : !!field.value;
+          });
+        });
+        if (startedFilling) lockIfStartedFilling();
+        return;
+      }
 
       // Task 12: Check if a non-company field was just filled (triggers year lock)
       const field = e.target;
       const seccion = field.closest('[data-seccion]')?.getAttribute('data-seccion');
-      const hasValue = field.value && field.value.trim && field.value.trim().length > 0;
+      const hasTextValue = typeof field.value === 'string' && field.value.trim().length > 0;
+      const hasNonTextValue = field.type === 'radio' || field.type === 'checkbox'
+        ? field.checked
+        : (field.value !== undefined && field.value !== null && String(field.value).length > 0);
+      const hasValue = hasTextValue || hasNonTextValue;
 
-      if (seccion && hasValue && this.isNonCompanySection(seccion) && !this.yearLocked) {
-        this.setYearLocked(true);
+      if (seccion && hasValue && this.isNonCompanySection(seccion)) {
+        lockIfStartedFilling();
       }
     };
   }
@@ -383,6 +405,7 @@ class NISFormRenderer {
 
     // Task 12 Phase 2: Initialize scroll effects
     this.initializeScrollEffects();
+    this.updateYearRailVisualState();
 
     // Renderizar cada sección
     Object.keys(this.formFields).forEach(seccion => {
@@ -1419,7 +1442,7 @@ class NISFormRenderer {
     const wrappedCallback = (fieldName, value) => {
       onChangeCallback(fieldName, value);
       if (!this.isReadOnly && !this.yearLocked && this.isNonCompanyField(fieldName)) {
-        this.yearLocked = true;
+        this.setYearLocked(true);
       }
     };
 
@@ -1455,6 +1478,18 @@ class NISFormRenderer {
     if (selector) {
       selector.disabled = locked || this.isReadOnly;
     }
+    this.updateYearRailVisualState();
+  }
+
+  /**
+   * Applies visual/accessibility state to the year rail when selector is locked/read-only.
+   */
+  updateYearRailVisualState() {
+    const rail = document.getElementById('year-rail');
+    if (!rail) return;
+    const isLocked = this.yearLocked || this.isReadOnly;
+    rail.classList.toggle('year-rail-locked', isLocked);
+    rail.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
   }
 
   /**
@@ -1471,6 +1506,7 @@ class NISFormRenderer {
     if (selector) {
       selector.disabled = readOnly || this.yearLocked;
     }
+    this.updateYearRailVisualState();
     // Disable all form fields
     const fields = form?.querySelectorAll('input, select, textarea');
     fields?.forEach(field => {

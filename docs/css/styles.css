@@ -1234,6 +1234,11 @@ footer p {
   display: none;
 }
 
+.year-rail-vertical.year-rail-locked {
+  filter: grayscale(1);
+  opacity: 0.8;
+}
+
 .year-label {
   font-size: 28px;
   font-weight: 600;
@@ -1297,6 +1302,31 @@ footer p {
   flex-direction: column;
   align-items: center;
   gap: 0;
+}
+
+.year-rail-locked .year-cylinder,
+.year-rail-locked .year-cylinder-stage {
+  perspective: none;
+  transform-style: flat;
+}
+
+.year-rail-locked .year-label {
+  cursor: not-allowed;
+  color: #666;
+  background-color: #e2e2e2;
+  border-color: #c8c8c8;
+  box-shadow: none;
+  text-shadow: none;
+  transform: none;
+}
+
+.year-rail-locked .year-label-selected {
+  background: #cfcfcf;
+  border-color: #b7b7b7;
+}
+
+.year-rail-locked .year-label-unselected {
+  opacity: 0.65;
 }
 
 .year-cylinder::before {
@@ -1433,6 +1463,16 @@ footer p {
 
   .year-selector-label {
     display: none;
+  }
+
+  .year-rail-vertical.year-rail-locked {
+    opacity: 0.8;
+    filter: grayscale(1);
+  }
+
+  .year-rail-locked .year-cylinder .year-label {
+    transform: none;
+    box-shadow: none;
   }
 }
 
