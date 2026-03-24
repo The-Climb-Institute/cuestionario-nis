@@ -9,13 +9,14 @@ Característica: Selector de Año de Reporte (Task 12)
     Y la etiqueta de año seleccionada muestra el año anterior
     Y la etiqueta no seleccionada muestra el año actual con opacidad menor a 1
 
-  Escenario: Usuario puede cambiar año tras completar un campo no-empresa
+  Escenario: Usuario no puede cambiar año tras completar un campo no-empresa
     Dado que la aplicación está abierta
     Y el año anterior está seleccionado
     Cuando el usuario rellena los datos mínimos de empresa
     Y el usuario rellena un valor en "¿La empresa reporta emisiones de GEI" (primer campo no-empresa)
-    Entonces el selector de año sigue habilitado y permite cambios
-    Y el usuario puede cambiar entre año actual y año anterior sin restricción
+    Entonces el selector de año está deshabilitado y no permite cambios
+    Y el riel de año muestra estado visual bloqueado
+    Y intentar cambiar el año no tiene efecto
 
   Escenario: Usuario puede cambiar año mientras solo rellena campos de empresa
     Dado que la aplicación está abierta

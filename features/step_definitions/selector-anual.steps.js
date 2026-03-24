@@ -53,19 +53,21 @@ Then('el selector de año está deshabilitado y no permite cambios', async funct
   await expect(this.page.locator('#year-selector')).toBeDisabled();
 });
 
+Then('el riel de año muestra estado visual bloqueado', async function () {
+  const yearRail = this.page.locator('#year-rail');
+  await expect(yearRail).toHaveClass(/year-rail-locked/);
+  await expect(yearRail).toHaveAttribute('aria-disabled', 'true');
+});
+
 Then('intentar cambiar el año no tiene efecto', async function () {
   const yearSelect = this.page.locator('#year-selector');
   const before = await yearSelect.inputValue();
-  const options = await yearSelect.locator('option').all();
-  if (options.length > 1) {
-    const alt = await options[0].getAttribute('value');
-    if (alt && alt !== before) {
-      await yearSelect.evaluate((el, value) => {
-        el.value = value;
-        el.dispatchEvent(new Event('change', { bubbles: true }));
-      }, alt);
-    }
-  }
+  const { currentYear, previousYear } = years();
+  const alt = String(before) === String(currentYear) ? String(previousYear) : String(currentYear);
+  await yearSelect.evaluate((el, value) => {
+    el.value = value;
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }, alt);
   const after = await yearSelect.inputValue();
   expect(after).toBe(before);
 });
