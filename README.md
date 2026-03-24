@@ -17,7 +17,7 @@ Formulario interactivo para evaluar el cumplimiento de **Normas de Información 
   - Se activa cuando el usuario completa el **primer campo no-empresa** (campos ambientales, sociales o de gobernanza)
   - Completar solo campos de empresa NO activa el bloqueo
   - Bloqueado: imposible cambiar año hasta confirmar limpiar
-- **Botón "Limpiar formulario"** debloquea el año y borra todos los datos (resetea estado de "formulario iniciado")
+- **Botón "Limpiar formulario"** en el panel derecho (Resumen): borra los datos del cuestionario, restablece el año al valor por defecto, quita el bloqueo del selector de año y oculta de nuevo el score total hasta un envío confirmado
 - **Estado post-envío:** Formulario en modo solo-lectura con estilo atenuado (deshabilitado), no permite cambios ni edición
 
 ### Layout y Centrado

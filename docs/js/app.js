@@ -609,6 +609,21 @@ function resetForm() {
     formRenderer.updateConditionalFields(formRenderer.getFormValues());
   }
 }
+
+/**
+ * Limpia el cuestionario desde el panel derecho: borra datos, restablece año y vuelve a ocultar scores hasta un nuevo envío.
+ */
+function clearFormFromPanel() {
+  if (!formRenderer) return;
+  if (!formRenderer.clearFormData()) return;
+
+  scoresRevealed = false;
+  const totalScoreEl = document.querySelector('.total-score');
+  if (totalScoreEl) totalScoreEl.setAttribute('hidden', '');
+
+  updateScores();
+  formRenderer.updateConditionalFields(formRenderer.getFormValues());
+}
 /**
  * Muestra modal de estado de envío del formulario
  */

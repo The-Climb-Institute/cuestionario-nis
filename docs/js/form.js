@@ -909,13 +909,14 @@ class NISFormRenderer {
       onChangeCallback();
     };
 
-    // Listen for country changes
-    const countrySelect = document.querySelector('[name="company_country"]');
-    if (countrySelect) {
-      countrySelect.addEventListener('change', updateRFCRequirement);
-      // Set initial state
-      updateRFCRequirement();
-    }
+    // Listen for country changes (country field may render after RFC field)
+    document.addEventListener('change', (e) => {
+      if (e?.target?.name === 'company_country') {
+        updateRFCRequirement();
+      }
+    });
+    // Ensure initial state after full section render
+    setTimeout(updateRFCRequirement, 0);
 
     // Task 15: RFC validation on input
     input.addEventListener('change', () => {
@@ -1231,6 +1232,7 @@ class NISFormRenderer {
           const optionElement = document.createElement('option');
           optionElement.value = country.name;
           optionElement.textContent = country.name;
+          if (country.code2) optionElement.setAttribute('data-code2', country.code2);
           input.appendChild(optionElement);
         });
       } else if (field.dataSource === 'regions') {
@@ -1614,44 +1616,74 @@ class NISFormRenderer {
 
   /**
    * Task 12 Phase 3: Clear form data and unlock year
+   * @returns {boolean} true if user confirmed and data was cleared
    */
   clearFormData() {
-    // Show confirmation dialog
     const confirmed = window.confirm(
       '¿Está seguro que desea limpiar todos los datos del formulario?\n\nEsta acción no se puede deshacer.'
     );
 
-    if (!confirmed) return;
+    if (!confirmed) return false;
 
-    // Clear all form fields
-    const form = document.querySelector('form');
-    if (form) {
-      // Clear text inputs
-      form.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+    const root = document.getElementById('form-container');
+    if (root) {
+      root.querySelectorAll('input[type="text"], input[type="number"]').forEach((input) => {
         input.value = '';
       });
 
-      // Clear selects
-      form.querySelectorAll('select').forEach(select => {
+      root.querySelectorAll('select').forEach((select) => {
         select.value = '';
       });
 
-      // Clear checkboxes and radios
-      form.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+      root.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach((input) => {
         input.checked = false;
       });
 
-      // Clear textareas
-      form.querySelectorAll('textarea').forEach(textarea => {
+      root.querySelectorAll('textarea').forEach((textarea) => {
         textarea.value = '';
       });
+
+      root.querySelectorAll('.number-field-wrapper .number-input').forEach((input) => {
+        input.disabled = false;
+      });
+
+      root.querySelectorAll('.bimestral-row').forEach((row) => row.remove());
+      root.querySelectorAll('.past-year-row').forEach((row) => row.remove());
     }
 
-    // Unlock year selection
+    document.querySelectorAll('.energy-bimestral-json').forEach((input) => {
+      input.value = '[]';
+    });
+
+    this.setReadOnly(false);
+
+    const defaultYear = this.dataYears[0];
+    this.selectedYear = defaultYear;
     this.setYearLocked(false);
 
-    // Show success message
+    const yearSelector = document.getElementById('year-selector');
+    if (yearSelector) {
+      yearSelector.value = String(defaultYear);
+    }
+
+    const tabUnselected = document.querySelector('[data-year-label="unselected"]');
+    const tabSelected = document.querySelector('[data-year-label="selected"]');
+    if (tabUnselected && tabSelected) {
+      tabUnselected.textContent = String(this.dataYears[1]);
+      tabSelected.textContent = String(defaultYear);
+      tabUnselected.classList.remove('year-label-selected');
+      tabUnselected.classList.add('year-label-unselected');
+      tabSelected.classList.remove('year-label-unselected');
+      tabSelected.classList.add('year-label-selected');
+      tabUnselected.style.opacity = '0.6';
+      tabSelected.style.opacity = '1';
+    }
+
+    this.updateYearBlocks();
+    this.updateYearRailVisualState();
+
     alert('Formulario limpiado. Ahora puede cambiar el año de reporte.');
+    return true;
   }
 
   /**

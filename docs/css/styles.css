@@ -1526,12 +1526,17 @@ footer p {
 /**
  * Task 12 Phase 3: Right Panel Clear Button
  */
-.results-panel .btn-clear-secondary {
+.results-panel .btn-clear-secondary,
+.resumen-panel .btn-clear-secondary {
   width: 100%;
   text-align: center;
   margin-top: var(--spacing-md);
   border-top: 1px solid var(--color-gray-medium);
   padding-top: var(--spacing-md);
+}
+
+.resumen-panel .resumen-clear-button {
+  box-sizing: border-box;
 }
 
 /**
