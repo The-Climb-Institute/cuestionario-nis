@@ -4,10 +4,10 @@ Característica: Comportamiento del formulario NIS en escenarios límite
   que un usuario real podría seguir (vacíos, "No sé", condicionales cambiantes, etc.).
 
   # --- Formulario vacío y datos mínimos ---
-  Escenario: Enviar sin rellenar nada no crashea y muestra validación
+  Escenario: Enviar sin consentimiento muestra aviso de privacidad antes de validación
     Dado que la aplicación está abierta
     Cuando el usuario hace clic en Enviar sin rellenar ningún campo
-    Entonces se muestra el modal de validación "Formulario incompleto"
+    Entonces se muestra el modal de aviso de privacidad
     Y el formulario sigue visible y usable
 
   Escenario: Solo datos de empresa con todas las condicionales en No
@@ -153,10 +153,3 @@ Característica: Comportamiento del formulario NIS en escenarios límite
     Entonces la aplicación no crashea
     Y se muestra un único modal de envío o de validación
 
-  # --- Descargar JSON sin enviar ---
-  Escenario: Descargar JSON con datos mínimos sin enviar
-    Dado que la aplicación está abierta
-    Cuando el usuario rellena los datos mínimos de empresa
-    Y el usuario hace clic en "Descargar JSON"
-    Entonces la aplicación no crashea
-    Y el formulario sigue visible

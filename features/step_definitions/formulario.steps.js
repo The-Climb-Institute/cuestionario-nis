@@ -53,6 +53,10 @@ When('el usuario rellena los datos mínimos de empresa', async function () {
 });
 
 When('el usuario hace clic en Enviar', async function () {
+  const privacyConsent = this.page.locator('#privacy-consent');
+  if (await privacyConsent.count()) {
+    await privacyConsent.check();
+  }
   await this.page.getByRole('button', { name: /enviar/i }).click();
 });
 

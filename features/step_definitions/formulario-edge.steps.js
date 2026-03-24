@@ -14,6 +14,12 @@ Then('se muestra el modal de validación {string}', async function (titulo) {
   await expect(modal).toContainText(titulo);
 });
 
+Then('se muestra el modal de aviso de privacidad', async function () {
+  const modal = this.page.locator('#privacy-consent-error');
+  await expect(modal).toBeVisible({ timeout: 5000 });
+  await expect(modal).toContainText('Consentimiento de privacidad requerido');
+});
+
 Then('el formulario sigue visible y usable', async function () {
   await expect(this.page.locator('#form-container')).toBeVisible();
   await expect(this.page.locator('#form-container .form-field').first()).toBeVisible();
@@ -221,6 +227,10 @@ When('el usuario rellena el resto de campos numéricos de emisiones y energía',
 
 // --- Doble clic y Descargar JSON ---
 When('el usuario hace doble clic en el botón Enviar', async function () {
+  const privacyConsent = this.page.locator('#privacy-consent');
+  if (await privacyConsent.count()) {
+    await privacyConsent.check();
+  }
   await this.page.getByRole('button', { name: /enviar/i }).dblclick();
 });
 
